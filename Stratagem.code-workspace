@@ -1,0 +1,45 @@
+{
+	"folders": [
+		{
+			"name": "Stratagem",
+			"path": "."
+		},
+		{
+			"name": "Stratagem-docs",
+			"path": "../docs/Stratagem-docs"
+		},
+		{
+			"name": "Steward",
+			"path": "../Steward"
+		},
+		{
+			"name": "Steward-docs",
+			"path": "../docs/Steward-docs"
+		},
+		{
+			"name": ".claude",
+			"path": "../../Users/TonyThomas/.claude"
+		}
+	],
+	"settings": {
+		"workbench.colorCustomizations": {
+			"tab.activeBorderTop": "#ffffff",
+			"tab.activeBackground": "#000000",
+			"tab.activeForeground": "#e2ff4e",
+			"editor.findMatchBackground": "#050505",
+			"editor.findMatchBorder": "#ffffaf",
+			"panel.border": "#ff0f0f66",
+			"sideBar.border": "#e0ff4566",
+			"editorGroup.border": "#fffd99ae",
+			"editor.lineHighlightBackground": "#1073cf2d",
+			"titleBar.activeForeground": "#ffffff",
+			"titleBar.activeBackground": "#c3771a",
+			"titleBar.inactiveForeground": "#ffffff",
+			"titleBar.inactiveBackground": "#7a4b11",
+			"tab.unfocusedActiveBackground": "#454545",
+			"window.activeBorder": "#ffee00",
+			"window.inactiveBorder": "#cec000",
+			"editor.lineHighlightBorder": "#9fced11f"
+		}
+	}
+}
