@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stratagem Performance — autonomy-loop wall-clock analysis</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, Roboto, sans-serif; max-width: 920px; margin: 2rem auto; padding: 0 1.25rem; color: #1b1f24; line-height: 1.5; }
+  h1 { font-size: 1.7rem; border-bottom: 2px solid #e1e4e8; padding-bottom: .4rem; }
+  h2 { font-size: 1.2rem; margin-top: 2rem; color: #0b4a6f; }
+  table { border-collapse: collapse; width: 100%; margin: .75rem 0; font-size: .93rem; }
+  th, td { border: 1px solid #d0d7de; padding: .45rem .6rem; text-align: left; vertical-align: top; }
+  th { background: #f6f8fa; }
+  code { background: #f3f4f6; padding: .05rem .3rem; border-radius: 4px; font-size: .9em; }
+  .headline { background: #fff8e1; border-left: 4px solid #f5a623; padding: .8rem 1rem; margin: 1rem 0; }
+  .caveat { background: #f3f6fb; border-left: 4px solid #6b7ec4; padding: .7rem 1rem; font-size: .9rem; color: #404a5c; }
+  .rank { font-weight: 700; color: #b3261e; }
+  .meta { color: #57606a; font-size: .88rem; }
+  ul { margin: .4rem 0; }
+</style>
+</head>
+<body>
+
+<h1>Stratagem Performance — autonomy-loop wall-clock analysis</h1>
+<p class="meta">
+  Subject: the <code>/if</code> autonomy-loop run for the <em>Board-Cards Chaining Test</em> (5 trivial file-creation tasks).<br>
+  Run ID <code>wf_6a7b77b1-eea</code> · 2026-06-29 · branch <code>tony/test</code>.<br>
+  Basis: <strong>inferred from run metrics + ledger timestamps</strong>, not a profiler. Transcript dig available for exact per-stage timing.
+</p>
+
+<div class="headline">
+  <strong>Headline:</strong> the ~10 minutes was almost <em>none</em> work and almost <em>all</em> fixed overhead —
+  <strong>10 fresh agents run one-after-another, each re-paying a skill-load + corpus-read startup tax.</strong>
+  The actual work (<code>echo "1.txt" &gt; file</code>) is microseconds; the rigor that pays off on a real feature is pure tax on a 5-byte file.
+</div>
+
+<h2>The numbers</h2>
+<table>
+  <tr><th>Metric</th><th>Value</th><th>Note</th></tr>
+  <tr><td>Wall-clock</td><td>610 s (~10.2 min)</td><td>5 tasks</td></tr>
+  <tr><td>Agents</td><td>10</td><td>~2 per task (implement + verify/board-sync)</td></tr>
+  <tr><td>Tool uses</td><td>87</td><td>~8.7 per agent</td></tr>
+  <tr><td>Subagent tokens (in+out)</td><td>413,077</td><td>overwhelmingly <em>input</em> — repeated large-file reads</td></tr>
+  <tr><td>Output tokens (budget-tracked)</td><td>~29,000</td><td>of 200k budget — cost was never the issue</td></tr>
+  <tr><td><strong>Per-agent average</strong></td><td><strong>~61 s</strong></td><td>610 ÷ 10 — this is the number to explain</td></tr>
+</table>
+
+<p><strong>Ledger timeline</strong> (verify-pass per task): start 21:08:59 → T1 21:12 → T2 21:14 → T3 21:17 → T4 21:18 → T5 21:21. Strictly serial, ~2–3 min apart.</p>
+
+<h2>Where the ~61 s/agent goes — three sinks</h2>
+
+<table>
+  <tr><th>#</th><th>Sink</th><th>Why it costs</th></tr>
+  <tr>
+    <td class="rank">1</td>
+    <td><strong>Sequential execution of independent tasks</strong></td>
+    <td>All 5 tasks are <code>Depends on: Nothing (leaf)</code>, yet the loop ran them strictly serially — and stages within a task (<code>px → ax → verify → board-sync</code>) are serial too. Nothing parallelized. For 5 independent tasks this is the obvious ~5× left on the table.</td>
+  </tr>
+  <tr>
+    <td class="rank">2</td>
+    <td><strong>Per-agent cold-start tax (CORPUS-READ-FIRST + skill load)</strong></td>
+    <td>Each fresh agent re-loads from scratch: its full <code>SKILL.md</code> (300+ lines), the plan file, and the CORPUS-READ-FIRST chain — resolve vault → read <code>Steward\CLAUDE.md</code> (<strong>~36 KB ≈ 9k tokens</strong>) → open vault index → drill pages. Repeated ~10×. This is why 5 five-byte files cost <strong>413k tokens</strong> — almost all <em>input</em> from re-reading the same big files in new contexts. Loading + reasoning over those prompts is real latency, not just tokens.</td>
+  </tr>
+  <tr>
+    <td class="rank">3</td>
+    <td><strong>Live ADO round-trips</strong></td>
+    <td>board-sync drove New→Active→Resolved ≈ 2 MCP writes/task ≈ 10 calls to Azure DevOps through the npx-launched server. Real but minor next to #1 and #2.</td>
+  </tr>
+</table>
+
+<h2>Optimization levers (biggest first)</h2>
+<table>
+  <tr><th>Lever</th><th>Expected win</th><th>Where</th></tr>
+  <tr>
+    <td><strong>Parallelize independent leaf tasks</strong></td>
+    <td>~5× on this shape; scales with fan-out width</td>
+    <td><code>autonomy-loop.js</code> — the dependency info exists (<code>leaf</code>) but is ignored; tasks run serially regardless.</td>
+  </tr>
+  <tr>
+    <td><strong>Fast-path trivial / code-observable tasks</strong></td>
+    <td>Removes the corpus tax where it adds nothing</td>
+    <td>Skip or cache CORPUS-READ-FIRST for a leaf task with a deterministic <code>Verify:</code> — no wiki read needed to write <code>1.txt</code>.</td>
+  </tr>
+  <tr>
+    <td><strong>Read the corpus once per task, not once per stage</strong></td>
+    <td>~3× fewer big-file reads per task</td>
+    <td><code>/px</code>, <code>/ax</code>, and the verifier each re-resolve the vault + re-read <code>Steward\CLAUDE.md</code>; resolve once and thread it.</td>
+  </tr>
+</table>
+
+<div class="caveat">
+  <strong>Caveat / honesty:</strong> the breakdown above is reasoned from the run metrics (duration, agent count, tool uses, token totals) and the ledger timestamps — not from a per-span profiler. To confirm which sink dominates, read the workflow subagent transcripts under
+  <code>…\projects\c--code-ISCI-Vision\…\subagents\workflows\wf_6a7b77b1-eea</code> for exact per-stage timing.
+</div>
+
+<h2>Candidate follow-ups</h2>
+<ul>
+  <li><strong>FEAT (loop):</strong> parallelize independent leaf tasks in <code>autonomy-loop.js</code> — the headline fix.</li>
+  <li><strong>FEAT (loop):</strong> fast-path / corpus-read skip for trivial code-observable tasks.</li>
+  <li>Both <code>scope/workflow</code> — log to the Bug-Hunt Runbook, harvest to the Stratagem wiki via <code>/rs</code>.</li>
+</ul>
+
+<p class="meta">The takeaway: this overhead is the cost of <code>/if</code>'s rigor (builder≠checker, per-task board transitions, recovery seams). It earns its keep on substantial features; on a trivial chain, manual <code>/px→/ax</code> or <code>/mpx</code> is far faster.</p>
+
+</body>
+</html>

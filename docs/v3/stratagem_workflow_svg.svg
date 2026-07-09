@@ -1,0 +1,1997 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1884.6145"
+   height="1223.8606"
+   viewBox="0 0 1884.6145 1223.8606"
+   version="1.1"
+   id="svg57"
+   sodipodi:docname="stratagem_workflow_svg.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview57"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.3609375"
+     inkscape:cx="897.66233"
+     inkscape:cy="501.47186"
+     inkscape:window-width="1295"
+     inkscape:window-height="1360"
+     inkscape:window-x="347"
+     inkscape:window-y="9"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg57"
+     showguides="true">
+    <sodipodi:guide
+       position="473.62999,73.257887"
+       orientation="0,-1"
+       id="guide12"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs8">
+    <color-profile
+       name="Adobe-RGB-1998"
+       xlink:href="../../../WINDOWS/system32/spool/drivers/color/AdobeRGB1998.icc"
+       id="color-profile1" />
+    <marker
+       id="arrowhead"
+       markerWidth="10"
+       markerHeight="7"
+       refX="9"
+       refY="3.5"
+       orient="auto">
+      <polygon
+         points="0,7 0,0 10,3.5 "
+         fill="#333333"
+         id="polygon1" />
+    </marker>
+    <!-- Command Type Gradients -->
+    <linearGradient
+       id="planGrad"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0%"
+         style="stop-color:#81C784"
+         id="stop1" />
+      <stop
+         offset="100%"
+         style="stop-color:#4CAF50"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       id="execGrad"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0%"
+         style="stop-color:#64B5F6"
+         id="stop3" />
+      <stop
+         offset="100%"
+         style="stop-color:#2196F3"
+         id="stop4" />
+    </linearGradient>
+    <linearGradient
+       id="errorGrad"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0%"
+         style="stop-color:#E57373"
+         id="stop5" />
+      <stop
+         offset="100%"
+         style="stop-color:#F44336"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="completeGrad"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1">
+      <stop
+         offset="0%"
+         style="stop-color:#BA68C8"
+         id="stop7" />
+      <stop
+         offset="100%"
+         style="stop-color:#9C27B0"
+         id="stop8" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#planGrad"
+       id="linearGradient1"
+       x1="0"
+       y1="11.547005"
+       x2="17.320507"
+       y2="28.867514"
+       gradientTransform="scale(1.1547005,0.8660254)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#execGrad"
+       id="linearGradient2"
+       x1="103.92305"
+       y1="11.547005"
+       x2="121.24356"
+       y2="28.867514"
+       gradientTransform="scale(1.1547005,0.8660254)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#errorGrad"
+       id="linearGradient3"
+       x1="207.8461"
+       y1="11.547005"
+       x2="225.1666"
+       y2="28.867514"
+       gradientTransform="scale(1.1547005,0.8660254)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#completeGrad"
+       id="linearGradient4"
+       x1="311.76917"
+       y1="11.547005"
+       x2="329.08966"
+       y2="28.867514"
+       gradientTransform="scale(1.1547005,0.8660254)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#planGrad"
+       id="linearGradient5"
+       x1="174.39694"
+       y1="155.71375"
+       x2="239.69624"
+       y2="221.01305"
+       gradientTransform="matrix(1.255756,0,0,0.79633306,111.02404,133.67401)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#planGrad"
+       id="linearGradient6"
+       x1="277.92023"
+       y1="155.71375"
+       x2="343.21954"
+       y2="221.01305"
+       gradientTransform="matrix(1.255756,0,0,0.79633306,111.02404,133.67401)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#completeGrad"
+       id="linearGradient7"
+       x1="174.39694"
+       y1="281.28934"
+       x2="239.69624"
+       y2="346.58865"
+       gradientTransform="matrix(1.255756,0,0,0.79633306,111.02404,133.67401)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#execGrad"
+       id="linearGradient8"
+       x1="381.44354"
+       y1="218.50154"
+       x2="446.74286"
+       y2="283.80084"
+       gradientTransform="matrix(1.255756,0,0,0.79633306,111.02404,133.67401)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#execGrad"
+       id="linearGradient9"
+       x1="484.96683"
+       y1="218.50154"
+       x2="550.26611"
+       y2="283.80084"
+       gradientTransform="matrix(1.255756,0,0,0.79633306,111.02404,133.67401)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#errorGrad"
+       id="linearGradient10"
+       x1="381.44354"
+       y1="406.86493"
+       x2="446.74286"
+       y2="472.16425"
+       gradientTransform="matrix(1.255756,0,0,0.79633306,111.02404,133.67401)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#errorGrad"
+       id="linearGradient11"
+       x1="484.96683"
+       y1="406.86493"
+       x2="550.26611"
+       y2="472.16425"
+       gradientTransform="matrix(1.255756,0,0,0.79633306,111.02404,133.67401)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#completeGrad"
+       id="linearGradient12"
+       x1="636.27008"
+       y1="218.50154"
+       x2="701.56946"
+       y2="283.80084"
+       gradientTransform="matrix(1.255756,0,0,0.79633306,111.02404,133.67401)"
+       gradientUnits="userSpaceOnUse" />
+    <marker
+       id="arrowhead-0"
+       markerWidth="10"
+       markerHeight="7"
+       refX="9"
+       refY="3.5"
+       orient="auto">
+      <polygon
+         points="0,7 0,0 10,3.5 "
+         fill="#333333"
+         id="polygon1-9" />
+    </marker>
+    <marker
+       id="marker2"
+       markerWidth="10"
+       markerHeight="7"
+       refX="9"
+       refY="3.5"
+       orient="auto">
+      <polygon
+         points="0,7 0,0 10,3.5 "
+         fill="#333333"
+         id="polygon2" />
+    </marker>
+  </defs>
+  <rect
+     style="fill:#ffffff;stroke-width:1.03996"
+     id="rect116"
+     width="1884.6145"
+     height="1223.8606"
+     x="0"
+     y="0" />
+  <!-- Title -->
+  <text
+     x="412.26468"
+     y="64.966019"
+     text-anchor="middle"
+     font-family="Arial, sans-serif"
+     font-size="24px"
+     font-weight="bold"
+     fill="#333333"
+     id="text8">ISCI-Web-App Command Mode Workflow</text>
+  <!-- Legend -->
+  <!-- Start Points -->
+  <!-- Planning Phase -->
+  <!-- Resume Path -->
+  <!-- Main Execution Loop -->
+  <!-- Error Handling -->
+  <!-- Feature Completion -->
+  <!-- Decision Diamonds -->
+  <!-- Arrows -->
+  <!-- Start to PF -->
+  <!-- Resume to RP -->
+  <!-- PF to CP -->
+  <!-- CP to PX -->
+  <!-- RP to PX -->
+  <!-- PX to AX -->
+  <!-- AX to Decision -->
+  <!-- Decision to CF -->
+  <!-- CF to END -->
+  <!-- AX Error to XE -->
+  <!-- XE to FX -->
+  <!-- FX back to PX -->
+  <!-- Task Loop -->
+  <g
+     id="g2"
+     transform="translate(-19.393939,-13.852814)">
+    <g
+       transform="translate(161.02404,193.67401)"
+       id="g13">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="16px"
+         font-weight="bold"
+         fill="#333333"
+         id="text9">Legend:</text>
+      <rect
+         x="0"
+         y="10"
+         width="20"
+         height="15"
+         fill="url(#planGrad)"
+         rx="3"
+         id="rect9"
+         style="fill:url(#linearGradient1)" />
+      <text
+         x="25"
+         y="22"
+         font-family="Arial, sans-serif"
+         font-size="12px"
+         fill="#333333"
+         id="text10">Planning Modes</text>
+      <rect
+         x="120"
+         y="10"
+         width="20"
+         height="15"
+         fill="url(#execGrad)"
+         rx="3"
+         id="rect10"
+         style="fill:url(#linearGradient2)" />
+      <text
+         x="145"
+         y="22"
+         font-family="Arial, sans-serif"
+         font-size="12px"
+         fill="#333333"
+         id="text11">Execution Modes</text>
+      <rect
+         x="240"
+         y="10"
+         width="20"
+         height="15"
+         fill="url(#errorGrad)"
+         rx="3"
+         id="rect11"
+         style="fill:url(#linearGradient3)" />
+      <text
+         x="265"
+         y="22"
+         font-family="Arial, sans-serif"
+         font-size="12px"
+         fill="#333333"
+         id="text12">Error Handling</text>
+      <rect
+         x="360"
+         y="10"
+         width="20"
+         height="15"
+         fill="url(#completeGrad)"
+         rx="3"
+         id="rect12"
+         style="fill:url(#linearGradient4)" />
+      <text
+         x="385"
+         y="22"
+         font-family="Arial, sans-serif"
+         font-size="12px"
+         fill="#333333"
+         id="text13">Completion</text>
+    </g>
+    <ellipse
+       cx="211.02402"
+       cy="283.67401"
+       rx="60"
+       ry="25"
+       fill="#ffe082"
+       stroke="#ffa000"
+       stroke-width="2"
+       id="ellipse13" />
+    <text
+       x="211.02402"
+       y="288.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="12px"
+       font-weight="bold"
+       fill="#333333"
+       id="text14">START</text>
+    <ellipse
+       cx="211.02402"
+       cy="383.67401"
+       rx="60"
+       ry="25"
+       fill="#ffe082"
+       stroke="#ffa000"
+       stroke-width="2"
+       id="ellipse14" />
+    <text
+       x="211.02402"
+       y="388.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="12px"
+       font-weight="bold"
+       fill="#333333"
+       id="text15">RESUME</text>
+    <rect
+       x="331.02405"
+       y="258.67401"
+       width="80"
+       height="50"
+       fill="url(#planGrad)"
+       stroke="#4caf50"
+       stroke-width="2"
+       rx="8"
+       id="rect15"
+       style="fill:url(#linearGradient5)" />
+    <text
+       x="371.02405"
+       y="278.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text16">📋 PF</text>
+    <text
+       x="371.02405"
+       y="293.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#ffffff"
+       id="text17">Plan Features</text>
+    <rect
+       x="461.02405"
+       y="258.67401"
+       width="80"
+       height="50"
+       fill="url(#planGrad)"
+       stroke="#4caf50"
+       stroke-width="2"
+       rx="8"
+       id="rect17"
+       style="fill:url(#linearGradient6)" />
+    <text
+       x="501.02405"
+       y="278.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text18">📁 CP</text>
+    <text
+       x="501.02405"
+       y="293.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#ffffff"
+       id="text19">Create Plan</text>
+    <rect
+       x="331.02405"
+       y="358.67401"
+       width="80"
+       height="50"
+       fill="url(#completeGrad)"
+       stroke="#9c27b0"
+       stroke-width="2"
+       rx="8"
+       id="rect19"
+       style="fill:url(#linearGradient7)" />
+    <text
+       x="371.02405"
+       y="378.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text20">📖 RP</text>
+    <text
+       x="371.02405"
+       y="393.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#ffffff"
+       id="text21">Read Plan</text>
+    <rect
+       x="591.02405"
+       y="308.67404"
+       width="80"
+       height="50"
+       fill="url(#execGrad)"
+       stroke="#2196f3"
+       stroke-width="2"
+       rx="8"
+       id="rect21"
+       style="fill:url(#linearGradient8)" />
+    <text
+       x="631.02405"
+       y="328.67404"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text22">🔍 PX</text>
+    <text
+       x="631.02405"
+       y="343.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#ffffff"
+       id="text23">Plan Execute</text>
+    <rect
+       x="721.02405"
+       y="308.67404"
+       width="80"
+       height="50"
+       fill="url(#execGrad)"
+       stroke="#2196f3"
+       stroke-width="2"
+       rx="8"
+       id="rect23"
+       style="fill:url(#linearGradient9)" />
+    <text
+       x="761.02405"
+       y="328.67404"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text24">⚡ AX</text>
+    <text
+       x="761.02405"
+       y="343.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#ffffff"
+       id="text25">Approve Execute</text>
+    <rect
+       x="591.02405"
+       y="458.67401"
+       width="80"
+       height="50"
+       fill="url(#errorGrad)"
+       stroke="#f44336"
+       stroke-width="2"
+       rx="8"
+       id="rect25"
+       style="fill:url(#linearGradient10)" />
+    <text
+       x="631.02405"
+       y="478.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text26">🚨 XE</text>
+    <text
+       x="631.02405"
+       y="493.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#ffffff"
+       id="text27">Execution Error</text>
+    <rect
+       x="721.02405"
+       y="458.67401"
+       width="80"
+       height="50"
+       fill="url(#errorGrad)"
+       stroke="#f44336"
+       stroke-width="2"
+       rx="8"
+       id="rect27"
+       style="fill:url(#linearGradient11)" />
+    <text
+       x="761.02405"
+       y="478.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text28">🔧 FX</text>
+    <text
+       x="761.02405"
+       y="493.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#ffffff"
+       id="text29">Fix Execution</text>
+    <rect
+       x="911.02405"
+       y="308.67404"
+       width="80"
+       height="50"
+       fill="url(#completeGrad)"
+       stroke="#9c27b0"
+       stroke-width="2"
+       rx="8"
+       id="rect29"
+       style="fill:url(#linearGradient12)" />
+    <text
+       x="951.02405"
+       y="328.67404"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text30">🎯 CF</text>
+    <text
+       x="951.02405"
+       y="343.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#ffffff"
+       id="text31">Complete Feature</text>
+    <ellipse
+       cx="1061.024"
+       cy="333.67404"
+       rx="60"
+       ry="25"
+       fill="#c8e6c9"
+       stroke="#4caf50"
+       stroke-width="2"
+       id="ellipse31" />
+    <text
+       x="1061.024"
+       y="338.67404"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="12px"
+       font-weight="bold"
+       fill="#333333"
+       id="text32">END</text>
+    <polygon
+       points="770,220 750,200 770,180 790,200 "
+       fill="#ffb74d"
+       stroke="#ff9800"
+       stroke-width="2"
+       id="polygon32"
+       transform="translate(111.02404,133.67401)" />
+    <text
+       x="881.02405"
+       y="323.67404"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="8px"
+       fill="#333333"
+       id="text33">All</text>
+    <text
+       x="881.02405"
+       y="333.67404"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="8px"
+       fill="#333333"
+       id="text34">Tasks</text>
+    <text
+       x="881.02405"
+       y="343.67401"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="8px"
+       fill="#333333"
+       id="text35">Done?</text>
+    <line
+       x1="271.02402"
+       y1="283.67401"
+       x2="331.02405"
+       y2="283.67401"
+       stroke="#333333"
+       stroke-width="2"
+       marker-end="url(#arrowhead)"
+       id="line35" />
+    <line
+       x1="271.02402"
+       y1="383.67401"
+       x2="331.02405"
+       y2="383.67401"
+       stroke="#333333"
+       stroke-width="2"
+       marker-end="url(#arrowhead)"
+       id="line36" />
+    <line
+       x1="411.02405"
+       y1="283.67401"
+       x2="461.02405"
+       y2="283.67401"
+       stroke="#333333"
+       stroke-width="2"
+       marker-end="url(#arrowhead)"
+       id="line37" />
+    <line
+       x1="541.02405"
+       y1="283.67401"
+       x2="591.02405"
+       y2="308.67404"
+       stroke="#333333"
+       stroke-width="2"
+       marker-end="url(#arrowhead)"
+       id="line38" />
+    <line
+       x1="411.02405"
+       y1="383.67401"
+       x2="591.02405"
+       y2="333.67404"
+       stroke="#333333"
+       stroke-width="2"
+       marker-end="url(#arrowhead)"
+       id="line39" />
+    <line
+       x1="671.02405"
+       y1="333.67404"
+       x2="721.02405"
+       y2="333.67404"
+       stroke="#333333"
+       stroke-width="2"
+       marker-end="url(#arrowhead)"
+       id="line40" />
+    <line
+       x1="801.02405"
+       y1="333.67404"
+       x2="861.02405"
+       y2="333.67404"
+       stroke="#333333"
+       stroke-width="2"
+       marker-end="url(#arrowhead)"
+       id="line41" />
+    <line
+       x1="901.02405"
+       y1="333.67404"
+       x2="911.02405"
+       y2="333.67404"
+       stroke="#333333"
+       stroke-width="2"
+       marker-end="url(#arrowhead)"
+       id="line42" />
+    <line
+       x1="991.02405"
+       y1="333.67404"
+       x2="1001.024"
+       y2="333.67404"
+       stroke="#333333"
+       stroke-width="2"
+       marker-end="url(#arrowhead)"
+       id="line43" />
+    <line
+       x1="761.02405"
+       y1="358.67401"
+       x2="661.02405"
+       y2="458.67401"
+       stroke="#f44336"
+       stroke-width="2"
+       marker-end="url(#arrowhead)"
+       id="line44" />
+    <text
+       x="701.02405"
+       y="403.67401"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#f44336"
+       id="text44">Error</text>
+    <line
+       x1="671.02405"
+       y1="483.67401"
+       x2="721.02405"
+       y2="483.67401"
+       stroke="#333333"
+       stroke-width="2"
+       marker-end="url(#arrowhead)"
+       id="line45" />
+    <line
+       x1="721.02405"
+       y1="458.67401"
+       x2="631.02405"
+       y2="358.67401"
+       stroke="#333333"
+       stroke-width="2"
+       marker-end="url(#arrowhead)"
+       id="line46" />
+    <path
+       d="m 881.02404,353.67401 q -250,60 -250,5"
+       stroke="#2196f3"
+       stroke-width="2"
+       fill="none"
+       marker-end="url(#arrowhead)"
+       id="path46" />
+    <text
+       x="731.02405"
+       y="403.67401"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#2196f3"
+       id="text46">More Tasks</text>
+  </g>
+  <!-- Task Management Section -->
+  <!-- Connection from main PX/AX to Task Management -->
+  <g
+     transform="translate(86.287615,826.78504)"
+     id="g71">
+    <text
+       x="0"
+       y="-200"
+       font-family="Arial, sans-serif"
+       font-size="16px"
+       font-weight="bold"
+       fill="#333333"
+       id="text67">Legacy Support:</text>
+    <rect
+       x="0"
+       y="-180"
+       width="60"
+       height="40"
+       fill="#bdbdbd"
+       stroke="#757575"
+       stroke-width="2"
+       rx="5"
+       id="rect67" />
+    <text
+       x="30"
+       y="-165"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="12px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text68">CX</text>
+    <text
+       x="30"
+       y="-152"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="8px"
+       fill="#ffffff"
+       id="text69">Chunk</text>
+    <rect
+       x="80"
+       y="-180"
+       width="60"
+       height="40"
+       fill="#bdbdbd"
+       stroke="#757575"
+       stroke-width="2"
+       rx="5"
+       id="rect49" />
+    <text
+       x="110"
+       y="-165"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="12px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text70">IQ</text>
+    <text
+       x="110"
+       y="-152"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="8px"
+       fill="#ffffff"
+       id="text71">Input Queue</text>
+  </g>
+  <!-- Human Checkpoint Flow Description -->
+  <g
+     transform="translate(75.971964,918.94888)"
+     id="human-checkpoints">
+    <g
+       transform="translate(0,25.800866)"
+       id="g85">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="16px"
+         font-weight="bold"
+         fill="#333333"
+         id="text75">Human Checkpoint Cycle:</text>
+      <text
+         x="0"
+         y="35"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text76">1. 🔍 PX (Plan Execute) - AI selects next task and creates implementation strategy</text>
+      <text
+         x="0"
+         y="65"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text77">2. 👤 HUMAN APPROVAL CHECKPOINT - Human reviews PX plan and decides:</text>
+      <text
+         x="30"
+         y="90"
+         font-family="Arial, sans-serif"
+         font-size="13px"
+         fill="#4caf50"
+         id="text78">✅ &quot;Approve for execution&quot; → proceed to AX</text>
+      <text
+         x="30"
+         y="110"
+         font-family="Arial, sans-serif"
+         font-size="13px"
+         fill="#f44336"
+         id="text79">❌ &quot;Needs revision&quot; → back to PX for refinement</text>
+      <text
+         x="30"
+         y="130"
+         font-family="Arial, sans-serif"
+         font-size="13px"
+         fill="#ff9800"
+         id="text80">🔄 &quot;Split task&quot; → back to CP for task breakdown</text>
+      <text
+         x="0"
+         y="165"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text81">3. ⚡ AX (Approve Execute) - AI implements ONLY after human approval</text>
+      <text
+         x="0"
+         y="195"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text82">4. 👤 HUMAN REVIEW CHECKPOINT - Human reviews AX results:</text>
+      <text
+         x="30"
+         y="220"
+         font-family="Arial, sans-serif"
+         font-size="13px"
+         fill="#4caf50"
+         id="text83">✅ &quot;Good implementation&quot; → continue to next task</text>
+      <text
+         x="30"
+         y="240"
+         font-family="Arial, sans-serif"
+         font-size="13px"
+         fill="#f44336"
+         id="text84">❌ &quot;Has errors&quot; → trigger XE → FX cycle</text>
+      <text
+         x="30"
+         y="260"
+         font-family="Arial, sans-serif"
+         font-size="13px"
+         fill="#ff9800"
+         id="text85">🔄 &quot;Needs changes&quot; → provide feedback for next iteration</text>
+    </g>
+  </g>
+  <text
+     x="83.145432"
+     y="741.26111"
+     font-family="Arial, sans-serif"
+     font-size="18px"
+     font-weight="bold"
+     fill="#333333"
+     id="text86">Common Patterns:</text>
+  <g
+     transform="translate(83.145404,759.26116)"
+     id="g53">
+    <circle
+       cx="5"
+       cy="5"
+       r="4"
+       fill="#4caf50"
+       id="circle52" />
+    <text
+       x="20"
+       y="9"
+       font-family="Arial, sans-serif"
+       font-size="16px"
+       fill="#333333"
+       id="text87"><tspan
+   font-weight="bold"
+   id="tspan52">New Feature:</tspan> START → PF → CP → PX → AX → (PX → AX)* → CF → END</text>
+  </g>
+  <g
+     transform="translate(83.145404,794.26116)"
+     id="g54">
+    <circle
+       cx="5"
+       cy="5"
+       r="4"
+       fill="#f44336"
+       id="circle53" />
+    <text
+       x="20"
+       y="9"
+       font-family="Arial, sans-serif"
+       font-size="16px"
+       fill="#333333"
+       id="text88"><tspan
+   font-weight="bold"
+   id="tspan53">Error Handling:</tspan> PX → AX → XE → FX → PX → AX → CF</text>
+  </g>
+  <g
+     transform="translate(83.145404,829.26116)"
+     id="g55">
+    <circle
+       cx="5"
+       cy="5"
+       r="4"
+       fill="#9c27b0"
+       id="circle54" />
+    <text
+       x="20"
+       y="9"
+       font-family="Arial, sans-serif"
+       font-size="16px"
+       fill="#333333"
+       id="text89"><tspan
+   font-weight="bold"
+   id="tspan54">Resume Work:</tspan> RESUME → RP → PX → AX → (PX → AX)* → CF</text>
+  </g>
+  <g
+     transform="translate(83.145404,864.26116)"
+     id="g56">
+    <circle
+       cx="5"
+       cy="5"
+       r="4"
+       fill="#2196f3"
+       id="circle55" />
+    <text
+       x="20"
+       y="9"
+       font-family="Arial, sans-serif"
+       font-size="16px"
+       fill="#333333"
+       id="text90"><tspan
+   font-weight="bold"
+   id="tspan55">Core Loop:</tspan> PX (select task) → AX (implement) → repeat until done</text>
+  </g>
+  <!-- Workflow Patterns -->
+  <g
+     transform="translate(76.664614,1020.9489)"
+     id="g57" />
+  <!-- Section 4: Workflow Checklist -->
+  <g
+     transform="translate(670.95031,806.87962)"
+     id="workflow-checklist">
+    <rect
+       x="-5"
+       y="-30"
+       width="1200"
+       height="400"
+       fill="#f8f9fa"
+       stroke="#dddddd"
+       stroke-width="2"
+       rx="5"
+       id="rect90" />
+    <text
+       x="0"
+       y="0"
+       font-family="Arial, sans-serif"
+       font-size="20px"
+       font-weight="bold"
+       fill="#333333"
+       id="text91">Section 4: Stratagem Workflow Checklist</text>
+    <!-- Starting the Project -->
+    <g
+       transform="translate(0,35)"
+       id="g95">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="16px"
+         font-weight="bold"
+         fill="#4caf50"
+         id="text92">🚀 Starting a New Feature:</text>
+      <rect
+         x="20"
+         y="10"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect92" />
+      <text
+         x="45"
+         y="22"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text93">1. START → Enter the workflow with a new feature request</text>
+      <rect
+         x="20"
+         y="35"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect93" />
+      <text
+         x="45"
+         y="47"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text94">2. PF (Plan Features) → Define what needs to be built</text>
+      <rect
+         x="20"
+         y="60"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect94" />
+      <text
+         x="45"
+         y="72"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text95">3. CP (Create Plan) → Generate detailed plan.md file with task list</text>
+    </g>
+    <!-- Core Execution Loop -->
+    <g
+       transform="translate(0,145)"
+       id="g102">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="16px"
+         font-weight="bold"
+         fill="#2196f3"
+         id="text96">🔄 Core Execution Loop (Repeat for Each Task):</text>
+      <rect
+         x="20"
+         y="10"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect96" />
+      <text
+         x="45"
+         y="22"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text97">4. PX (Plan Execute) → Select next [ ] task from plan.md</text>
+      <rect
+         x="20"
+         y="35"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect97" />
+      <text
+         x="45"
+         y="47"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text98">5. 👤 HUMAN CHECKPOINT → Review PX strategy (Approve/Revise/Split)</text>
+      <rect
+         x="20"
+         y="60"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect98" />
+      <text
+         x="45"
+         y="72"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text99">6. AX (Approve Execute) → Implement the approved task</text>
+      <rect
+         x="20"
+         y="85"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect99" />
+      <text
+         x="45"
+         y="97"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text100">7. 👤 HUMAN REVIEW → Check implementation quality</text>
+      <rect
+         x="20"
+         y="110"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect100" />
+      <text
+         x="45"
+         y="122"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text101">8. Update plan.md → Mark task [x] with ✅ timestamp</text>
+      <rect
+         x="20"
+         y="135"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect101" />
+      <text
+         x="45"
+         y="147"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text102">9. Decision Point → More tasks? Return to step 4. All done? Proceed to CF</text>
+    </g>
+    <!-- Completion -->
+    <g
+       transform="translate(600,35)"
+       id="g105">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="16px"
+         font-weight="bold"
+         fill="#9c27b0"
+         id="text103">✅ Completing the Feature:</text>
+      <rect
+         x="20"
+         y="10"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect103" />
+      <text
+         x="45"
+         y="22"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text104">10. CF (Complete Feature) → Finalize and document completion</text>
+      <rect
+         x="20"
+         y="35"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect104" />
+      <text
+         x="45"
+         y="47"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text105">11. END → Feature successfully delivered</text>
+    </g>
+    <!-- Error Handling Branch -->
+    <g
+       transform="translate(600,105)"
+       id="g109">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="16px"
+         font-weight="bold"
+         fill="#f44336"
+         id="text106">🚨 Error Handling (When Issues Arise):</text>
+      <rect
+         x="20"
+         y="10"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect106" />
+      <text
+         x="45"
+         y="22"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text107">• XE (Execution Error) → Identify what went wrong</text>
+      <rect
+         x="20"
+         y="35"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect107" />
+      <text
+         x="45"
+         y="47"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text108">• FX (Fix Execution) → Correct the issue</text>
+      <rect
+         x="20"
+         y="60"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect108" />
+      <text
+         x="45"
+         y="72"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text109">• Return to PX → Re-plan and continue</text>
+    </g>
+    <!-- Resume Path -->
+    <g
+       transform="translate(600,210)"
+       id="g113">
+      <text
+         x="0"
+         y="0"
+         font-family="Arial, sans-serif"
+         font-size="16px"
+         font-weight="bold"
+         fill="#9c27b0"
+         id="text110">📖 Resuming Work:</text>
+      <rect
+         x="20"
+         y="10"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect110" />
+      <text
+         x="45"
+         y="22"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text111">• RESUME → Pick up where you left off</text>
+      <rect
+         x="20"
+         y="35"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect111" />
+      <text
+         x="45"
+         y="47"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text112">• RP (Read Plan) → Load existing plan.md</text>
+      <rect
+         x="20"
+         y="60"
+         width="15"
+         height="15"
+         fill="#ffffff"
+         stroke="#333333"
+         stroke-width="1"
+         rx="2"
+         id="rect112" />
+      <text
+         x="45"
+         y="72"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         fill="#333333"
+         id="text113">• Continue at step 4 (PX)</text>
+    </g>
+    <!-- Key Points -->
+    <g
+       transform="translate(0,310)"
+       id="g115">
+      <rect
+         x="-5"
+         y="-5"
+         width="1190"
+         height="50"
+         fill="#e3f2fd"
+         stroke="#1976d2"
+         stroke-width="1"
+         rx="3"
+         id="rect113" />
+      <text
+         x="5"
+         y="15"
+         font-family="Arial, sans-serif"
+         font-size="14px"
+         font-weight="bold"
+         fill="#1976d2"
+         id="text114">💡 Key Points:</text>
+      <text
+         x="5"
+         y="35"
+         font-family="Arial, sans-serif"
+         font-size="13px"
+         fill="#333333"
+         id="text115">• Human approval required before ANY code execution (PX → AX transition) | • Tasks processed one at a time in sequence | • All progress tracked in plan.md | • Loop continues until all tasks complete</text>
+    </g>
+  </g>
+  <g
+     transform="translate(1243.1082,28.088783)"
+     id="g19">
+    <rect
+       x="0"
+       y="0"
+       width="550"
+       height="280"
+       fill="#f8f9fa"
+       stroke="#333333"
+       stroke-width="2"
+       rx="8"
+       id="rect1" />
+    <text
+       x="275"
+       y="25"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="18px"
+       font-weight="bold"
+       fill="#333333"
+       id="text2">📄 plan.md File Structure</text>
+    <!-- File Path -->
+    <rect
+       x="20"
+       y="45"
+       width="510"
+       height="35"
+       fill="#e8e8e8"
+       stroke="#666666"
+       stroke-width="1"
+       rx="3"
+       id="rect2" />
+    <text
+       x="30"
+       y="65"
+       font-family="monospace"
+       font-size="12px"
+       fill="#333333"
+       id="text3">C:\code\ISCI-Web-App\claude\{timestamp}_{feature}_plan.md</text>
+    <text
+       x="30"
+       y="78"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#666666"
+       id="text4">Example: 20250125_1430_user_authentication_plan.md</text>
+    <!-- Feature Overview -->
+    <rect
+       x="20"
+       y="95"
+       width="510"
+       height="60"
+       fill="#e8f5e9"
+       stroke="#4caf50"
+       stroke-width="1"
+       rx="3"
+       id="rect4" />
+    <text
+       x="30"
+       y="110"
+       font-family="Arial, sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       fill="#2e7d32"
+       id="text5">## Feature Overview</text>
+    <text
+       x="30"
+       y="128"
+       font-family="Arial, sans-serif"
+       font-size="11px"
+       fill="#333333"
+       id="text6">• Feature: User Authentication System</text>
+    <text
+       x="30"
+       y="143"
+       font-family="Arial, sans-serif"
+       font-size="11px"
+       fill="#333333"
+       id="text7">• Created: 2025-01-25 14:30 | Status: In Progress (3/7 tasks)</text>
+    <text
+       x="280"
+       y="143"
+       font-family="Arial, sans-serif"
+       font-size="11px"
+       fill="#333333"
+       id="text8-4">• Time: 57 min elapsed / ~2.5 hrs total</text>
+    <!-- Tasks Side by Side -->
+    <!-- Active Tasks -->
+    <rect
+       x="20"
+       y="170"
+       width="250"
+       height="75"
+       fill="#fff3cd"
+       stroke="#856404"
+       stroke-width="1"
+       rx="3"
+       id="rect8" />
+    <text
+       x="30"
+       y="185"
+       font-family="Arial, sans-serif"
+       font-size="13px"
+       font-weight="bold"
+       fill="#856404"
+       id="text9-8">### Active Tasks</text>
+    <text
+       x="30"
+       y="202"
+       font-family="monospace"
+       font-size="10px"
+       fill="#856404"
+       id="text10-8">- [ ] Task 1: Setup auth DB schema</text>
+    <text
+       x="30"
+       y="217"
+       font-family="monospace"
+       font-size="10px"
+       fill="#856404"
+       id="text11-2">- [ ] Task 2: User registration API</text>
+    <text
+       x="30"
+       y="232"
+       font-family="monospace"
+       font-size="10px"
+       fill="#856404"
+       id="text12-4">- [ ] Task 3: Password hashing</text>
+    <!-- Completed Tasks -->
+    <rect
+       x="280"
+       y="170"
+       width="250"
+       height="75"
+       fill="#d1edff"
+       stroke="#0056b3"
+       stroke-width="1"
+       rx="3"
+       id="rect12-5" />
+    <text
+       x="290"
+       y="185"
+       font-family="Arial, sans-serif"
+       font-size="13px"
+       font-weight="bold"
+       fill="#0056b3"
+       id="text13-5">### Completed Tasks</text>
+    <text
+       x="290"
+       y="202"
+       font-family="monospace"
+       font-size="10px"
+       fill="#0056b3"
+       id="text14-1">- [x] Task 0: Initialize auth ✅ 14:35</text>
+    <text
+       x="290"
+       y="217"
+       font-family="monospace"
+       font-size="10px"
+       fill="#0056b3"
+       id="text15-7">- [x] Task 5: JWT generation ✅ 15:02</text>
+    <text
+       x="290"
+       y="232"
+       font-family="monospace"
+       font-size="10px"
+       fill="#0056b3"
+       id="text16-1">- [x] Task 6: Auth middleware ✅ 15:27</text>
+    <!-- Implementation Notes -->
+    <rect
+       x="20"
+       y="260"
+       width="510"
+       height="60"
+       fill="#f3e5f5"
+       stroke="#7b1fa2"
+       stroke-width="1"
+       rx="3"
+       id="rect16" />
+    <text
+       x="30"
+       y="275"
+       font-family="Arial, sans-serif"
+       font-size="13px"
+       font-weight="bold"
+       fill="#7b1fa2"
+       id="text17-1">### Implementation Details</text>
+    <text
+       x="30"
+       y="293"
+       font-family="Arial, sans-serif"
+       font-size="11px"
+       fill="#333333"
+       id="text18-5">• Current: Task 1 - Setting up PostgreSQL auth tables</text>
+    <text
+       x="30"
+       y="308"
+       font-family="Arial, sans-serif"
+       font-size="11px"
+       fill="#333333"
+       id="text19-2">• Tech Stack: PostgreSQL, bcrypt, JWT, Express middleware</text>
+  </g>
+  <text
+     x="1518.1083"
+     y="348.08878"
+     text-anchor="middle"
+     font-family="Arial, sans-serif"
+     font-size="20px"
+     font-weight="bold"
+     fill="#333333"
+     id="text20-7">How Tasks Flow Through the System</text>
+  <g
+     transform="translate(1243.1082,378.08878)"
+     id="g27">
+    <rect
+       x="0"
+       y="0"
+       width="200"
+       height="120"
+       fill="#e3f2fd"
+       stroke="#1976d2"
+       stroke-width="2"
+       rx="5"
+       id="rect20" />
+    <rect
+       x="0"
+       y="0"
+       width="200"
+       height="30"
+       fill="#1976d2"
+       rx="5"
+       id="rect21-6" />
+    <text
+       x="100"
+       y="20"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text21-1">🔍 PX - Plan Execute</text>
+    <text
+       x="10"
+       y="45"
+       font-family="Arial, sans-serif"
+       font-size="11px"
+       font-weight="bold"
+       fill="#333333"
+       id="text22-4">What AI Does:</text>
+    <text
+       x="10"
+       y="60"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#333333"
+       id="text23-2">1. Reads plan.md file</text>
+    <text
+       x="10"
+       y="73"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#333333"
+       id="text24-3">2. Finds next [ ] task</text>
+    <text
+       x="10"
+       y="86"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#333333"
+       id="text25-2">3. Creates implementation plan</text>
+    <text
+       x="10"
+       y="99"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#333333"
+       id="text26-2">4. Shows plan to human</text>
+    <text
+       x="10"
+       y="112"
+       font-family="Arial, sans-serif"
+       font-size="9px"
+       fill="#666666"
+       font-style="italic"
+       id="text27-1">⏱ ~2-3 minutes</text>
+  </g>
+  <g
+     transform="translate(1473.1082,408.08878)"
+     id="g30">
+    <polygon
+       points="80,40 40,80 0,40 40,0 "
+       fill="#ff9800"
+       stroke="#f57c00"
+       stroke-width="2"
+       id="polygon27" />
+    <text
+       x="40"
+       y="38"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="12px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text28-6">👤</text>
+    <text
+       x="40"
+       y="50"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text29-8">DECIDE</text>
+    <text
+       x="40"
+       y="95"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="11px"
+       font-weight="bold"
+       fill="#f57c00"
+       id="text30-5">Human Reviews</text>
+  </g>
+  <g
+     transform="translate(1593.1082,378.08878)"
+     id="g37">
+    <rect
+       x="0"
+       y="0"
+       width="200"
+       height="120"
+       fill="#e8f5e9"
+       stroke="#4caf50"
+       stroke-width="2"
+       rx="5"
+       id="rect30" />
+    <rect
+       x="0"
+       y="0"
+       width="200"
+       height="30"
+       fill="#4caf50"
+       rx="5"
+       id="rect31" />
+    <text
+       x="100"
+       y="20"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text31-7">⚡ AX - Execute</text>
+    <text
+       x="10"
+       y="45"
+       font-family="Arial, sans-serif"
+       font-size="11px"
+       font-weight="bold"
+       fill="#333333"
+       id="text32-6">What AI Does:</text>
+    <text
+       x="10"
+       y="60"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#333333"
+       id="text33-1">1. Executes approved plan</text>
+    <text
+       x="10"
+       y="73"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#333333"
+       id="text34-8">2. Writes/edits code files</text>
+    <text
+       x="10"
+       y="86"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#333333"
+       id="text35-9">3. Updates plan.md [x] ✅</text>
+    <text
+       x="10"
+       y="99"
+       font-family="Arial, sans-serif"
+       font-size="10px"
+       fill="#333333"
+       id="text36">4. Shows results</text>
+    <text
+       x="10"
+       y="112"
+       font-family="Arial, sans-serif"
+       font-size="9px"
+       fill="#666666"
+       font-style="italic"
+       id="text37">⏱ ~3-5 minutes</text>
+  </g>
+  <line
+     x1="1443.1083"
+     y1="438.08878"
+     x2="1473.1083"
+     y2="438.08878"
+     stroke="#333333"
+     stroke-width="2"
+     marker-end="url(#arrowhead-0)"
+     id="line37-2"
+     style="marker-end:url(#arrowhead-0)" />
+  <line
+     x1="1553.1083"
+     y1="438.08878"
+     x2="1593.1083"
+     y2="438.08878"
+     stroke="#4caf50"
+     stroke-width="2"
+     marker-end="url(#arrowhead-0)"
+     id="line38-7"
+     style="marker-end:url(#arrowhead-0)" />
+  <text
+     x="1558.1083"
+     y="433.08878"
+     font-family="Arial, sans-serif"
+     font-size="9px"
+     fill="#4caf50"
+     id="text38">Approve</text>
+  <g
+     transform="translate(1243.1082,528.08878)"
+     id="g40">
+    <rect
+       x="0"
+       y="0"
+       width="550"
+       height="80"
+       fill="#f5f5f5"
+       stroke="#666666"
+       stroke-width="2"
+       rx="5"
+       id="rect38" />
+    <text
+       x="275"
+       y="20"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       fill="#333333"
+       id="text39">Live Progress Visualization</text>
+    <!-- Progress Bar -->
+    <rect
+       x="50"
+       y="35"
+       width="450"
+       height="25"
+       fill="#e0e0e0"
+       stroke="#666666"
+       stroke-width="1"
+       rx="12.5"
+       id="rect39" />
+    <rect
+       x="50"
+       y="35"
+       width="193"
+       height="25"
+       fill="#4caf50"
+       rx="12.5"
+       id="rect40" />
+    <text
+       x="275"
+       y="52"
+       text-anchor="middle"
+       font-family="Arial, sans-serif"
+       font-size="12px"
+       font-weight="bold"
+       fill="#ffffff"
+       id="text40">43% Complete (3/7 tasks)</text>
+  </g>
+  <g
+     transform="translate(1243.1082,628.08878)"
+     id="g45">
+    <rect
+       x="0"
+       y="0"
+       width="550"
+       height="100"
+       fill="#e3f2fd"
+       stroke="#1976d2"
+       stroke-width="2"
+       rx="5"
+       id="rect41" />
+    <text
+       x="10"
+       y="20"
+       font-family="Arial, sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       fill="#1976d2"
+       id="text41">💡 Critical Task Management Rules:</text>
+    <text
+       x="20"
+       y="40"
+       font-family="Arial, sans-serif"
+       font-size="11px"
+       fill="#333333"
+       id="text42">• Each task must be atomic - completable in one PX→AX cycle (15-30 min)</text>
+    <text
+       x="20"
+       y="55"
+       font-family="Arial, sans-serif"
+       font-size="11px"
+       fill="#333333"
+       id="text43">• Human approval is MANDATORY before any code execution</text>
+    <text
+       x="20"
+       y="70"
+       font-family="Arial, sans-serif"
+       font-size="11px"
+       fill="#333333"
+       id="text44-9">• plan.md is the single source of truth - persists across all sessions</text>
+    <text
+       x="20"
+       y="85"
+       font-family="Arial, sans-serif"
+       font-size="11px"
+       fill="#333333"
+       id="text45">• Failed tasks trigger XE→FX error handling flow, never abandoned</text>
+  </g>
+</svg>

@@ -1,0 +1,115 @@
+<meta charset="utf-8">
+<title>Completed — stratagem-ado Plugin-Scrub</title>
+<style>
+  :root{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#d8d8dd;--card:#f6f6f8;--accent:#1971c2;--good:#2b8a3e;--warn:#e8590c;--code:#ececef;--del:#c92a2a;}
+  @media (prefers-color-scheme:dark){:root{--bg:#15171b;--fg:#e6e6e6;--muted:#9aa0a6;--line:#2c3038;--card:#1d2027;--accent:#4dabf7;--good:#51cf66;--warn:#ffa94d;--code:#23262d;--del:#ff8787;}}
+  :root[data-theme="dark"]{--bg:#15171b;--fg:#e6e6e6;--muted:#9aa0a6;--line:#2c3038;--card:#1d2027;--accent:#4dabf7;--good:#51cf66;--warn:#ffa94d;--code:#23262d;--del:#ff8787;}
+  :root[data-theme="light"]{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#d8d8dd;--card:#f6f6f8;--accent:#1971c2;--good:#2b8a3e;--warn:#e8590c;--code:#ececef;--del:#c92a2a;}
+  *{box-sizing:border-box;} body{background:var(--bg);color:var(--fg);font:15px/1.55 -apple-system,"Segoe UI",Roboto,sans-serif;max-width:920px;margin:0 auto;padding:1.5rem 1.1rem 4rem;}
+  h1{font-size:1.5rem;margin:0 0 .2rem;} h2{font-size:1.1rem;margin:1.9rem 0 .5rem;padding-bottom:.25rem;border-bottom:2px solid var(--line);}
+  h3{font-size:.98rem;margin:1.1rem 0 .3rem;}
+  .meta{color:var(--muted);font-size:.83rem;margin:.2rem 0 1rem;}
+  code{background:var(--code);padding:.08em .35em;border-radius:4px;font-size:.86em;font-family:"Cascadia Code",Consolas,monospace;}
+  pre{background:var(--code);padding:.7rem .9rem;border-radius:8px;overflow-x:auto;font-size:.83rem;line-height:1.45;}
+  table{border-collapse:collapse;width:100%;margin:.5rem 0;font-size:.87rem;} th,td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top;} th{background:var(--card);}
+  .overflow{overflow-x:auto;} ul{padding-left:1.2rem;margin:.4rem 0;} li{margin:.22rem 0;}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.7rem .9rem;margin:.6rem 0;}
+  .box.good{border-left:4px solid var(--good);} .box.warn{border-left:4px solid var(--warn);} .box.acc{border-left:4px solid var(--accent);}
+  .pill{display:inline-block;font-size:.72rem;font-weight:700;padding:.12em .5em;border-radius:999px;color:#fff;background:var(--good);}
+  .note{color:var(--muted);font-size:.82rem;}
+  .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:.5rem;margin:.6rem 0;}
+  .col{flex:1 1 300px;border:1px solid var(--line);border-radius:10px;padding:.7rem .8rem;background:var(--card);}
+  .col h4{margin:.1rem 0 .5rem;font-size:.85rem;letter-spacing:.02em;text-transform:uppercase;color:var(--muted);}
+  .chip{display:block;border:1px solid var(--line);border-radius:7px;padding:.35rem .55rem;margin:.3rem 0;font-size:.82rem;background:var(--bg);}
+  .chip.del{border-color:var(--del);} .chip.del code{text-decoration:line-through;text-decoration-color:var(--del);}
+  .chip.new{border-color:var(--good);}
+  .arrowrow{display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700;font-size:1.4rem;margin:.2rem 0;}
+  .chk li{list-style:none;margin-left:-1rem;} .chk li::before{content:"✅ ";}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;} @media(max-width:620px){.grid2{grid-template-columns:1fr;}}
+</style>
+
+<h1>stratagem-ado Plugin-Scrub <span class="pill">COMPLETED</span></h1>
+<p class="meta">Feature completion report · 2026-07-09 · plan <code>stratagem-ado-plugin-scrub_260708_210440_plan.md</code> · source PF <code>Stratagem-ADO-Plugin-Scrub_260708_205052_plan.html</code> (kept) · 9/9 tasks · 1 error (EX-001, fixed) · <b>uncommitted</b></p>
+
+<div class="box acc">
+<b>What shipped.</b> The <code>stratagem-ado</code> Claude Code plugin is now <b>portable</b>. It used to bake in one operator's identity, so a second dev couldn't install it. The scrub moved every identity value out of plugin <b>source</b> into a single <b>per-install config home</b> — <code>${CLAUDE_PLUGIN_DATA}/ado.config.json</code>, beside the existing <code>pat.b64</code> secret — read by both the MCP launcher shim and the read-side skills. Plugin source now carries <b>zero identity literals</b>; any dev drops in their own config + PAT and it works, no source change.
+</div>
+
+<h2>Architecture — before → after</h2>
+<p class="note">Identity gets the <b>same</b> per-install treatment as the secret. <code>.mcp.json</code> stops naming the org; the launcher and skills resolve it from the config home.</p>
+<div class="flow">
+  <div class="col">
+    <h4>Before — identity baked into source</h4>
+    <span class="chip del"><code>.mcp.json</code> → <code>--org intelliscience</code></span>
+    <span class="chip del"><code>sp</code> → project <code>ISCI - Consolidated - Kanban</code>, owner <code>tony.thomas@…</code>, <code>intelliscience.visualstudio.com</code></span>
+    <span class="chip del"><code>pr</code> → project default + board URL host</span>
+    <span class="chip del"><code>ss</code> → <code>$env:STRATAGEM_ADO_ORG/OWNER/PROJECT</code> (wrong home)</span>
+    <span class="chip del"><code>ISCI-Vision/…/settings.local.json</code> → <code>env.STRATAGEM_ADO_*</code></span>
+  </div>
+  <div class="col" style="flex:0 0 44px;display:flex;align-items:center;justify-content:center;border:none;background:none;">
+    <div class="arrowrow">➜</div>
+  </div>
+  <div class="col">
+    <h4>After — one per-install home</h4>
+    <span class="chip new"><b><code>${CLAUDE_PLUGIN_DATA}/ado.config.json</code></b><br><span class="note">{ org, project, owner } — per-install, outside repo, beside <code>pat.b64</code></span></span>
+    <span class="chip new"><b>launcher</b> reads <code>org</code> → passes to server<br><span class="note">AP-1 <code>shell:true</code> + AP-2 PATH-prepend preserved</span></span>
+    <span class="chip new"><b>skills</b> sp · pr · ss → resolve org/project/owner from config; URLs <code>dev.azure.com/&lt;org&gt;</code></span>
+    <span class="chip new"><code>.mcp.json</code> + <code>settings.local.json</code> → identity removed</span>
+  </div>
+</div>
+
+<h2>Key achievements</h2>
+<ul>
+  <li><b>One identity home</b> — <code>ado.config.json</code> <code>{ org, project, owner }</code>; org reclassified from declarative <code>.mcp.json</code> config → per-install Profile (deliberate evolution of the <code>bundled-mcp-launcher-shim</code> pattern).</li>
+  <li><b>Launcher self-resolves org</b> from the config (precedence <code>config.org || --org</code>, fail-loud) while <b>preserving AP-1 (<code>shell:true</code>) and AP-2 (<code>execPath</code> PATH-prepend)</b>.</li>
+  <li><b>All three read-side skills</b> (sp/pr/ss) resolve identity from the one home — replacing hardcodes <em>and</em> the <code>$env:STRATAGEM_ADO_*</code> session-env "wrong home".</li>
+  <li><b>Orphan env removed</b> from ISCI-Vision <code>settings.local.json</code> — confirms the env-promote would have been throwaway.</li>
+  <li><b>Adversarial verification caught a real leak</b> the enumerated grep would have shipped (EX-001).</li>
+</ul>
+
+<h2>Files</h2>
+<div class="overflow"><table>
+  <tr><th>Action</th><th>File</th><th>Change</th></tr>
+  <tr><td><b>new</b></td><td><code>plugins/stratagem-ado/ado.config.example.json</code></td><td>in-repo template (placeholders)</td></tr>
+  <tr><td>mod</td><td><code>bin/ado-mcp-launch.js</code></td><td>read <code>ado.config.json</code>, resolve org, fail-loud; AP-1/AP-2 preserved; <code>null</code>-config hardened</td></tr>
+  <tr><td>mod</td><td><code>.mcp.json</code></td><td>dropped <code>--org intelliscience</code></td></tr>
+  <tr><td>mod</td><td><code>INSTALL.md</code></td><td>new §2c "supply the identity config"; identity examples genericized</td></tr>
+  <tr><td>mod</td><td><code>skills/sp/SKILL.md</code></td><td>project/owner ← config; board URL → <code>dev.azure.com/&lt;org&gt;</code></td></tr>
+  <tr><td>mod</td><td><code>skills/pr/SKILL.md</code></td><td>project ← config; URL → <code>dev.azure.com/&lt;org&gt;</code>; <b>+<code>Glob</code></b> tool</td></tr>
+  <tr><td>mod</td><td><code>skills/ss/SKILL.md</code></td><td><code>$env:STRATAGEM_ADO_*</code> → <code>ado.config.json</code> (org via <code>node -e</code> in its Bash block)</td></tr>
+  <tr><td>mod</td><td><code>ISCI-Vision/.claude/settings.local.json</code></td><td>removed orphan <code>env.STRATAGEM_ADO_*</code> block</td></tr>
+  <tr><td class="note">install</td><td class="note"><code>${CLAUDE_PLUGIN_DATA}/ado.config.json</code></td><td class="note">written to the active data dir (per-install, not in repo)</td></tr>
+</table></div>
+
+<h2>Verification</h2>
+<p>No unit-test suite — this is prompts + a Node launcher + JSON/markdown config. Correctness was proven by the always-on verifier gate and a live tracer.</p>
+<div class="grid2">
+  <div class="box good">
+    <b>Verifier gate — 9/9 tasks</b><br>
+    Each task ran an objective <code>Verify:</code> command (exit 0) <b>plus an independent confirmer subagent</b> (structural separation, not self-assessment). All passed.
+  </div>
+  <div class="box good">
+    <b>Live tracer (the AP-1/AP-2 gate)</b><br>
+    Launcher smoke test (<code>initialize</code> handshake) + live <code>core_list_projects</code> in the <b>VSCode extension venue</b> → returned <code>ISCI - Consolidated - Kanban</code>; server reported <code>organization: intelliscience</code> resolved from config.
+  </div>
+</div>
+<div class="box warn">
+  <b>EX-001 — near-miss caught by the adversarial completeness-critic.</b> Task 8's enumerated grep passed (exit 0), but a separate confirmer found <code>ISCI-SAAS</code> — a real ISCI-tenant area-path leaf — in <code>sp/SKILL.md</code>, missed by the enumerated pattern list. Fixed → generic <code>&lt;Area-Leaf&gt;</code>; re-verified with an extended <code>\bISCI\b</code>/<code>visualstudio</code> sweep → 0 hits. <span class="note">Lesson: enumerated-literal grep gates are blind to same-family variants — pair with a near-miss sweep.</span>
+</div>
+
+<h2>Acceptance criteria</h2>
+<ul class="chk">
+  <li>Plugin <b>source</b> (skills + <code>.mcp.json</code> + launcher) carries <b>0</b> identity literals (enumerated + extended near-miss sweep).</li>
+  <li>Identity lives once in <code>ado.config.json</code> + <code>pat.b64</code> (per-install, outside the repo).</li>
+  <li>MCP connects live; <code>core_list_projects</code> → the Kanban project; org resolved from config; PAT auth.</li>
+  <li><code>ss</code> no longer uses <code>$env:STRATAGEM_ADO_*</code>; the env block is gone from <code>settings.local.json</code>.</li>
+  <li>Plugin is as portable as Core — installable by any dev with their own PAT + config.</li>
+</ul>
+
+<h2>Install (per dev)</h2>
+<pre>$dir = "$env:USERPROFILE\.claude\plugins\data\stratagem-ado"
+@{ org = "&lt;your-org&gt;"; project = "&lt;your-default-project&gt;"; owner = "&lt;your-work-email&gt;" } |
+  ConvertTo-Json | Out-File -NoNewline -Encoding ascii "$dir\ado.config.json"
+# Restart Claude Code -> launcher resolves org from the config; MCP connects. No source edit.</pre>
+
+<p class="meta"><b>Next:</b> <code>/rs</code> — bank the learnings into <code>C:\code\Stratagem\Vault</code> (the "org de-declarative" pattern evolution + the EX-001 grep-completeness lesson). Changes are uncommitted for review; not board-synced (no <code>/sp</code> run).</p>

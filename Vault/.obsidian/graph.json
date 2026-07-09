@@ -1,0 +1,93 @@
+{
+  "collapse-filter": false,
+  "search": "-file:index -file:changelog",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "path:wiki/architecture",
+      "color": {
+        "a": 1,
+        "rgb": 3047594
+      }
+    },
+    {
+      "query": "path:wiki/patterns",
+      "color": {
+        "a": 1,
+        "rgb": 5290596
+      }
+    },
+    {
+      "query": "path:wiki/anti-patterns",
+      "color": {
+        "a": 1,
+        "rgb": 14431557
+      }
+    },
+    {
+      "query": "path:wiki/retrospectives",
+      "color": {
+        "a": 1,
+        "rgb": 11549704
+      }
+    },
+    {
+      "query": "path:wiki/decisions",
+      "color": {
+        "a": 1,
+        "rgb": 14425053
+      }
+    },
+    {
+      "query": "path:wiki/plans",
+      "color": {
+        "a": 1,
+        "rgb": 10233776
+      }
+    },
+    {
+      "query": "path:wiki/runbooks",
+      "color": {
+        "a": 1,
+        "rgb": 16498733
+      }
+    },
+    {
+      "query": "path:wiki/api",
+      "color": {
+        "a": 1,
+        "rgb": 8370431
+      }
+    },
+    {
+      "query": "path:wiki/meta",
+      "color": {
+        "a": 1,
+        "rgb": 10395294
+      }
+    },
+    {
+      "query": "tag:#status/superseded",
+      "color": {
+        "a": 1,
+        "rgb": 6710886
+      }
+    }
+  ],
+  "collapse-display": true,
+  "showArrow": false,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1.2,
+  "lineSizeMultiplier": 1,
+  "collapse-forces": true,
+  "centerStrength": 0.518713248970312,
+  "repelStrength": 12,
+  "linkStrength": 1,
+  "linkDistance": 220,
+  "scale": 0.18462325879366082,
+  "close": true
+}

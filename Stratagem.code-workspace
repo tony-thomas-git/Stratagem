@@ -9,14 +9,6 @@
 			"path": "../docs/Stratagem-docs"
 		},
 		{
-			"name": "Steward",
-			"path": "../Steward"
-		},
-		{
-			"name": "Steward-docs",
-			"path": "../docs/Steward-docs"
-		},
-		{
 			"name": ".claude",
 			"path": "../../Users/TonyThomas/.claude"
 		}

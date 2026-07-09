@@ -1,0 +1,809 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1600"
+   height="900"
+   version="1.1"
+   id="svg61"
+   sodipodi:docname="stratagem-testing-workflow-v3.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   inkscape:export-filename="stratagem-testing-workflow-v3.pdf"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview61"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.8149074"
+     inkscape:cx="803.89776"
+     inkscape:cy="339.68675"
+     inkscape:window-width="3440"
+     inkscape:window-height="1369"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg61" />
+  <defs
+     id="defs3">
+    <!-- Define colors and styles -->
+    <style
+       id="style1">
+      .planning { fill: #90EE90; stroke: #228B22; stroke-width: 2; }
+      .execution { fill: #87CEEB; stroke: #4682B4; stroke-width: 2; }
+      .error { fill: #FFA07A; stroke: #DC143C; stroke-width: 2; }
+      .completion { fill: #DDA0DD; stroke: #8B008B; stroke-width: 2; }
+      .testing { fill: #FFD700; stroke: #DAA520; stroke-width: 2; }
+      .start-end { fill: #FAFAD2; stroke: #DAA520; stroke-width: 3; }
+      .decision { fill: #FFF8DC; stroke: #D2691E; stroke-width: 2; }
+      .text { font-family: Arial, sans-serif; font-size: 14px; text-anchor: middle; font-weight: bold; }
+      .small-text { font-family: Arial, sans-serif; font-size: 12px; text-anchor: middle; }
+      .label-text { font-family: Arial, sans-serif; font-size: 11px; text-anchor: middle; fill: #666; }
+      .arrow { fill: none; stroke: #333; stroke-width: 2; marker-end: url(#arrowhead); }
+      .dashed { stroke-dasharray: 5,5; }
+      .test-arrow { fill: none; stroke: #DAA520; stroke-width: 2; marker-end: url(#test-arrowhead); }
+      .error-arrow { fill: none; stroke: #DC143C; stroke-width: 2; marker-end: url(#error-arrowhead); }
+      .no-test { fill: #FFE6E6; stroke: #DC143C; stroke-width: 2; stroke-dasharray: 5,3; }
+    </style>
+    <!-- Arrow markers -->
+    <marker
+       id="arrowhead"
+       markerWidth="10"
+       markerHeight="10"
+       refX="9"
+       refY="3"
+       orient="auto">
+      <polygon
+         points="0 0, 10 3, 0 6"
+         fill="#333"
+         id="polygon1" />
+    </marker>
+    <marker
+       id="test-arrowhead"
+       markerWidth="10"
+       markerHeight="10"
+       refX="9"
+       refY="3"
+       orient="auto">
+      <polygon
+         points="0 0, 10 3, 0 6"
+         fill="#DAA520"
+         id="polygon2" />
+    </marker>
+    <marker
+       id="error-arrowhead"
+       markerWidth="10"
+       markerHeight="10"
+       refX="9"
+       refY="3"
+       orient="auto">
+      <polygon
+         points="0 0, 10 3, 0 6"
+         fill="#DC143C"
+         id="polygon3" />
+    </marker>
+    <marker
+       id="error-arrowhead-0"
+       markerWidth="10"
+       markerHeight="10"
+       refX="9"
+       refY="3"
+       orient="auto">
+      <polygon
+         points="10,3 0,6 0,0 "
+         fill="#dc143c"
+         id="polygon3-9" />
+    </marker>
+    <marker
+       id="arrowhead-8"
+       markerWidth="10"
+       markerHeight="10"
+       refX="9"
+       refY="3"
+       orient="auto">
+      <polygon
+         points="10,3 0,6 0,0 "
+         fill="#333333"
+         id="polygon1-2" />
+    </marker>
+  </defs>
+  <!-- Title -->
+  <!-- Legend -->
+  <g
+     transform="translate(50, 80)"
+     id="g10">
+    <text
+       x="0"
+       y="0"
+       class="text"
+       text-anchor="start"
+       id="text4">Legend:</text>
+    <g
+       transform="translate(0, 20)"
+       id="g9">
+      <rect
+         x="0"
+         y="0"
+         width="20"
+         height="15"
+         class="planning"
+         id="rect4" />
+      <text
+         x="25"
+         y="12"
+         class="small-text"
+         text-anchor="start"
+         id="text5">Planning Modes</text>
+      <rect
+         x="140"
+         y="0"
+         width="20"
+         height="15"
+         class="execution"
+         id="rect5" />
+      <text
+         x="165"
+         y="12"
+         class="small-text"
+         text-anchor="start"
+         id="text6">Execution Modes</text>
+      <rect
+         x="280"
+         y="0"
+         width="20"
+         height="15"
+         class="error"
+         id="rect6" />
+      <text
+         x="305"
+         y="12"
+         class="small-text"
+         text-anchor="start"
+         id="text7">Error Handling</text>
+      <rect
+         x="420"
+         y="0"
+         width="20"
+         height="15"
+         class="completion"
+         id="rect7" />
+      <text
+         x="445"
+         y="12"
+         class="small-text"
+         text-anchor="start"
+         id="text8">Completion</text>
+      <rect
+         x="540"
+         y="0"
+         width="20"
+         height="15"
+         class="testing"
+         id="rect8" />
+      <text
+         x="565"
+         y="12"
+         class="small-text"
+         text-anchor="start"
+         id="text9">Testing</text>
+    </g>
+  </g>
+  <!-- Main Flow Y=200 -->
+  <!-- START -->
+  <ellipse
+     cx="100"
+     cy="200"
+     rx="50"
+     ry="30"
+     class="start-end"
+     id="ellipse10" />
+  <text
+     x="100"
+     y="205"
+     class="text"
+     id="text10">START</text>
+  <!-- PF -->
+  <rect
+     x="200"
+     y="170"
+     width="120"
+     height="60"
+     rx="10"
+     class="planning"
+     id="rect10" />
+  <text
+     x="260"
+     y="195"
+     class="text"
+     id="text11">📋 PF</text>
+  <text
+     x="260"
+     y="215"
+     class="small-text"
+     id="text12">Plan Features</text>
+  <!-- CP -->
+  <rect
+     x="370"
+     y="170"
+     width="120"
+     height="60"
+     rx="10"
+     class="planning"
+     id="rect12" />
+  <text
+     x="430"
+     y="195"
+     class="text"
+     id="text13">📝 CP</text>
+  <text
+     x="430"
+     y="215"
+     class="small-text"
+     id="text14">Create Plan</text>
+  <!-- PX -->
+  <rect
+     x="540"
+     y="170"
+     width="120"
+     height="60"
+     rx="10"
+     class="execution"
+     id="rect14" />
+  <text
+     x="600"
+     y="195"
+     class="text"
+     id="text15">🔍 PX</text>
+  <text
+     x="600"
+     y="215"
+     class="small-text"
+     id="text16">Plan Execute</text>
+  <!-- Human Review 1 -->
+  <circle
+     cx="720"
+     cy="200"
+     r="20"
+     fill="#FFE4B5"
+     stroke="#FF8C00"
+     stroke-width="2"
+     id="circle16" />
+  <text
+     x="720"
+     y="205"
+     class="small-text"
+     id="text17">👤</text>
+  <text
+     x="720"
+     y="160"
+     class="label-text"
+     id="text18">Review</text>
+  <!-- AX -->
+  <rect
+     x="780"
+     y="170"
+     width="120"
+     height="60"
+     rx="10"
+     class="execution"
+     id="rect18" />
+  <text
+     x="840"
+     y="195"
+     class="text"
+     id="text19">🚀 AX</text>
+  <text
+     x="840"
+     y="215"
+     class="small-text"
+     id="text20">Approve Execute</text>
+  <!-- Human Test -->
+  <circle
+     cx="960"
+     cy="200"
+     r="20"
+     fill="#FFE4B5"
+     stroke="#FF8C00"
+     stroke-width="2"
+     id="circle20" />
+  <text
+     x="960"
+     y="205"
+     class="small-text"
+     id="text21">👤</text>
+  <text
+     x="960"
+     y="160"
+     class="label-text"
+     id="text22">Test</text>
+  <!-- Decision Diamond -->
+  <g
+     transform="translate(1080, 200)"
+     id="g24">
+    <path
+       d="M 0 -50 L 50 0 L 0 50 L -50 0 Z"
+       class="decision"
+       id="path22" />
+    <text
+       x="0"
+       y="-10"
+       class="small-text"
+       id="text23">Feature</text>
+    <text
+       x="0"
+       y="5"
+       class="small-text"
+       id="text24">Status?</text>
+  </g>
+  <!-- Works Path (top) -->
+  <rect
+     x="1200"
+     y="90"
+     width="140"
+     height="50"
+     rx="10"
+     class="testing"
+     id="rect24" />
+  <text
+     x="1270"
+     y="110"
+     class="text"
+     id="text25">✅ Integration Test</text>
+  <text
+     x="1270"
+     y="125"
+     class="small-text"
+     id="text26">Document Success</text>
+  <!-- Partial Path (middle) -->
+  <rect
+     x="1200"
+     y="175"
+     width="140"
+     height="50"
+     rx="10"
+     class="testing"
+     id="rect26" />
+  <text
+     x="1270"
+     y="195"
+     class="text"
+     id="text27">🧩 Partial Test</text>
+  <text
+     x="1270"
+     y="210"
+     class="small-text"
+     id="text28">Working Parts Only</text>
+  <!-- CF -->
+  <rect
+     x="1400"
+     y="170"
+     width="120"
+     height="60"
+     rx="10"
+     class="completion"
+     id="rect28" />
+  <text
+     x="1460"
+     y="195"
+     class="text"
+     id="text29">✅ CF</text>
+  <text
+     x="1460"
+     y="215"
+     class="small-text"
+     id="text30">Complete Feature</text>
+  <!-- END -->
+  <ellipse
+     cx="1580"
+     cy="200"
+     rx="50"
+     ry="30"
+     class="start-end"
+     id="ellipse30" />
+  <text
+     x="1580"
+     y="205"
+     class="text"
+     id="text31">END</text>
+  <!-- Error Flow Y=400 -->
+  <!-- No Test Box -->
+  <rect
+     x="600"
+     y="370"
+     width="140"
+     height="60"
+     rx="10"
+     class="no-test"
+     id="rect30" />
+  <text
+     x="670"
+     y="395"
+     class="text"
+     id="text30a">❌ No Test Yet</text>
+  <text
+     x="670"
+     y="415"
+     class="small-text"
+     id="text30b">Feature Broken</text>
+  <!-- XE -->
+  <rect
+     x="780"
+     y="370"
+     width="120"
+     height="60"
+     rx="10"
+     class="error"
+     id="rect31" />
+  <text
+     x="840"
+     y="395"
+     class="text"
+     id="text32">⚠️ EX</text>
+  <text
+     x="840"
+     y="415"
+     class="small-text"
+     id="text33"><tspan
+       sodipodi:role="line"
+       id="tspan5"
+       x="840"
+       y="415">Error Executing</tspan></text>
+  <!-- FX -->
+  <rect
+     x="950"
+     y="370"
+     width="120"
+     height="60"
+     rx="10"
+     class="error"
+     id="rect33" />
+  <text
+     x="1010"
+     y="395"
+     class="text"
+     id="text34">🔧 FX</text>
+  <text
+     x="1010"
+     y="415"
+     class="small-text"
+     id="text35">Fix Execution</text>
+  <!-- Unit Tests -->
+  <g
+     id="g1"
+     transform="translate(2.2039692,-38.569461)">
+    <rect
+       x="1085.8385"
+       y="501.1362"
+       width="140"
+       height="60"
+       rx="10"
+       class="testing"
+       id="rect35" />
+    <text
+       x="1155.8385"
+       y="526.13617"
+       class="text"
+       id="text36">🧪 Unit Tests</text>
+    <text
+       x="1155.8385"
+       y="546.13617"
+       class="small-text"
+       id="text37">For Each Fix</text>
+  </g>
+  <!-- Decision Diamond for Fix Result -->
+  <g
+     transform="translate(1154.3977,403.30595)"
+     id="g25">
+    <path
+       d="M 0,-30 30,0 0,30 -30,0 Z"
+       class="decision"
+       id="path23" />
+    <text
+       x="0"
+       y="5"
+       class="small-text"
+       id="text25a">Fixed?</text>
+  </g>
+  <!-- Integration Test After Fix -->
+  <rect
+     x="1259.5311"
+     y="464.18549"
+     width="160"
+     height="50"
+     rx="10"
+     class="testing"
+     id="rect36" />
+  <text
+     x="1339.5311"
+     y="484.18555"
+     class="text"
+     id="text36a">📝 Integration Test</text>
+  <text
+     x="1339.5311"
+     y="499.18555"
+     class="small-text"
+     id="text36b">Now Feature Works</text>
+  <!-- Resume Flow Y=600 -->
+  <!-- RESUME -->
+  <ellipse
+     cx="100"
+     cy="618"
+     rx="50"
+     ry="30"
+     class="start-end"
+     id="ellipse37" />
+  <text
+     x="100"
+     y="623"
+     class="text"
+     id="text38">RESUME</text>
+  <!-- RP -->
+  <rect
+     x="200"
+     y="588"
+     width="120"
+     height="60"
+     rx="10"
+     class="completion"
+     id="rect38" />
+  <text
+     x="260"
+     y="613"
+     class="text"
+     id="text39">📖 RP</text>
+  <text
+     x="260"
+     y="633"
+     class="small-text"
+     id="text40">Read Plan</text>
+  <!-- Main Flow Arrows -->
+  <path
+     d="M 150 200 L 200 200"
+     class="arrow"
+     id="path40" />
+  <path
+     d="M 320 200 L 370 200"
+     class="arrow"
+     id="path41" />
+  <path
+     d="M 490 200 L 540 200"
+     class="arrow"
+     id="path42" />
+  <path
+     d="M 660 200 L 700 200"
+     class="arrow"
+     id="path43" />
+  <path
+     d="M 740 200 L 780 200"
+     class="arrow"
+     id="path44" />
+  <path
+     d="M 900 200 L 940 200"
+     class="arrow"
+     id="path45" />
+  <path
+     d="M 980 200 L 1030 200"
+     class="arrow"
+     id="path46" />
+  <!-- Decision to outcomes -->
+  <path
+     d="M 1106 174 L 1200 115"
+     class="arrow"
+     id="path47" />
+  <path
+     d="m 1273.114,88.088595 0.158,-14.220317 -548.16732,0.858753 -121.11502,94.864599"
+     class="arrow"
+     id="path47-5"
+     style="fill:none;stroke:#333333;stroke-width:2;marker-end:url(#arrowhead-8)"
+     sodipodi:nodetypes="cccc" />
+  <text
+     x="1165"
+     y="140"
+     class="label-text"
+     id="text47">Works</text>
+  <path
+     d="M 1130 200 L 1200 200"
+     class="arrow"
+     id="path48" />
+  <text
+     x="1165"
+     y="195"
+     class="label-text"
+     id="text48">Partial</text>
+  <path
+     d="m 1080,250 0.551,24.10336 -410.00001,0.0609 L 670,370"
+     class="error-arrow"
+     id="path49"
+     sodipodi:nodetypes="cccc" />
+  <text
+     x="880"
+     y="295"
+     class="label-text"
+     id="text49a">Fails</text>
+  <!-- Testing to CF -->
+  <path
+     d="M 1340 115 L 1400 170"
+     class="arrow"
+     id="path50" />
+  <path
+     d="M 1340 200 L 1400 200"
+     class="arrow"
+     id="path51" />
+  <!-- CF to END -->
+  <path
+     d="M 1520 200 L 1530 200"
+     class="arrow"
+     id="path52" />
+  <!-- Partial to FX (fix broken parts) -->
+  <path
+     d="m 1270,225 0.551,78.14168 L 1010,303.69267 V 370"
+     class="error-arrow"
+     id="path53"
+     sodipodi:nodetypes="cccc" />
+  <text
+     x="1140"
+     y="275"
+     class="label-text"
+     id="text53a"
+     style="white-space:pre;inline-size:79.9756;display:inline"
+     transform="translate(19.284731,7.7138922)"
+     xml:space="preserve"><tspan
+       x="1140"
+       y="275"
+       id="tspan4">Fix Broken<tspan
+   y="275"
+   id="tspan6"> </tspan></tspan><tspan
+       x="1140"
+       y="288.75"
+       id="tspan10">Parts</tspan></text>
+  <!-- Error flow -->
+  <path
+     d="M 740 400 L 780 400"
+     class="error-arrow"
+     id="path53b" />
+  <path
+     d="M 900 400 L 950 400"
+     class="error-arrow"
+     id="path54" />
+  <path
+     d="m 1071.1759,400.69405 h 50"
+     class="error-arrow"
+     id="path54-8"
+     style="fill:none;stroke:#dc143c;stroke-width:2;marker-end:url(#error-arrowhead-0)" />
+  <path
+     d="m 1231.3484,490.36274 h 29.0733"
+     class="test-arrow"
+     id="path55a" />
+  <!-- Fixed decision paths -->
+  <path
+     d="m 1154.3977,433.30595 v 28.7521"
+     class="test-arrow"
+     id="path55b" />
+  <text
+     x="1167.7036"
+     y="447.91922"
+     class="label-text"
+     id="text55b">Yes</text>
+  <path
+     d="m 1155.4622,371.12589 0.16,-33.15827 -125.0991,1.74534 -194.20836,-1.12402 -1.37471,31.1616"
+     class="error-arrow"
+     id="path55c"
+     sodipodi:nodetypes="ccccc" />
+  <text
+     x="1201.2422"
+     y="363.81586"
+     class="label-text"
+     id="text55c">No, More XE &gt; FX</text>
+  <text
+     x="957.45746"
+     y="86.80629"
+     class="label-text"
+     id="text55c-1"
+     style="font-size:11.0754px;font-family:Arial, sans-serif;text-anchor:middle;fill:#666666;stroke-width:1.00686"
+     transform="scale(1.0068586,0.99318813)"><tspan
+       sodipodi:role="line"
+       id="tspan2"
+       x="957.45746"
+       y="86.80629">Next task in the feature</tspan><tspan
+       sodipodi:role="line"
+       id="tspan3"
+       x="957.45746"
+       y="100.65054">plan</tspan></text>
+  <!-- Integration test to CF -->
+  <path
+     d="m 1420.2168,494.97379 h 38.5759 V 230.17016"
+     class="arrow"
+     id="path55d" />
+  <!-- Resume flow -->
+  <path
+     d="m 150,618 h 50"
+     class="arrow"
+     id="path57" />
+  <path
+     d="m 320.05021,617.6356 h 79.97191 V 279.37189 H 599.9519 v -49.3282"
+     class="arrow"
+     id="path58"
+     sodipodi:nodetypes="ccccc" />
+  <text
+     x="375"
+     y="483"
+     class="label-text"
+     id="text58">Continue</text>
+  <!-- More tasks loop -->
+  <path
+     d="M 1460.3798,229.88848 V 566.48743 H 255.67402 V 229.88848"
+     class="arrow dashed"
+     id="path59" />
+  <!-- Key Annotations -->
+  <g
+     transform="translate(1270, 50)"
+     id="g60">
+    <rect
+       x="-70"
+       y="-15"
+       width="140"
+       height="30"
+       rx="5"
+       fill="#E6F3FF"
+       stroke="#4682B4"
+       id="rect59" />
+    <text
+       x="0"
+       y="5"
+       class="small-text"
+       id="text60">All Tests Pass → CF</text>
+  </g>
+  <g
+     transform="translate(1162.4503,538.35722)"
+     id="g61">
+    <rect
+       x="-90"
+       y="-15"
+       width="180"
+       height="30"
+       rx="5"
+       fill="#ffe6e6"
+       stroke="#dc143c"
+       id="rect60" />
+    <text
+       x="0"
+       y="5"
+       class="small-text"
+       id="text61">Every FX generates Unit Tests</text>
+  </g>
+  <g
+     transform="translate(670, 320)"
+     id="g62">
+    <rect
+       x="-100"
+       y="-15"
+       width="200"
+       height="30"
+       rx="5"
+       fill="#FFE6E6"
+       stroke="#DC143C"
+       id="rect61" />
+    <text
+       x="0"
+       y="5"
+       class="small-text"
+       id="text62">No Integration Test until it works</text>
+  </g>
+  <text
+     xml:space="preserve"
+     style="text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff"
+     x="1013.2748"
+     y="140.50304"
+     id="text1"><tspan
+       sodipodi:role="line"
+       id="tspan1"
+       x="1013.2748"
+       y="140.50304"> s</tspan></text>
+</svg>

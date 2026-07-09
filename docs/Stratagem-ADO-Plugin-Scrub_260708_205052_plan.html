@@ -1,0 +1,127 @@
+<meta charset="utf-8">
+<title>PF — stratagem-ado Plugin-Scrub</title>
+<style>
+  :root{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#d8d8dd;--card:#f6f6f8;--accent:#1971c2;--good:#2b8a3e;--warn:#e8590c;--code:#ececef;}
+  @media (prefers-color-scheme:dark){:root{--bg:#15171b;--fg:#e6e6e6;--muted:#9aa0a6;--line:#2c3038;--card:#1d2027;--accent:#4dabf7;--good:#51cf66;--warn:#ffa94d;--code:#23262d;}}
+  :root[data-theme="dark"]{--bg:#15171b;--fg:#e6e6e6;--muted:#9aa0a6;--line:#2c3038;--card:#1d2027;--accent:#4dabf7;--good:#51cf66;--warn:#ffa94d;--code:#23262d;}
+  :root[data-theme="light"]{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#d8d8dd;--card:#f6f6f8;--accent:#1971c2;--good:#2b8a3e;--warn:#e8590c;--code:#ececef;}
+  *{box-sizing:border-box;} body{background:var(--bg);color:var(--fg);font:15px/1.55 -apple-system,"Segoe UI",Roboto,sans-serif;max-width:900px;margin:0 auto;padding:1.5rem 1.1rem 4rem;}
+  h1{font-size:1.5rem;margin:0 0 .2rem;} h2{font-size:1.1rem;margin:1.8rem 0 .5rem;padding-bottom:.25rem;border-bottom:2px solid var(--line);}
+  h3{font-size:.98rem;margin:1.1rem 0 .3rem;}
+  .meta{color:var(--muted);font-size:.83rem;margin:.2rem 0 1rem;}
+  code{background:var(--code);padding:.08em .35em;border-radius:4px;font-size:.86em;font-family:"Cascadia Code",Consolas,monospace;}
+  table{border-collapse:collapse;width:100%;margin:.5rem 0;font-size:.87rem;} th,td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top;} th{background:var(--card);}
+  .overflow{overflow-x:auto;} ul{padding-left:1.2rem;margin:.4rem 0;} li{margin:.2rem 0;}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.7rem .9rem;margin:.6rem 0;}
+  .box.good{border-left:4px solid var(--good);} .box.warn{border-left:4px solid var(--warn);} .box.acc{border-left:4px solid var(--accent);}
+  .tag{font-size:.7rem;font-weight:700;padding:.08em .45em;border-radius:4px;color:#fff;}
+  .t-org{background:#1971c2;} .t-own{background:#862e9c;} .t-proj{background:#2b8a3e;} .t-env{background:#e8590c;} .t-ok{background:#5c7080;}
+  .note{color:var(--muted);font-size:.82rem;}
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;font-size:.83rem;margin:.5rem 0;}
+  .chip{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:.3rem .55rem;} .arr{color:var(--muted);font-weight:700;}
+</style>
+
+<h1>PF — <code>stratagem-ado</code> Plugin-Scrub</h1>
+<p class="meta">Plan Features · authored 2026-07-08 · <b>no code, strategy only</b> · next: <code>/cp</code> → <code>.md</code> execution plan · sibling effort to the completed <a>Stratagem-Core-Scrub</a> · CORPUS-READ-FIRST ✓ (Stratagem-Vault: <code>bundled-mcp-launcher-shim</code>, <code>claude-code-plugin-bundled-mcp-gotchas</code>)</p>
+
+<h2>Problem &amp; Solution</h2>
+<div class="box">
+The Core scrub made the 23 Stratagem skills portable. But <code>stratagem-ado</code> — <b>also a distributable</b> — still bakes in <b>your</b> identity: org <code>intelliscience</code>, owner <code>tony.thomas@intelliscience.com</code>, default project <code>ISCI - Consolidated - Kanban</code>. A second dev can't install it as-is. <b>Solution:</b> give the plugin <b>one self-contained identity home</b> in its own data dir (alongside <code>pat.b64</code>), read by <em>both</em> the MCP launcher and the skills — so the plugin carries zero identity literals and needs no session env vars.
+</div>
+
+<h2>Leak Inventory (grep-verified 2026-07-08)</h2>
+<div class="overflow"><table>
+  <tr><th>File</th><th>Literal</th><th>Where</th><th>Kind</th></tr>
+  <tr><td><code>.mcp.json</code></td><td><code>--org intelliscience</code></td><td>server args</td><td><span class="tag t-org">org</span></td></tr>
+  <tr><td><code>sp/SKILL.md</code></td><td><code>ISCI - Consolidated - Kanban</code></td><td>:41 project default</td><td><span class="tag t-proj">project</span></td></tr>
+  <tr><td><code>sp/SKILL.md</code></td><td><code>tony.thomas@intelliscience.com</code></td><td>:43 owner default</td><td><span class="tag t-own">owner</span></td></tr>
+  <tr><td><code>sp/SKILL.md</code></td><td><code>intelliscience.visualstudio.com</code></td><td>:94 board URL</td><td><span class="tag t-org">org</span></td></tr>
+  <tr><td><code>pr/SKILL.md</code></td><td><code>ISCI - Consolidated - Kanban</code></td><td>:44 project default</td><td><span class="tag t-proj">project</span></td></tr>
+  <tr><td><code>pr/SKILL.md</code></td><td><code>intelliscience.visualstudio.com</code></td><td>:81 board URL</td><td><span class="tag t-org">org</span></td></tr>
+  <tr><td><code>ss/SKILL.md</code></td><td><code>$env:STRATAGEM_ADO_*</code></td><td>:40,42,58,59,69</td><td><span class="tag t-env">wrong home</span></td></tr>
+  <tr><td><code>board-sync/SKILL.md</code></td><td>— none —</td><td>event→state only</td><td><span class="tag t-ok">clean ✓</span></td></tr>
+  <tr><td><code>bin/ado-mcp-launch.js</code></td><td>reads <code>--org</code> from args (only a doc-comment example names the org)</td><td>runtime-clean</td><td><span class="tag t-ok">parameterized ✓</span></td></tr>
+</table></div>
+<p class="note"><b>Surface = 3 values:</b> <b>org</b> (×3: <code>.mcp.json</code> + 2 board URLs), <b>owner</b> (×1: <code>sp</code>), <b>project default</b> (×2: <code>sp</code>, <code>pr</code>). <code>ss</code> already externalized them — but to session env, the wrong home. The launcher is already parameterized (reads <code>--org</code> from args).</p>
+
+<h2>Key Insight — the shim already solves this</h2>
+<div class="box acc">
+The launcher's own comment (D15): <em>"a plugin's <code>.mcp.json</code> does string substitution only — it CANNOT read a file's contents into an env value."</em> That's exactly why the <code>pat.b64</code> shim exists — it reads the secret file and exports it. <b>The same shim can read the org</b> (and project) from a config file in <code>${CLAUDE_PLUGIN_DATA}</code>. So the plugin's identity gets the <em>same</em> treatment as its secret: a file in the data dir, read by the launcher — and by the skills (they already glob that dir for <code>pat.b64</code>).
+</div>
+
+<h2>Corpus grounding (Stratagem-Vault)</h2>
+<div class="box good">
+This plan <b>reuses a documented pattern</b>, not a new invention. <b><code>[[bundled-mcp-launcher-shim]]</code></b> is exactly this shape (shim reads <code>${CLAUDE_PLUGIN_DATA}/&lt;file&gt;</code> → env → execs the pinned server) — from the original <code>stratagem-ado-plugin</code> build. <b>One revision:</b> that pattern kept the <b>org declarative in <code>.mcp.json</code></b> (readability + grep-verify) <em>because it treated org as fixed config</em>. The scrub <b>reclassifies org as per-install Profile</b> (like the secret) → it moves into the launcher-read config, and <code>.mcp.json</code> stops naming it. Deliberate pattern evolution — worth an <code>/rs</code> note after.
+<br><br>
+<b><code>[[claude-code-plugin-bundled-mcp-gotchas]]</code></b> — the launcher edit MUST preserve <b>AP-1</b> <code>shell:true</code> (else <code>spawn EINVAL</code> on Node ≥20) and <b>AP-2</b> the <code>node</code>-dir PATH prepend (else the VSCode extension can't find <code>npx</code>). <b>AP-3</b> (<code>.mcp.json</code> can't read files) is the very reason the shim reads the config. All are <b>env-coupled — invisible to grep/<code>node --check</code></b>; only a live launch catches them.
+</div>
+
+<h2>Architecture — one identity home</h2>
+<div class="flow">
+  <span class="chip"><code>${CLAUDE_PLUGIN_DATA}/ado.config.json</code><br><span class="note">{ org, project } — non-secret Profile</span></span>
+  <span class="arr">→ read by →</span>
+  <span class="chip"><b>launcher</b> <code>ado-mcp-launch.js</code><br><span class="note">passes <code>--org</code> from config</span></span>
+  <span class="arr">&nbsp;&amp;&nbsp;</span>
+  <span class="chip"><b>skills</b> sp · pr · ss<br><span class="note">org/project defaults + board URLs</span></span>
+</div>
+<ul>
+  <li><b>New file:</b> <code>${CLAUDE_PLUGIN_DATA}/ado.config.json</code> = <code>{ "org": "...", "project": "..." }</code> — the plugin's <b>non-secret identity</b>, sitting beside <code>pat.b64</code> (the secret). Both gitignored (data dir, per-install).</li>
+  <li><b>Owner</b> is <em>derived</em> from <code>pat.b64</code> — it's <code>base64("email:PAT")</code>, so decode → email. One source; no duplication.</li>
+  <li><b>Launcher</b> reads <code>ado.config.json</code> (like it reads <code>pat.b64</code>) and supplies <code>--org</code> itself → <code>.mcp.json</code> drops the hardcoded <code>--org intelliscience</code>.</li>
+  <li><b>Skills</b> resolve org/project from the same config (newest-wins glob, same as the PAT), owner from the decoded PAT; build board URLs as <code>https://dev.azure.com/&lt;org&gt;/…</code> from the resolved org.</li>
+  <li><b>ss re-target:</b> replace <code>$env:STRATAGEM_ADO_*</code> with the config reads → and <b>delete</b> the <code>STRATAGEM_ADO_*</code> env from <code>ISCI-Vision\.claude\settings.local.json</code> (subsumed — confirms env-promote would've been throwaway).</li>
+</ul>
+
+<h2>Components to change</h2>
+<div class="overflow"><table>
+  <tr><th>Component</th><th>Change</th></tr>
+  <tr><td><code>ado.config.json</code> (new, in data dir)</td><td>create; holds <code>{ org, project }</code>; written by <code>profile.bat</code> at install (beside <code>pat.b64</code>)</td></tr>
+  <tr><td><code>bin/ado-mcp-launch.js</code></td><td>read <code>org</code> (+ optional project) from <code>&lt;pat-dir&gt;/ado.config.json</code>; keep <code>--org</code> as an override/fallback; fail-loud if neither present (mirrors the PAT handling). <b>PRESERVE</b> <code>shell:true</code> (AP-1) + the <code>node</code>-dir PATH prepend (AP-2) — env-coupled, invisible to grep/<code>node --check</code></td></tr>
+  <tr><td><code>.mcp.json</code></td><td>drop the hardcoded <code>--org intelliscience</code> (launcher self-resolves from config) — a deliberate revision of the "org stays declarative" pattern, now that org is per-install</td></tr>
+  <tr><td><code>sp/SKILL.md</code></td><td>project/owner defaults ← config + PAT-email; board URL ← resolved org</td></tr>
+  <tr><td><code>pr/SKILL.md</code></td><td>project default ← config; board URL ← resolved org</td></tr>
+  <tr><td><code>ss/SKILL.md</code></td><td>swap <code>$env:STRATAGEM_ADO_*</code> → config/PAT reads (align with sp/pr)</td></tr>
+  <tr><td><code>board-sync/SKILL.md</code></td><td>no change (already clean)</td></tr>
+  <tr><td><code>ISCI-Vision\.claude\settings.local.json</code></td><td>remove the now-orphan <code>env.STRATAGEM_ADO_*</code> block</td></tr>
+</table></div>
+
+<h2>Open Design Decisions</h2>
+<div class="overflow"><table>
+  <tr><th>#</th><th>Decision</th><th>Lean</th></tr>
+  <tr><td>1</td><td>Owner source: derive from <code>pat.b64</code> email vs. store in config</td><td><b>derive from PAT</b> — single source; the email's already there</td></tr>
+  <tr><td>2</td><td>Config format/name</td><td><code>ado.config.json</code> (JSON — launcher is Node, trivial parse; skills read via <code>node -e</code> or <code>jq</code>)</td></tr>
+  <tr><td>3</td><td>Board URL form: <code>&lt;org&gt;.visualstudio.com</code> (sp/pr) vs <code>dev.azure.com/&lt;org&gt;</code> (ss)</td><td><b>standardize on <code>dev.azure.com/&lt;org&gt;</code></b> (modern, consistent)</td></tr>
+  <tr><td>4</td><td>Keep plan-header overrides (<code>## ADO-Project</code>)?</td><td><b>yes</b> — config is the <em>default</em>; a plan header still overrides (sp/pr already read headers)</td></tr>
+  <tr><td>5</td><td>How skills read the config in-prompt</td><td>same newest-wins glob they use for <code>pat.b64</code> (<code>$HOME/.claude/plugins/data/stratagem-ado-*/ado.config.json</code>) — survives marketplace renames</td></tr>
+  <tr><td>6</td><td>Org source: config file vs. derive from PAT email domain</td><td><b>config file</b> (explicit, safe) — deriving org from the email domain (<code>intelliscience.com</code>→<code>intelliscience</code>) happens to work here, but org≠domain isn't universal</td></tr>
+</table></div>
+
+<h2>Risks</h2>
+<div class="overflow"><table>
+  <tr><th>Risk</th><th>Mitigation</th></tr>
+  <tr><td>Launcher change breaks MCP startup (401 / no org / <code>EINVAL</code>)</td><td>fail-loud like the PAT path; keep <code>--org</code> arg as fallback; <b>preserve <code>shell:true</code> + PATH prepend (AP-1/AP-2)</b>; live-test <code>core_list_projects</code> before/after</td></tr>
+  <tr><td>Live, working plugin — must not regress ADO integration</td><td>change-couple <code>.mcp.json</code> ↔ launcher ↔ config together; restart + probe</td></tr>
+  <tr><td>Config drift from <code>.mcp.json</code></td><td>single source (config); <code>.mcp.json</code> stops naming org at all</td></tr>
+  <tr><td>Skills reading JSON in a prompt is awkward</td><td>use <code>node -e</code> (Node is a plugin prereq anyway) — robust, no <code>jq</code> dependency</td></tr>
+</table></div>
+
+<h2>Testing Strategy</h2>
+<ul>
+  <li><b>MCP still connects (live tracer — the only gate for env-coupled defects):</b> restart → <code>core_list_projects</code> returns the Kanban project, run <b>in BOTH the CLI and the VSCode extension</b> (AP-2: they spawn MCP with different PATHs). Proves the launcher resolves org from config + PAT.</li>
+  <li><b>Skills resolve from config:</b> a dry <code>/stratagem-ado:sp</code> (or <code>ss</code>) banner shows org/project/owner sourced from config/PAT, not hardcodes.</li>
+  <li><b>Grep-clean:</b> plugin <em>source</em> (skills + <code>.mcp.json</code> + launcher) has 0 hits for <code>intelliscience</code> / the email / <code>Kanban</code> (the values now live only in the gitignored data-dir config).</li>
+  <li><b>Portability proof:</b> a hypothetical second identity (different <code>ado.config.json</code> + <code>pat.b64</code>) would drive a different org/project with no source change.</li>
+</ul>
+
+<h2>Success Criteria</h2>
+<ul>
+  <li>Plugin <b>source</b> carries zero identity literals; identity lives once in <code>ado.config.json</code> + <code>pat.b64</code> (both per-install data).</li>
+  <li>MCP connects; <code>sp</code>/<code>pr</code>/<code>ss</code> resolve org/project/owner from that one home.</li>
+  <li><code>ss</code> no longer uses <code>$env:STRATAGEM_ADO_*</code>; the env block is gone from <code>settings.local.json</code>.</li>
+  <li>Plugin is now as portable as Core — installable by any dev with their own PAT + config.</li>
+</ul>
+
+<h2>Complexity</h2>
+<p class="note"><b>Medium.</b> ~6 touch points (1 new config, 1 Node launcher edit, <code>.mcp.json</code>, 3 skills) + 1 env deletion. Change-coupled (launcher ↔ <code>.mcp.json</code> ↔ config). Requires an MCP restart to verify. No new abstractions — reuses the existing <code>pat.b64</code>-shim pattern for the org.</p>
+
+<p class="meta"><b>Next:</b> <code>/cp</code> — break this into tasks (reads this <code>.html</code>, emits the <code>.md</code> execution plan).</p>

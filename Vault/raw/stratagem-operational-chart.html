@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stratagem — Skills Operational Chart</title>
+<style>
+  :root{
+    --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --plan:#16a34a;      --plan-bg:#dcfce7;
+    --exec:#2563eb;      --exec-bg:#dbeafe;
+    --recover:#ea580c;   --recover-bg:#ffedd5;
+    --gate:#ca8a04;      --gate-bg:#fef9c3;
+    --complete:#7c3aed;  --complete-bg:#ede9fe;
+    --know:#0d9488;      --know-bg:#ccfbf1;
+    --board:#0891b2;     --board-bg:#cffafe;
+    --util:#475569;      --util-bg:#f1f5f9;
+  }
+  *{box-sizing:border-box;}
+  body{font:15px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:32px;}
+  .wrap{max-width:1240px;margin:0 auto;}
+  header.top{margin-bottom:8px;}
+  h1{font-size:27px;margin:0 0 4px;letter-spacing:-.01em;}
+  .lede{color:var(--muted);margin:0 0 4px;font-size:14px;}
+  .stamp{color:var(--muted);font-size:12px;}
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:34px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line);}
+  h3{font-size:15px;margin:18px 0 8px;}
+  section{margin-bottom:8px;}
+  code{background:#eef2f7;padding:1px 5px;border-radius:4px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.88em;}
+  .mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;}
+
+  /* legend */
+  .legend{display:flex;flex-wrap:wrap;gap:8px 16px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;}
+  .legend span{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#334155;}
+  .sw{width:14px;height:14px;border-radius:4px;display:inline-block;border:1.5px solid;}
+
+  /* callout */
+  .callout{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:13.5px;}
+  .callout b{color:#92400e;}
+  .callout.delta{background:#eff6ff;border-color:#bfdbfe;border-left-color:#2563eb;}
+  .callout.delta b{color:#1e40af;}
+
+  /* spine — flex card row */
+  .flow{display:flex;align-items:stretch;flex-wrap:wrap;gap:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 14px;}
+  .node{flex:1 1 0;min-width:96px;border-radius:10px;padding:10px 8px;text-align:center;border:1.5px solid;background:#fff;}
+  .node .k{font-weight:700;font-size:14px;display:block;}
+  .node .d{font-size:11px;color:#475569;display:block;margin-top:2px;line-height:1.3;}
+  .node.term{background:#f1f5f9;border-color:#475569;}
+  .node.plan{background:var(--plan-bg);border-color:var(--plan);}
+  .node.exec{background:var(--exec-bg);border-color:var(--exec);}
+  .node.complete{background:var(--complete-bg);border-color:var(--complete);}
+  .chev{flex:0 0 26px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:20px;font-weight:700;}
+  .subnote{font-size:12px;color:var(--muted);margin:8px 2px 0;}
+
+  /* figure */
+  figure{margin:14px 0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;}
+  figure svg{width:100%;height:auto;display:block;}
+  figcaption{font-size:12px;color:var(--muted);padding:6px 8px 2px;}
+
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:6px;}
+  th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600;background:#f8fafc;}
+  tr:last-child td{border-bottom:none;}
+  td.skill{white-space:nowrap;font-weight:700;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;}
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:999px;border:1px solid;}
+  .cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:880px){.cat-grid{grid-template-columns:1fr;}}
+  .group-h{display:flex;align-items:center;gap:9px;margin:0 0 7px;font-size:14px;font-weight:700;}
+  .dot{width:11px;height:11px;border-radius:3px;border:1.5px solid;}
+  footer{margin-top:30px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Stratagem — Skills Operational Chart</h1>
+    <p class="lede">The current operating model of the Stratagem AI-coding workflow: from raw idea to shipped feature to captured learning, across the manual and unattended execution paths.</p>
+    <p class="stamp">Living reference · refreshed 2026-06-30 · supersedes <code>stratagem-testing-workflow.svg</code> (v3) · scope/workflow</p>
+  </header>
+
+  <div class="callout delta">
+    <b>What changed since the v3 SVG.</b> v3 showed a single linear <code>PF→CP→PX→AX</code> flow with a <em>human</em> test gate. The system has since grown a <b>seed phase</b> (<code>/ps</code>), an <b>always-on verifier gate</b> (builder≠checker) replacing eyeball-testing, a <b>two-path execution model</b> (manual <code>/phx</code> vs unattended budget-guarded <code>/if</code>), <b>bounded auto-recovery</b>, a <b>memory quick-path</b>, an <b>ADO board rail</b>, and a closed <b>knowledge loop</b> (retros → wiki → corpus-read-first → planning).
+  </div>
+
+  <div class="legend" aria-label="Category legend">
+    <span><i class="sw" style="background:var(--plan-bg);border-color:var(--plan)"></i>Plan</span>
+    <span><i class="sw" style="background:var(--exec-bg);border-color:var(--exec)"></i>Execute</span>
+    <span><i class="sw" style="background:var(--gate-bg);border-color:var(--gate)"></i>Verify / gate</span>
+    <span><i class="sw" style="background:var(--recover-bg);border-color:var(--recover)"></i>Recover</span>
+    <span><i class="sw" style="background:var(--complete-bg);border-color:var(--complete)"></i>Complete</span>
+    <span><i class="sw" style="background:var(--know-bg);border-color:var(--know)"></i>Knowledge corpus</span>
+    <span><i class="sw" style="background:var(--board-bg);border-color:var(--board)"></i>Board / ADO</span>
+    <span><i class="sw" style="background:var(--util-bg);border-color:var(--util)"></i>Utility</span>
+  </div>
+
+  <!-- ============ SPINE ============ -->
+  <h2>The lifecycle spine</h2>
+  <section>
+    <div class="flow">
+      <div class="node term"><span class="k">💡 Idea</span><span class="d">raw intent</span></div>
+      <div class="chev">›</div>
+      <div class="node plan"><span class="k">/ps</span><span class="d">Plan Seed<br>→ seed.html</span></div>
+      <div class="chev">›</div>
+      <div class="node plan"><span class="k">/pf</span><span class="d">Plan Features<br>→ plan.html</span></div>
+      <div class="chev">›</div>
+      <div class="node plan"><span class="k">/cp</span><span class="d">Create Plan<br>→ plan.md</span></div>
+      <div class="chev">›</div>
+      <div class="node exec"><span class="k">⚙ Execute</span><span class="d">manual /phx<br>or unattended /if</span></div>
+      <div class="chev">›</div>
+      <div class="node complete"><span class="k">/cf</span><span class="d">Complete<br>Feature</span></div>
+      <div class="chev">›</div>
+      <div class="node term"><span class="k">✓ Done</span><span class="d">+ retro</span></div>
+    </div>
+    <p class="subnote"><b>Format seam:</b> <code>/ps</code> &amp; <code>/pf</code> author <b>HTML</b> (human reasoning surfaces); <code>/cp</code> re-emits a self-contained <b>.md</b> execution plan (machine-edited by <code>/px /ax /phx /cf</code>, graph-bound). Every <code>/cp</code> task carries an objective <code>Verify:</code> line; decisions are locked up-front via the question-batch.</p>
+  </section>
+
+  <!-- ============ EXECUTION CORE (SVG) ============ -->
+  <h2>The execution core — two paths, one verifier gate</h2>
+  <p style="font-size:13.5px;color:#475569;margin:0 0 4px">After <code>/cp</code>, the plan runs one of two ways. Both drive the same per-task contract — <code>/px → /ax → <b>verify</b></code> — but differ in who watches and what stops them. The verifier is <b>always on</b>: an executed check plus a <em>separate</em> confirmer (builder ≠ checker).</p>
+
+  <figure>
+  <svg viewBox="0 0 1180 470" role="img" aria-label="Execution core diagram: manual and unattended paths sharing a verifier gate and a bounded recovery loop">
+    <defs>
+      <marker id="ar" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#334155"/></marker>
+      <marker id="arO" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#ea580c"/></marker>
+      <marker id="arG" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#94a3b8"/></marker>
+      <marker id="arP" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#7c3aed"/></marker>
+      <style>
+        .b{rx:9;stroke-width:1.6;}
+        .t{font:700 13px ui-monospace,Consolas,monospace;fill:#0f172a;text-anchor:middle;}
+        .s{font:11px -apple-system,Segoe UI,Arial;fill:#475569;text-anchor:middle;}
+        .lbl{font:italic 11px -apple-system,Segoe UI,Arial;fill:#64748b;text-anchor:middle;}
+        .ln{fill:none;stroke:#334155;stroke-width:1.6;}
+        .lnO{fill:none;stroke:#ea580c;stroke-width:1.6;}
+        .lnG{fill:none;stroke:#94a3b8;stroke-width:1.6;stroke-dasharray:5 4;}
+        .lnP{fill:none;stroke:#7c3aed;stroke-width:1.6;}
+        .exec{fill:#dbeafe;stroke:#2563eb;}
+        .gate{fill:#fef9c3;stroke:#ca8a04;}
+        .recover{fill:#ffedd5;stroke:#ea580c;}
+        .complete{fill:#ede9fe;stroke:#7c3aed;}
+        .plan{fill:#dcfce7;stroke:#16a34a;}
+      </style>
+    </defs>
+
+    <!-- lane tints -->
+    <rect x="296" y="56" width="628" height="150" rx="12" fill="#2563eb" opacity="0.05"/>
+    <rect x="296" y="330" width="650" height="104" rx="12" fill="#4338ca" opacity="0.06"/>
+    <rect x="540" y="214" width="296" height="86" rx="12" fill="#ea580c" opacity="0.07"/>
+    <text x="312" y="74" style="font:700 11px -apple-system;fill:#1e40af">MANUAL — /phx phase-chain (human-watched, no hard budget)</text>
+    <text x="312" y="348" style="font:700 11px -apple-system;fill:#3730a3">UNATTENDED — /if autonomy loop (token-budgeted, self-recovering)</text>
+    <text x="688" y="231" style="font:700 11px -apple-system;fill:#9a3412;text-anchor:middle">RECOVERY (shared)</text>
+
+    <!-- entry + fork -->
+    <rect class="b plan" x="20" y="240" width="132" height="54"/>
+    <text class="t" x="86" y="262">/cp</text><text class="s" x="86" y="280">→ plan.md</text>
+    <path class="ln" d="M152,267 H183" marker-end="url(#ar)"/>
+    <polygon class="gate" points="220,237 256,267 220,297 184,267" stroke-width="1.6"/>
+    <text class="s" x="220" y="264">exec</text><text class="s" x="220" y="277">mode?</text>
+
+    <!-- manual lane -->
+    <path class="ln" d="M220,237 V119 H317" marker-end="url(#ar)"/>
+    <text class="lbl" x="250" y="150">manual</text>
+    <rect class="b exec" x="318" y="95" width="92" height="48"/>
+    <text class="t" x="364" y="116">/px</text><text class="s" x="364" y="132">select task</text>
+    <circle cx="448" cy="119" r="17" fill="#ffedd5" stroke="#f97316" stroke-width="1.6"/>
+    <text x="448" y="124" style="text-anchor:middle;font-size:14px">👤</text>
+    <path class="ln" d="M410,119 H429" marker-end="url(#ar)"/>
+    <rect class="b exec" x="486" y="95" width="120" height="48"/>
+    <text class="t" x="546" y="115">/ax</text><text class="s" x="546" y="132">+PICA · context7</text>
+    <path class="ln" d="M465,119 H483" marker-end="url(#ar)"/>
+    <path class="ln" d="M606,119 H654" marker-end="url(#ar)"/>
+    <polygon class="gate" points="694,91 734,119 694,147 654,119"/>
+    <text class="s" x="694" y="116">verify</text><text class="s" x="694" y="128">?</text>
+    <circle cx="800" cy="119" r="18" fill="#ffedd5" stroke="#f97316" stroke-width="1.6"/>
+    <text x="800" y="124" style="text-anchor:middle;font-size:14px">👤</text>
+    <text class="s" x="800" y="152">phase review</text>
+    <path class="ln" d="M734,119 H781" marker-end="url(#ar)"/>
+    <text class="lbl" x="758" y="111">pass</text>
+    <!-- more-tasks loop -->
+    <path class="lnG" d="M800,101 V62 H364 V90" marker-end="url(#arG)"/>
+    <text class="lbl" x="585" y="56">more tasks / next phase</text>
+
+    <!-- unattended lane -->
+    <path class="ln" d="M220,297 V384 H317" marker-end="url(#ar)"/>
+    <text class="lbl" x="250" y="330">unattended</text>
+    <rect class="b exec" x="318" y="360" width="92" height="48"/>
+    <text class="t" x="364" y="381">/if</text><text class="s" x="364" y="397">launch loop</text>
+    <rect class="b exec" x="430" y="360" width="138" height="48" stroke-dasharray="5 3"/>
+    <text class="t" x="499" y="380">budget</text><text class="s" x="499" y="397">## 750k · reserve</text>
+    <path class="ln" d="M410,384 H427" marker-end="url(#ar)"/>
+    <rect class="b exec" x="588" y="360" width="196" height="48"/>
+    <text class="t" x="686" y="380">px→ax→verify→advance</text><text class="s" x="686" y="397">per task, fresh checker</text>
+    <path class="ln" d="M568,384 H585" marker-end="url(#ar)"/>
+    <polygon class="gate" points="824,356 866,384 824,412 782,384"/>
+    <text class="s" x="824" y="381">integ</text><text class="s" x="824" y="393">?</text>
+    <path class="ln" d="M784,384 H780" marker-end="url(#ar)"/>
+    <text class="s" x="700" y="428" style="fill:#3730a3">feature-branch pre-flight (HALT on main/staging) · run-ledger + STATUS line</text>
+
+    <!-- recovery cluster -->
+    <rect class="b recover" x="560" y="238" width="104" height="48"/>
+    <text class="t" x="612" y="259">/ex</text><text class="s" x="612" y="275">log + fix-plan</text>
+    <rect class="b recover" x="700" y="238" width="104" height="48"/>
+    <text class="t" x="752" y="259">/fx</text><text class="s" x="752" y="275">implement fix</text>
+    <path class="lnO" d="M664,262 H697" marker-end="url(#arO)"/>
+    <!-- manual verify fail -> ex -->
+    <path class="lnO" d="M694,147 V200 H612 V236" marker-end="url(#arO)"/>
+    <text class="lbl" x="640" y="178" style="fill:#9a3412">fail</text>
+    <!-- unattended fail -> ex -->
+    <path class="lnO" d="M640,360 V320 H612 V288" marker-end="url(#arO)" stroke-dasharray="5 3"/>
+    <text class="lbl" x="690" y="340" style="fill:#9a3412">fail · auto-recover ×3</text>
+    <!-- fx re-verify -->
+    <path class="lnO" d="M752,238 V200 H720 V148" marker-end="url(#arO)" stroke-dasharray="5 3"/>
+    <text class="lbl" x="775" y="214" style="fill:#9a3412">re-verify</text>
+
+    <!-- complete -->
+    <rect class="b complete" x="980" y="232" width="160" height="58"/>
+    <text class="t" x="1060" y="256">/cf</text><text class="s" x="1060" y="274">Complete → ✓ DONE</text>
+    <!-- manual pass -> cf -->
+    <path class="lnP" d="M818,119 H1020 V230" marker-end="url(#arP)"/>
+    <text class="lbl" x="915" y="111" style="fill:#6d28d9">all tasks pass</text>
+    <!-- integ pass -> cf -->
+    <path class="lnP" d="M866,384 H1020 V291" marker-end="url(#arP)"/>
+    <text class="lbl" x="940" y="376" style="fill:#6d28d9">integration green</text>
+  </svg>
+  <figcaption>Manual and unattended paths share the per-task verifier gate (yellow) and the bounded <code>/ex→/fx</code> recovery loop (orange). Three halt semantics on the <code>/if</code> path: <b>budget</b> (resumable), <b>recovery-exhausted</b> (terminal, per-task), <b>integration</b> (terminal, plan-level). The loop never commits — its diff lands on a feature branch for review.</figcaption>
+  </figure>
+
+  <!-- ============ KNOWLEDGE LOOP (SVG) ============ -->
+  <h2>The knowledge loop — the corpus feeds back into planning</h2>
+  <p style="font-size:13.5px;color:#475569;margin:0 0 4px">Closing a feature is not the end. Retrospectives distil learnings into the wiki vault; every planning skill then reads that corpus <em>before</em> reaching for the web (<code>CORPUS-READ-FIRST</code>). The system's reasoning surface compounds over time.</p>
+
+  <figure>
+  <svg viewBox="0 0 1000 300" role="img" aria-label="Knowledge loop: retrospectives feed the wiki vault, which planning skills read first">
+    <defs>
+      <marker id="k1" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#0d9488"/></marker>
+      <marker id="k2" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#94a3b8"/></marker>
+      <style>
+        .kt{font:700 12.5px ui-monospace,Consolas,monospace;fill:#0f172a;text-anchor:middle;}
+        .ks{font:11px -apple-system,Segoe UI,Arial;fill:#475569;text-anchor:middle;}
+        .klbl{font:italic 11px -apple-system,Segoe UI,Arial;fill:#0f766e;text-anchor:middle;}
+        .know{fill:#ccfbf1;stroke:#0d9488;stroke-width:1.6;}
+        .plan{fill:#dcfce7;stroke:#16a34a;stroke-width:1.6;}
+        .lk{fill:none;stroke:#0d9488;stroke-width:1.7;}
+        .lkd{fill:none;stroke:#94a3b8;stroke-width:1.6;stroke-dasharray:5 4;}
+      </style>
+    </defs>
+
+    <rect class="know" x="24" y="48" width="170" height="50" rx="9"/>
+    <text class="kt" x="109" y="69">/rs</text><text class="ks" x="109" y="86">retro · completed plan</text>
+    <rect class="know" x="24" y="118" width="170" height="50" rx="9"/>
+    <text class="kt" x="109" y="139">/crs</text><text class="ks" x="109" y="156">retro · live chat</text>
+
+    <path class="lk" d="M194,73 H230 V103" marker-end="url(#k1)"/>
+    <path class="lk" d="M194,143 H230 V117" marker-end="url(#k1)"/>
+    <rect class="know" x="232" y="86" width="158" height="50" rx="9"/>
+    <text class="kt" x="311" y="107">/wiki-ingest</text><text class="ks" x="311" y="124">add page · §4.5</text>
+
+    <path class="lk" d="M390,111 H452" marker-end="url(#k1)"/>
+    <polygon class="know" points="540,72 588,111 540,150 492,150 470,111 492,72"/>
+    <text class="kt" x="529" y="107">Stratagem</text><text class="ks" x="529" y="124">-Wiki vault</text>
+
+    <rect class="know" x="452" y="216" width="172" height="48" rx="9"/>
+    <text class="kt" x="538" y="237">/wiki-graph-audit</text><text class="ks" x="538" y="253">verify · auto-fix §4.5</text>
+    <path class="lk" d="M538,216 V152" marker-end="url(#k1)"/>
+    <text class="klbl" x="588" y="190">audits</text>
+
+    <rect class="plan" x="700" y="64" width="252" height="92" rx="9"/>
+    <text style="font:700 12px ui-monospace;fill:#14532d;text-anchor:middle" x="826" y="92">/pf · /cp · /px · /ax</text>
+    <text style="font:700 12px ui-monospace;fill:#14532d;text-anchor:middle" x="826" y="112">/ex · /fx · /mpx · /max</text>
+    <text class="ks" x="826" y="134">planning &amp; execution skills</text>
+    <text class="ks" x="826" y="148">read the corpus first</text>
+
+    <path class="lk" d="M588,111 H697" marker-end="url(#k1)"/>
+    <text class="klbl" x="643" y="100">CORPUS-READ-FIRST</text>
+    <text class="klbl" x="643" y="124">index → drill → link-walk</text>
+
+    <!-- outer cycle: work eventually gets retro'd -->
+    <path class="lkd" d="M826,156 V288 H109 V172" marker-end="url(#k2)"/>
+    <text class="klbl" x="470" y="284" style="fill:#64748b">…work ships, then is retrospected — the cycle closes</text>
+  </svg>
+  <figcaption>A read/write cycle: retros <b>write</b> the vault (<code>/wiki-ingest</code>, shape-audited by <code>/wiki-graph-audit</code>); planning skills <b>read</b> it first (<code>CORPUS-READ-FIRST</code> — index-first retrieval, not RAG). The web/context7 ladder is the fallback on a corpus miss.</figcaption>
+  </figure>
+
+  <!-- ============ ADO RAIL ============ -->
+  <h2>The board rail — Azure DevOps (optional)</h2>
+  <p style="font-size:13.5px;color:#475569;margin:0 0 8px">Board-synced projects get a parallel rail that mirrors plan state onto an ADO Kanban board. Core Stratagem stays board-blind — it only emits headers the <code>stratagem-ado</code> plugin consumes. The never-commit rule holds; linkage happens at PR time.</p>
+  <section>
+    <div class="flow" style="background:var(--board-bg);border-color:var(--board)">
+      <div class="node" style="background:#fff;border-color:var(--board)"><span class="k">/cp</span><span class="d">plan.md + ADO headers</span></div>
+      <div class="chev">›</div>
+      <div class="node" style="background:#fff;border-color:var(--board)"><span class="k">/sp</span><span class="d">Sync Plan → Feature + 1 Story/task · writes Sync-Ids</span></div>
+      <div class="chev">›</div>
+      <div class="node" style="background:#fff;border-color:var(--board)"><span class="k">⟳ board-sync</span><span class="d">cards move New→Active→Resolved→Closed as tasks change state</span></div>
+      <div class="chev">›</div>
+      <div class="node" style="background:#fff;border-color:var(--board)"><span class="k">/pr</span><span class="d">open PR · links Feature + Stories · auto-close on merge</span></div>
+    </div>
+    <p class="subnote"><b>Sync timing:</b> run <code>/sp</code> right after <code>/cp</code> (before execution) so the loop can move cards as tasks complete. <code>/pr</code> runs after <code>/cf</code> once the feature branch is pushed.</p>
+  </section>
+
+  <!-- ============ FULL SKILL CATALOG ============ -->
+  <h2>Full skill catalog (current)</h2>
+
+  <div class="cat-grid">
+
+    <div>
+      <div class="group-h"><i class="dot" style="background:var(--plan-bg);border-color:var(--plan)"></i>Plan</div>
+      <table>
+        <tr><th>Skill</th><th>Role · chains to</th></tr>
+        <tr><td class="skill">/ps</td><td>Plan Seed — clarifies + explores codebase → seed <code>.html</code> → <code>/pf</code></td></tr>
+        <tr><td class="skill">/pf</td><td>Plan Features — architecture, no code → plan <code>.html</code> → <code>/cp</code></td></tr>
+        <tr><td class="skill">/cp</td><td>Create Plan — tasks w/ <code>Verify:</code>, tracer-bullet check, question-batch lock → plan <code>.md</code></td></tr>
+      </table>
+
+      <div class="group-h"><i class="dot" style="background:var(--exec-bg);border-color:var(--exec)"></i>Execute — manual</div>
+      <table>
+        <tr><th>Skill</th><th>Role · chains to</th></tr>
+        <tr><td class="skill">/px</td><td>Plan Execute — select &amp; analyze one task → <code>/ax</code></td></tr>
+        <tr><td class="skill">/ax</td><td>Authorize Execution — implement (context7); runs PICA inline → verifier</td></tr>
+        <tr><td class="skill">/phx</td><td>Phase Execute — chains <code>/px→/ax</code>+verify per task across a phase</td></tr>
+      </table>
+
+      <div class="group-h"><i class="dot" style="background:var(--exec-bg);border-color:var(--exec)"></i>Execute — unattended</div>
+      <table>
+        <tr><th>Skill</th><th>Role · chains to</th></tr>
+        <tr><td class="skill">/if</td><td>Implement Feature — launches the autonomy-loop Workflow under <code>## Budget</code></td></tr>
+        <tr><td class="skill" style="white-space:normal">autonomy-loop</td><td>the Workflow <code>/if</code> drives: px→ax→verify→advance, recovery, integration gate</td></tr>
+      </table>
+
+      <div class="group-h"><i class="dot" style="background:var(--exec-bg);border-color:var(--exec)"></i>Execute — quick path</div>
+      <table>
+        <tr><th>Skill</th><th>Role · chains to</th></tr>
+        <tr><td class="skill">/mpx</td><td>Memory Plan Execute — plan small tasks (&lt;5 files), no plan file → <code>/max</code></td></tr>
+        <tr><td class="skill">/max</td><td>Memory Authorize Execute — execute the in-memory plan</td></tr>
+      </table>
+    </div>
+
+    <div>
+      <div class="group-h"><i class="dot" style="background:var(--gate-bg);border-color:var(--gate)"></i>Verify &amp; audit</div>
+      <table>
+        <tr><th>Skill</th><th>Role · chains to</th></tr>
+        <tr><td class="skill" style="white-space:normal">verifier&nbsp;gate</td><td>always-on per-task gate: executed check + <em>separate</em> confirmer (builder≠checker)</td></tr>
+        <tr><td class="skill">/pica</td><td>Post-Impl Compliance Audit — pattern consistency; runs inside <code>/ax</code>; feeds <code>/rs</code></td></tr>
+        <tr><td class="skill">/sa</td><td>Skill Audit — conformance vs the canonical skill layout</td></tr>
+      </table>
+
+      <div class="group-h"><i class="dot" style="background:var(--recover-bg);border-color:var(--recover)"></i>Recover</div>
+      <table>
+        <tr><th>Skill</th><th>Role · chains to</th></tr>
+        <tr><td class="skill">/ex</td><td>Error Executing — document error, create fix plan (doc only) → <code>/fx</code></td></tr>
+        <tr><td class="skill">/fx</td><td>Fix Execution — implement the logged fix → re-verify (bounded ×3 in <code>/if</code>)</td></tr>
+      </table>
+
+      <div class="group-h"><i class="dot" style="background:var(--complete-bg);border-color:var(--complete)"></i>Complete &amp; resume</div>
+      <table>
+        <tr><th>Skill</th><th>Role · chains to</th></tr>
+        <tr><td class="skill">/cf</td><td>Complete Feature — finalize + executive summary → <code>/rs</code></td></tr>
+        <tr><td class="skill">/rp</td><td>Read Plan — resume work, assess progress via <code>git diff</code></td></tr>
+        <tr><td class="skill">/um</td><td>UpdateMe — instant plan status snapshot (done / now / next)</td></tr>
+      </table>
+
+      <div class="group-h"><i class="dot" style="background:var(--know-bg);border-color:var(--know)"></i>Knowledge corpus</div>
+      <table>
+        <tr><th>Skill</th><th>Role · chains to</th></tr>
+        <tr><td class="skill">/rs</td><td>Retrospective Summary — completed plan → learnings → <code>/wiki-ingest</code></td></tr>
+        <tr><td class="skill">/crs</td><td>Conversation Retrospective — live chat → learnings → <code>/wiki-ingest</code></td></tr>
+        <tr><td class="skill" style="white-space:normal">/wiki-ingest</td><td>generator — add a vault page per the §4.5 shape contract</td></tr>
+        <tr><td class="skill" style="white-space:normal">/wiki-graph-audit</td><td>verifier — sweep vault for §4.5 violations, per-category auto-fix</td></tr>
+      </table>
+
+      <div class="group-h"><i class="dot" style="background:var(--board-bg);border-color:var(--board)"></i>Board / ADO <span style="font-weight:400;font-size:11px;color:var(--muted)">(plugin)</span></div>
+      <table>
+        <tr><th>Skill</th><th>Role · chains to</th></tr>
+        <tr><td class="skill">/sp</td><td>Sync Plan — plan.md → Feature + Story/task; writes Sync-Ids back</td></tr>
+        <tr><td class="skill" style="white-space:normal">board-sync</td><td>adapter — moves the work item through its board states</td></tr>
+        <tr><td class="skill">/pr</td><td>Pull Request — open PR, link Feature + Stories at PR time</td></tr>
+      </table>
+
+      <div class="group-h"><i class="dot" style="background:var(--util-bg);border-color:var(--util)"></i>Utility</div>
+      <table>
+        <tr><th>Skill</th><th>Role</th></tr>
+        <tr><td class="skill">/handoff</td><td>slice context into a durable brief for a fresh session</td></tr>
+        <tr><td class="skill">/gbx</td><td>Gmail Bookmark Extract — links from self-sent emails</td></tr>
+        <tr><td class="skill">/cx</td><td>Chunk-eXamine — file-size analysis (legacy)</td></tr>
+        <tr><td class="skill">/azure</td><td>Azure SQL connection status</td></tr>
+        <tr><td class="skill" style="white-space:normal">/ha-*</td><td>Hearact suite — audio → split / transcribe / research / tasks</td></tr>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ============ INVARIANTS ============ -->
+  <h2>Operating invariants</h2>
+  <div class="callout"><b>Never commit.</b> All changes stay uncommitted for manual review. The <code>/if</code> loop never touches git; its diff lands on a feature branch (HALTs on <code>main</code>/<code>staging</code>). Board linkage happens at PR time, not commit time.</div>
+  <div class="callout"><b>Verifier always-on (builder ≠ checker).</b> Every task is proven by an executed <code>Verify:</code> command plus a separate confirmer instance. There is no opt-out flag; a plan with any task missing <code>Verify:</code> HALTs at <code>/phx</code>'s upfront sweep.</div>
+  <div class="callout"><b>Budget is a first-class stop condition.</b> Unattended loops carry a token ceiling (<code>## Budget:</code>, default 750k) that can say "no" independent of the goal — 80% warn, reserve-floor halt, no silent caps.</div>
+  <div class="callout"><b>Literal composition.</b> A skill that chains others invokes them via the real Skill tool — never paraphrased. Sub-skill checklists (e.g. <code>/ax</code>'s PICA) only run if the sub-skill actually runs.</div>
+  <div class="callout"><b>Trust-But-Verify within auto-chains.</b> Mid-task L/M decisions auto-proceed and surface in a Decisions Made block; H-complexity decisions STOP and escalate inline. Fleet-wide vault-shape edits always gate.</div>
+
+  <footer>
+    Stratagem-Wiki · <code>raw/stratagem-operational-chart.html</code> · HTML chassis + inline SVG illustrations · supersedes <code>stratagem-testing-workflow.svg</code>. Sources: Steward <code>CLAUDE.md</code> (Meta-Architecture Framework), global skill catalog, wiki <code>index.md</code> (<code>operating-modes</code>, <code>autonomy-loop-and-budget-guard</code>).
+  </footer>
+
+</div>
+</body>
+</html>

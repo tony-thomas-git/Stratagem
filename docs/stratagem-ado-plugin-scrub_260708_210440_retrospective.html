@@ -1,0 +1,54 @@
+<meta charset="utf-8">
+<title>Retrospective log — stratagem-ado Plugin-Scrub</title>
+<style>
+  :root{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#d8d8dd;--card:#f6f6f8;--accent:#1971c2;--good:#2b8a3e;--warn:#e8590c;--code:#ececef;}
+  @media (prefers-color-scheme:dark){:root{--bg:#15171b;--fg:#e6e6e6;--muted:#9aa0a6;--line:#2c3038;--card:#1d2027;--accent:#4dabf7;--good:#51cf66;--warn:#ffa94d;--code:#23262d;}}
+  :root[data-theme="dark"]{--bg:#15171b;--fg:#e6e6e6;--muted:#9aa0a6;--line:#2c3038;--card:#1d2027;--accent:#4dabf7;--good:#51cf66;--warn:#ffa94d;--code:#23262d;}
+  :root[data-theme="light"]{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#d8d8dd;--card:#f6f6f8;--accent:#1971c2;--good:#2b8a3e;--warn:#e8590c;--code:#ececef;}
+  *{box-sizing:border-box;} body{background:var(--bg);color:var(--fg);font:15px/1.55 -apple-system,"Segoe UI",Roboto,sans-serif;max-width:900px;margin:0 auto;padding:1.5rem 1.1rem 4rem;}
+  h1{font-size:1.4rem;margin:0 0 .2rem;} h2{font-size:1.05rem;margin:1.7rem 0 .5rem;padding-bottom:.25rem;border-bottom:2px solid var(--line);}
+  .meta{color:var(--muted);font-size:.83rem;margin:.2rem 0 1rem;}
+  code{background:var(--code);padding:.08em .35em;border-radius:4px;font-size:.86em;font-family:"Cascadia Code",Consolas,monospace;}
+  table{border-collapse:collapse;width:100%;margin:.5rem 0;font-size:.87rem;} th,td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top;} th{background:var(--card);}
+  .overflow{overflow-x:auto;} ul{padding-left:1.2rem;margin:.4rem 0;} li{margin:.22rem 0;}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.7rem .9rem;margin:.6rem 0;}
+  .box.good{border-left:4px solid var(--good);} .box.acc{border-left:4px solid var(--accent);}
+  .pill{display:inline-block;font-size:.72rem;font-weight:700;padding:.12em .5em;border-radius:999px;color:#fff;background:var(--good);}
+  .note{color:var(--muted);font-size:.82rem;}
+</style>
+
+<h1>Retrospective log — stratagem-ado Plugin-Scrub <span class="pill">APPLIED</span></h1>
+<p class="meta">/rs · 2026-07-09 · source <code>stratagem-ado-plugin-scrub_260708_210440_plan.md</code> · vault <b>C:\code\Stratagem\Vault</b> · 3 changes · audit clean</p>
+
+<div class="box acc">
+This log records the retrospective harvest of the completed plugin-scrub into the Stratagem Vault. It is the LOG only — the canonical learnings live in the wiki pages listed below. The gold-doc updates are <code>.md</code> (AI-consumed canon); this log is <code>.html</code> (human review, write-once).
+</div>
+
+<h2>Learnings extracted (2)</h2>
+<ul>
+  <li><b>Critical pattern — "org de-declarative."</b> When a bundled-MCP config value becomes <b>per-install</b> (org, like the secret), it moves out of declarative <code>.mcp.json</code> into the launcher-read data-dir config. An evolution of <code>[[bundled-mcp-launcher-shim]]</code>, not a new invention.</li>
+  <li><b>Bug pattern — enumerated-literal grep-gate blindness (EX-001).</b> A grep-clean gate scoped to exact literals (<code>ISCI - Consolidated - Kanban</code>) was blind to a same-family variant (<code>ISCI-SAAS</code>) that survived in a skill; caught by an adversarial completeness-critic. Sibling of <code>[[scope-by-category-blindness]]</code> applied to verification. Fix: pair enumerated-literal gates with a word-boundary/near-miss sweep.</li>
+</ul>
+
+<h2>Proposals generated &amp; applied (3)</h2>
+<div class="overflow"><table>
+  <tr><th>#</th><th>Page</th><th>Change</th><th>Method</th></tr>
+  <tr><td>①</td><td><b>NEW</b> <code>wiki/retrospectives/stratagem-ado-plugin-scrub.md</code></td><td>retrospective — both learnings + narrative + 4 related links</td><td><code>/wiki-ingest</code></td></tr>
+  <tr><td>②</td><td>UPDATE <code>wiki/patterns/bundled-mcp-launcher-shim.md</code></td><td>amended "org declarative" note + new "When identity is per-install" subsection + Related; +source; date bump</td><td>direct edit + CHANGELOG</td></tr>
+  <tr><td>③</td><td>UPDATE <code>wiki/anti-patterns/scope-by-category-blindness.md</code></td><td>new "Sibling instance — enumerated-literal verification gates (EX-001)" + Related; +source; date bump</td><td>direct edit + CHANGELOG</td></tr>
+  <tr><td>—</td><td>UPDATE <code>wiki/index.md</code></td><td>1 new link under Retrospectives</td><td>direct edit</td></tr>
+</table></div>
+<p class="note">Applied: <b>yes</b> (user-approved). Logged to <code>logs/CHANGELOG.md</code> (§6) + <code>logs/ingest-log.md</code>.</p>
+
+<h2>Wiki vault</h2>
+<ul>
+  <li><b>Vault used:</b> yes — <code>C:\code\Stratagem\Vault</code> (confirmed single canonical vault; the CHANGELOG's older <code>C:\code\docs\Stratagem-Wiki</code> root no longer exists — moved into the repo).</li>
+  <li><b>Pre-flight:</b> §4.5 schema present; no basename collision; drift hash captured; <span class="note">4 folders absent (<code>decisions/ plans/ runbooks/ api/</code>) — not created (empty untracked dirs); stray <code>README.md</code> at vault root (pre-existing).</span></li>
+  <li><b>Audit result (<code>/wiki-graph-audit</code>):</b> <b>0 violations</b> attributable to this run — folder-mismatch 0, frontmatter 0 (3 touched pages valid), orphans 0, duplicates 0. 12 forward-link gaps + the stray README are pre-existing/informational.</li>
+  <li><b>D-5 counterpart(s) re-rendered:</b> none — source is a plan file (not a <code>&lt;project&gt;-docs/patterns/</code> gold doc), and the two edited pages are vault-native. Not D-5-eligible.</li>
+</ul>
+
+<h2>PICA effectiveness (from the plan)</h2>
+<p>9 verifier runs · 1 issue found (EX-001, T8) · 1 follow-up (fixed). <b>Verdict: EARNING ITS PLACE</b> — the adversarial completeness-critic caught a real portability leak the enumerated grep would have shipped.</p>
+
+<p class="meta">Retrospective complete. Feature <code>stratagem-ado Plugin-Scrub</code> closed out; changes uncommitted for review.</p>

@@ -1,0 +1,189 @@
+<meta charset="utf-8">
+<title>PF — Stratagem Core Extraction (Builder ⇄ Artifact)</title>
+<style>
+  :root{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#d8d8dd;--card:#f6f6f8;--accent:#1971c2;--good:#2b8a3e;--warn:#e8590c;--del:#c92a2a;--code:#ececef;}
+  @media (prefers-color-scheme:dark){:root{--bg:#15171b;--fg:#e6e6e6;--muted:#9aa0a6;--line:#2c3038;--card:#1d2027;--accent:#4dabf7;--good:#51cf66;--warn:#ffa94d;--del:#ff8787;--code:#23262d;}}
+  :root[data-theme="dark"]{--bg:#15171b;--fg:#e6e6e6;--muted:#9aa0a6;--line:#2c3038;--card:#1d2027;--accent:#4dabf7;--good:#51cf66;--warn:#ffa94d;--del:#ff8787;--code:#23262d;}
+  :root[data-theme="light"]{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#d8d8dd;--card:#f6f6f8;--accent:#1971c2;--good:#2b8a3e;--warn:#e8590c;--del:#c92a2a;--code:#ececef;}
+  *{box-sizing:border-box;} body{background:var(--bg);color:var(--fg);font:15px/1.55 -apple-system,"Segoe UI",Roboto,sans-serif;max-width:940px;margin:0 auto;padding:1.5rem 1.1rem 4rem;}
+  h1{font-size:1.5rem;margin:0 0 .2rem;} h2{font-size:1.12rem;margin:1.9rem 0 .5rem;padding-bottom:.25rem;border-bottom:2px solid var(--line);}
+  h3{font-size:.98rem;margin:1.1rem 0 .3rem;}
+  .meta{color:var(--muted);font-size:.83rem;margin:.2rem 0 1rem;}
+  code{background:var(--code);padding:.08em .35em;border-radius:4px;font-size:.85em;font-family:"Cascadia Code",Consolas,monospace;}
+  table{border-collapse:collapse;width:100%;margin:.5rem 0;font-size:.86rem;} th,td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top;} th{background:var(--card);}
+  .overflow{overflow-x:auto;} ul{padding-left:1.2rem;margin:.4rem 0;} li{margin:.22rem 0;}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.7rem .9rem;margin:.6rem 0;}
+  .box.good{border-left:4px solid var(--good);} .box.warn{border-left:4px solid var(--warn);} .box.acc{border-left:4px solid var(--accent);} .box.del{border-left:4px solid var(--del);}
+  .tag{font-size:.7rem;font-weight:700;padding:.08em .45em;border-radius:4px;color:#fff;}
+  .t-build{background:#862e9c;} .t-op{background:#e8590c;} .t-sys{background:#2b8a3e;}
+  .note{color:var(--muted);font-size:.82rem;}
+  .flow{display:flex;flex-wrap:wrap;gap:.5rem;align-items:stretch;margin:.6rem 0;}
+  .col{flex:1 1 260px;border:1px solid var(--line);border-radius:10px;padding:.7rem .8rem;background:var(--card);}
+  .col h4{margin:.1rem 0 .5rem;font-size:.82rem;text-transform:uppercase;letter-spacing:.02em;color:var(--muted);}
+  .chip{display:block;border:1px solid var(--line);border-radius:7px;padding:.32rem .55rem;margin:.3rem 0;font-size:.82rem;background:var(--bg);}
+  .chip.del code{text-decoration:line-through;text-decoration-color:var(--del);}
+  .chip.new{border-color:var(--good);}
+  .arrow{display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:700;font-size:1.5rem;flex:0 0 34px;}
+  kbd{background:var(--code);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:.02em .35em;font-size:.82em;font-family:"Cascadia Code",Consolas,monospace;}
+</style>
+
+<h1>PF — Stratagem Core Extraction</h1>
+<p class="meta">Plan Features · authored 2026-07-09 · <b>no code, strategy only</b> · next <code>/cp</code> → <code>.md</code> execution plan · seed <code>stratagem-core-extraction_260709_074057_seed.md</code> · sibling of the completed <b>stratagem-ado Plugin-Scrub</b> (identity portability → this is build-time-dependency portability) · CORPUS-READ-FIRST ✓ (<code>bundled-mcp-launcher-shim</code>, <code>configuration-hierarchy</code>, <code>stratagem-ado-plugin-scrub</code>, <code>claude-code-plugin-bundled-mcp-gotchas</code>, <code>scope-by-category-blindness</code>)</p>
+
+<h2>Problem &amp; Solution</h2>
+<div class="box">
+The deployable Stratagem system is <b>entangled with its builder</b>. Deployed skills cite builder-only paths (<code>Steward CLAUDE.md</code>, <code>Meta-Architecture Framework</code>) that dangle on any machine without the builder repos; and the Stratagem-system operating rules are <b>smeared across TWO builder files</b> — <code>C:\code\Stratagem\CLAUDE.md</code> (design surface) and <code>C:\code\CLAUDE.md</code> (workspace config) — neither of which ships cleanly. A fresh consuming project inherits dangling references and cannot reconstruct the rules. <b>Principle: Builder ≠ Artifact.</b> <b>Solution:</b> package the deployable core as a Claude Code <b>plugin</b> (<code>stratagem-core</code>) with <b>one consolidated rules doc</b>, extracting <b>all Stratagem-system logic</b> from both builder files. The plugin references only plugin-relative paths; the builder keeps design-only; the operator keeps personal-only.
+</div>
+
+<h2>Coupling inventory — the leak (grep-verified 2026-07-09)</h2>
+<div class="overflow"><table>
+  <tr><th>Deployed artifact</th><th>References the builder as</th><th>Fix</th></tr>
+  <tr><td><code>c:\code\CLAUDE.md</code> :66</td><td>"Trust-But-Verify (<b>Steward CLAUDE.md, Meta-Architecture Framework</b>)"</td><td>→ package rules doc</td></tr>
+  <tr><td><code>skills/cp/SKILL.md</code></td><td>"<b>Steward CLAUDE.md</b> — Autonomy Budget / two-path"</td><td>→ package rules doc</td></tr>
+  <tr><td><code>skills/if/SKILL.md</code></td><td>"<b>Steward CLAUDE.md</b> — Autonomy Budget"</td><td>→ package rules doc</td></tr>
+  <tr><td><code>skills/wiki-ingest/SKILL.md</code></td><td>"<b>Steward/CLAUDE.md</b> Wiki Registry"</td><td>→ package rules doc + kill stale Registry ref</td></tr>
+  <tr><td><code>skills/wiki-graph-audit/SKILL.md</code></td><td>"<b>Steward/CLAUDE.md</b> Wiki Registry"</td><td>→ package rules doc + kill stale Registry ref</td></tr>
+</table></div>
+<p class="note">Small, bounded surface (5). The two <code>wiki-*</code> refs are doubly stale — they cite the Wiki Registry retired 2026-07-08. <b>Guard (from <code>[[scope-by-category-blindness]]</code> / plugin-scrub EX-001):</b> the enumerated list is a starting point — a near-miss sweep (<code>\bSteward\b</code>, <code>\bStratagem\b</code>, <code>Meta-Architecture</code>, <code>c:\\code\\</code> paths) across ALL shipped artifacts must confirm completeness, not just these 5.</p>
+
+<h2>The three-bucket model (the extraction this plan turns on)</h2>
+<div class="overflow"><table>
+  <tr><th>Bucket</th><th>Content</th><th>Current home</th><th>Destination</th></tr>
+  <tr><td><span class="tag t-build">BUILDER</span></td><td>Meta-Architecture Framework, Hierarchy Decision Tree, Skill-Creation Criteria, Project Intelligence, Multi-Tool Integration, Self-Improvement Mechanisms, Config Evolution</td><td><code>Stratagem\CLAUDE.md</code></td><td><b>stays</b> (slimmed to design-only) — never ships</td></tr>
+  <tr><td><span class="tag t-op">OPERATOR</span></td><td>Communication style, technical-communication prefs, MCP/preview tooling, research-tool routing <i>(borderline)</i>, identity</td><td><code>c:\code\CLAUDE.md</code></td><td><b>stays</b> in operator's own machine config — never ships (per-install, like identity/PAT)</td></tr>
+  <tr><td><span class="tag t-sys">SYSTEM</span></td><td>Trust-But-Verify, Autonomy Budget &amp; Two-Path Loop, tracer-bullet execution, Fleet-Aware vault editing, Literal Composition, verifier contract; skills catalog, Critical Operation Rules, Context7 integration, Task-Interruption Protocol, vault convention</td><td><b>smeared across BOTH</b> builder files</td><td><b>extracted + consolidated</b> into the <code>stratagem-core</code> plugin's rules doc — <b>ships</b></td></tr>
+</table></div>
+
+<h2>Locked decisions (design conversation 2026-07-09)</h2>
+<div class="overflow"><table>
+  <tr><th>#</th><th>Decision</th><th>Value</th></tr>
+  <tr><td>D1</td><td>Package form</td><td><b>Claude Code plugin</b> — <code>stratagem-core</code> (sibling to <code>stratagem-ado</code>); strongest builder/artifact isolation, <code>${CLAUDE_PLUGIN_ROOT}</code>-relative</td></tr>
+  <tr><td>D2</td><td>Rules home</td><td><b>One package rules doc</b> — a single bundled file consolidating all SYSTEM rules from both builder files; skills reference it (no per-skill duplication)</td></tr>
+  <tr><td>D3</td><td>Extract cut</td><td><b>Everything Stratagem-touched</b> — maximal extraction from <code>c:\code\CLAUDE.md</code>; guard: flag genuinely-personal items for a conscious operator keep</td></tr>
+</table></div>
+
+<h2>What's already built (current state)</h2>
+<div class="overflow"><table>
+  <tr><th>Asset</th><th>Location</th><th>Note</th></tr>
+  <tr><td>Live workflow skills (23)</td><td><code>&lt;project&gt;\.claude\skills\</code> (e.g. ISCI-Vision)</td><td><b>project-copied</b> — each consuming project holds its own copy (the smell the plugin fixes). Incl. ps pf cp px ax ex fx cf rs crs mpx max phx pica rp um if sa handoff wiki-ingest wiki-graph-audit + <i>gbx, cx</i> (non-core — triage)</td></tr>
+  <tr><td>Pre-scrub skill backup</td><td><code>~/.claude/_backup/preScrub/skills/</code></td><td>a prior scrub already happened; backup only</td></tr>
+  <tr><td><code>stratagem-ado</code> plugin (precedent)</td><td><code>Stratagem\plugins\stratagem-ado\</code></td><td>manifest = <code>{name,version,description,author,defaultEnabled:false}</code>; <code>.claude-plugin/plugin.json</code> + local <code>marketplace.json</code>; skills namespaced <code>/stratagem-ado:*</code></td></tr>
+  <tr><td>Builder design surface</td><td><code>Stratagem\CLAUDE.md</code></td><td>BUILDER + SYSTEM mixed</td></tr>
+  <tr><td>Workspace config</td><td><code>c:\code\CLAUDE.md</code></td><td>OPERATOR + SYSTEM mixed</td></tr>
+  <tr><td>Workflow vault</td><td><code>Stratagem\Vault</code></td><td>stays builder-side; NOT shipped (D2 = rules doc, not vault)</td></tr>
+</table></div>
+
+<h2>Architecture — the <code>stratagem-core</code> plugin</h2>
+<div class="flow">
+  <div class="col">
+    <h4>Before — tangled across the builder</h4>
+    <span class="chip del"><code>c:\code\CLAUDE.md</code> — OPERATOR + SYSTEM</span>
+    <span class="chip del"><code>Stratagem\CLAUDE.md</code> — BUILDER + SYSTEM</span>
+    <span class="chip del"><code>&lt;project&gt;\.claude\skills\</code> — per-project copies, cite <code>Steward CLAUDE.md</code></span>
+  </div>
+  <div class="arrow">➜</div>
+  <div class="col">
+    <h4>After — self-contained plugin + slim residues</h4>
+    <span class="chip new"><b><code>stratagem-core</code> plugin</b><br><span class="note"><code>.claude-plugin/plugin.json</code> · <code>skills/</code> (all workflow skills, one source) · <b>one rules doc</b> (all SYSTEM rules) · marketplace entry</span></span>
+    <span class="chip new"><code>Stratagem\CLAUDE.md</code> → BUILDER-only + one-way ship note</span>
+    <span class="chip new"><code>c:\code\CLAUDE.md</code> → OPERATOR-only</span>
+    <span class="chip new">skills reference <code>${CLAUDE_PLUGIN_ROOT}/&lt;rules-doc&gt;</code> — never the builder</span>
+  </div>
+</div>
+<ul>
+  <li><b>Plugin skeleton</b> mirrors <code>stratagem-ado</code>: <code>.claude-plugin/plugin.json</code> (<code>name: stratagem-core</code>, <code>defaultEnabled: true</code> — the core is always-on, unlike the optional ado bridge) + a local <code>marketplace.json</code> entry alongside <code>stratagem-ado</code>.</li>
+  <li><b>Skills folder</b> is the <b>single source of truth</b> — the ~21 workflow skills move in; consuming projects stop carrying copies.</li>
+  <li><b>One rules doc</b> (working name <code>stratagem-core-rules.md</code>, or the plugin's own <code>CLAUDE.md</code>) holds every SYSTEM rule; skills cite it by plugin-relative path.</li>
+  <li><b>No MCP</b> — unlike <code>stratagem-ado</code>, core bundles no server (no launcher shim, no <code>pat.b64</code>). Simpler package.</li>
+</ul>
+
+<div class="box good">
+<b>✅ RESOLVED — slash-command namespacing (spike 2026-07-09).</b> Plugin commands are <b>always</b> namespaced by the plugin's <code>name</code> (proven live: <code>stratagem-ado</code> → <code>/stratagem-ado:sp</code>; confirmed against Claude Code plugin docs). <b>Decision: name the plugin <code>sg</code></b> (both <code>plugin.json</code> <code>name</code> AND the marketplace entry — the marketplace name drives the prefix if they differ, so set both) → commands become <code>/sg:cp</code>, <code>/sg:px</code>, <code>/sg:ax</code>, … <b>Cost:</b> a 3-char prefix vs bare <code>/cp</code> — there is <b>no</b> bare-command or aliasing path for plugin skills (mandatory namespace). <b>Non-issue:</b> a plugin <code>/sg:cp</code> and a leftover project-level bare <code>/cp</code> do NOT collide (different namespaces), which also gives a clean migration window. "Stratagem Core" remains the descriptive identity (manifest <code>description</code>); <code>sg</code> is the <code>name</code>/prefix.
+</div>
+
+<h2>The consolidated rules doc — section mapping</h2>
+<p class="note">Which current section flows into the package rules doc, and from where:</p>
+<div class="overflow"><table>
+  <tr><th>Rules-doc section</th><th>Source</th></tr>
+  <tr><td>Operating modes + composition patterns; skills catalog</td><td><code>c:\code\CLAUDE.md</code> §Available Skills + <code>Stratagem\CLAUDE.md</code> §Composition Patterns</td></tr>
+  <tr><td>Critical Operation Rules (never-commit, plan updates, git-diff, one-task, mid-task gates)</td><td><code>c:\code\CLAUDE.md</code> §Critical Operation Rules</td></tr>
+  <tr><td>Trust-But-Verify (L/M/H + Decisions Made + Adjust)</td><td><code>Stratagem\CLAUDE.md</code> §115</td></tr>
+  <tr><td>Autonomy Budget &amp; Two-Path Loop; verifier contract</td><td><code>Stratagem\CLAUDE.md</code> §245</td></tr>
+  <tr><td>Tracer-Bullet execution discipline</td><td><code>Stratagem\CLAUDE.md</code> §43</td></tr>
+  <tr><td>Fleet-Aware Vault Editing; Wiki Vault Resolution convention</td><td><code>Stratagem\CLAUDE.md</code> §210 + §379</td></tr>
+  <tr><td>Literal Composition</td><td><code>Stratagem\CLAUDE.md</code> §319</td></tr>
+  <tr><td>Context7 Integration; Task-Interruption Protocol; Research routing; MCP rules <i>(D3: extract)</i></td><td><code>c:\code\CLAUDE.md</code></td></tr>
+</table></div>
+
+<h2>Components to build / change</h2>
+<div class="overflow"><table>
+  <tr><th>Component</th><th>Change</th></tr>
+  <tr><td><code>plugins/stratagem-core/.claude-plugin/plugin.json</code> (new)</td><td>manifest; <code>defaultEnabled: true</code></td></tr>
+  <tr><td><code>plugins/.claude-plugin/marketplace.json</code></td><td>add <code>stratagem-core</code> entry beside <code>stratagem-ado</code></td></tr>
+  <tr><td><code>plugins/stratagem-core/skills/*</code> (new)</td><td>the ~21 workflow skills, single source</td></tr>
+  <tr><td><code>plugins/stratagem-core/&lt;rules-doc&gt;</code> (new)</td><td>consolidated SYSTEM rules from both builder files</td></tr>
+  <tr><td>the 5 leak references</td><td>re-point → <code>${CLAUDE_PLUGIN_ROOT}/&lt;rules-doc&gt;</code>; kill stale Wiki-Registry citations</td></tr>
+  <tr><td><code>Stratagem\CLAUDE.md</code></td><td>slim to BUILDER-only + one-way "authored here → shipped to plugin" note</td></tr>
+  <tr><td><code>c:\code\CLAUDE.md</code></td><td>slim to OPERATOR-only</td></tr>
+  <tr><td><code>&lt;project&gt;\.claude\skills\</code> (ISCI-Vision)</td><td>remove copies after plugin install (migration)</td></tr>
+  <tr><td><code>[[configuration-hierarchy]]</code> (vault)</td><td>re-render post-impl — the 5-layer model changes (see below); an <code>/rs</code> concern</td></tr>
+</table></div>
+
+<h2>Migration &amp; the bootstrapping paradox</h2>
+<div class="box acc">
+The <b>builder uses the product it builds</b> — this very session ran <code>/cp /phx /cf /rs</code> from <code>ISCI-Vision\.claude\skills\</code>. Post-extraction, the single skill source is the plugin. Two sub-questions: <b>(1) Dogfooding</b> — does the builder install <code>stratagem-core</code> to run its own workflows, or keep a working authoring copy? Leaning: builder <i>authors</i> in <code>plugins/stratagem-core/</code> and <i>dogfoods by installing from the local marketplace</i> (same loop <code>stratagem-ado</code> uses — INSTALL.md §3 local-dir marketplace). <b>(2) Consuming-project migration</b> — ISCI-Vision removes its <code>.claude/skills/</code> copies and installs the plugin; sequence with a rollback (the <code>preScrub</code> backup is precedent).
+</div>
+
+<h2><code>stratagem-core</code> ⇄ <code>stratagem-ado</code> relationship</h2>
+<p>Two sibling plugins: <b>core</b> = the workflow engine (always-on); <b>ado</b> = the optional board bridge (<code>defaultEnabled:false</code>) that consumes core's neutral seams (<code>Sync-Id</code>, the board adapter). Confirm ado's references resolve to core's <b>shipped</b> seams, not builder paths — ado is already scrubbed of identity, but a sweep must confirm it names no builder file either. They compose; neither references the builder.</p>
+
+<h2>Configuration-hierarchy impact</h2>
+<p>The extraction rewrites the layer model in <code>[[configuration-hierarchy]]</code>. Today's 5 layers (global skills → desktop skills → global CLAUDE.md → project CLAUDE.md → Steward CLAUDE.md) collapse: layers 1/3/5's <b>SYSTEM</b> content merges into the <b>plugin</b>. The clean post-state is <b>3 runtime layers</b>: <b>plugin rules doc</b> (workflow) + <b>project CLAUDE.md</b> (domain) + <b>operator config</b> (personal) — none referencing the builder. The corpus page (itself stale — still documents the retired Wiki Registry) is re-rendered at <code>/rs</code> close-out.</p>
+
+<h2>Risk Assessment</h2>
+<div class="overflow"><table>
+  <tr><th>Risk</th><th>Mitigation</th></tr>
+  <tr><td><b>Slash-command namespacing</b> turns <code>/cp</code> → <code>/stratagem-core:cp</code></td><td>Early spike (one-skill throwaway plugin) BEFORE committing; decide accept vs alias — gates the feature</td></tr>
+  <tr><td>Incomplete extraction — a SYSTEM rule left in a builder file, or a builder ref missed</td><td>Near-miss grep sweep (<code>\bSteward\b</code>/<code>\bStratagem\b</code>/<code>Meta-Architecture</code>/<code>c:\\code\\</code>) across ALL shipped artifacts; role-not-recall enumeration (<code>[[scope-by-category-blindness]]</code>)</td></tr>
+  <tr><td>Over-extraction — genuinely-personal prefs pulled into the shared package (D3 risk)</td><td>Per-section keep/extract review; flag comm-style / verification-tone for conscious operator keep</td></tr>
+  <tr><td>Live system regression (the builder runs on these skills right now)</td><td>Dogfood-install + full-lifecycle tracer in a clean project before removing project copies; <code>preScrub</code>-style backup</td></tr>
+  <tr><td>Plugin cache residue (AP-5) / uninstall cleanliness</td><td>Known from <code>[[claude-code-plugin-bundled-mcp-gotchas]]</code>; document clean-detach</td></tr>
+  <tr><td>Skill triage churn (<code>gbx</code>, <code>cx</code>, Hearact <code>ha-*</code> not in core)</td><td>Decide in/out per skill before packaging; non-core skills stay operator-personal or a separate plugin</td></tr>
+</table></div>
+
+<h2>Open Design Decisions</h2>
+<div class="overflow"><table>
+  <tr><th>#</th><th>Decision</th><th>Lean</th></tr>
+  <tr><td>1</td><td><b>Namespacing</b> — command prefix</td><td><b>RESOLVED 2026-07-09 (spike):</b> plugin <code>name</code> = <code>sg</code> (+ marketplace entry <code>sg</code>) → <code>/sg:cp</code>. No bare-command/alias path exists; accepted. Live-proven by <code>stratagem-ado</code>'s <code>/stratagem-ado:*</code>.</td></tr>
+  <tr><td>2</td><td>Rules-doc filename — plugin <code>CLAUDE.md</code> vs <code>stratagem-core-rules.md</code></td><td>a named <code>stratagem-core-rules.md</code> (explicit; avoids CLAUDE.md auto-load ambiguity)</td></tr>
+  <tr><td>3</td><td>Dogfooding — builder installs the plugin vs keeps authoring copy</td><td>author in <code>plugins/</code>, dogfood via local-marketplace install (the ado loop)</td></tr>
+  <tr><td>4</td><td>Skill triage — <code>gbx</code>, <code>cx</code>, Hearact <code>ha-*</code></td><td><b>CONFIRMED 2026-07-09:</b> <code>gbx</code> + <code>cx</code> stay behind (NOT core) — <code>gbx</code> operator-personal (Gmail), <code>cx</code> legacy → retire. <code>ha-*</code> out of core (a separate plugin later). Core = workflow operating-mode skills only.</td></tr>
+  <tr><td>5</td><td>Exact OPERATOR residue in <code>c:\code\CLAUDE.md</code></td><td>keep comm style + verification tone + personal MCP prefs; extract the rest</td></tr>
+  <tr><td>6</td><td>Ship the vault? (rules-home = doc, not vault)</td><td>no — vault stays builder-side; skills cite the rules doc, not <code>[[nodes]]</code>, at runtime</td></tr>
+  <tr><td>7</td><td>Migration sequencing for existing consuming projects</td><td>install plugin → tracer-verify → remove <code>.claude/skills/</code> copies → re-verify</td></tr>
+</table></div>
+
+<h2>Testing Strategy</h2>
+<ul>
+  <li><b>Grep-clean (self-containment gate):</b> shipped plugin artifacts have 0 hits for <code>Steward</code> / <code>Stratagem\CLAUDE.md</code> / <code>Meta-Architecture Framework</code> / <code>c:\code\Stratagem</code> / <code>c:\code\Steward</code> — enumerated <b>+ near-miss sweep</b>.</li>
+  <li><b>Namespacing spike (pre-commit):</b> a one-skill throwaway plugin proves how the command surfaces (<code>/x</code> vs <code>/plugin:x</code>) — the only gate for the AP-4-analog uncertainty.</li>
+  <li><b>Fresh-install tracer (the real proof):</b> install <code>stratagem-core</code> into a clean project with NO builder repos on-path; run the full <code>/pf → /cp → /phx → /cf → /rs</code> lifecycle end-to-end. Builder-independence proven only by a live run.</li>
+  <li><b>Rules-resolution check:</b> a skill that cites the rules doc resolves it via <code>${CLAUDE_PLUGIN_ROOT}</code> in both CLI and the VSCode extension (AP-2 venue split).</li>
+  <li><b>Sibling-compose check:</b> <code>stratagem-ado</code> still works alongside <code>stratagem-core</code>, both builder-independent.</li>
+  <li><b>Residue reads:</b> <code>Stratagem\CLAUDE.md</code> = design-only + ship note; <code>c:\code\CLAUDE.md</code> = operator-only — confirmed by read, not just grep.</li>
+</ul>
+
+<h2>Complexity</h2>
+<p class="note"><b>High.</b> Cross-cutting across ~21 skills + 2 builder CLAUDE.md files + a new plugin + a consolidated rules doc + a live migration of the running system. New abstraction (the plugin as the core's home) and a platform-capability uncertainty (namespacing) that must be spiked. Not single-commit reversible → phase it: <b>(P0)</b> namespacing spike → <b>(P1)</b> scaffold plugin + author rules doc (extract + consolidate) → <b>(P2)</b> move skills + re-point refs → <b>(P3)</b> slim the two builder files → <b>(P4)</b> dogfood-install + fresh-install tracer + migrate ISCI-Vision.</p>
+
+<h2>Success Criteria</h2>
+<ul>
+  <li><code>stratagem-core</code> plugin is fully self-contained: <b>0</b> builder references in shipped artifacts (grep-clean + near-miss).</li>
+  <li>All SYSTEM rules from BOTH <code>c:\code\CLAUDE.md</code> and <code>Stratagem\CLAUDE.md</code> live in the one package rules doc; the 5 leak refs re-point to it.</li>
+  <li><code>Stratagem\CLAUDE.md</code> = design-only + one-way ship note; <code>c:\code\CLAUDE.md</code> = operator-only.</li>
+  <li>A fresh consuming project installs the plugin and runs the full lifecycle with <b>zero dependency on the builder repos</b>.</li>
+  <li><code>stratagem-ado</code> still composes with <code>stratagem-core</code>; both builder-independent.</li>
+  <li><code>[[configuration-hierarchy]]</code> re-rendered to the post-extraction 3-layer model.</li>
+</ul>
+
+<p class="meta"><b>Next:</b> <code>/cp</code> — break this into tasks (reads this <code>.html</code>, emits the <code>.md</code> execution plan). <b>Resolve the namespacing spike (P0) before or as Task 1</b> — it gates packaging form.</p>

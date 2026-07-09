@@ -1,0 +1,295 @@
+<meta charset="utf-8">
+<title>strat-dist — WIP</title>
+<style>
+  :root {
+    --bg:#fff; --fg:#1a1a1a; --muted:#666; --line:#d8d8dd; --card:#f6f6f8;
+    --core:#1971c2; --tmpl:#2b8a3e; --prof:#e8590c;
+    --coreb:#d0e4fb; --tmplb:#d3f0da; --profb:#fde3cf;
+    --agreed:#2b8a3e; --pending:#e8590c; --open:#862e9c; --fact:#1971c2; --code:#ececef;
+  }
+  @media (prefers-color-scheme: dark){:root{
+    --bg:#15171b; --fg:#e6e6e6; --muted:#9aa0a6; --line:#2c3038; --card:#1d2027;
+    --core:#4dabf7; --tmpl:#69db7c; --prof:#ffa94d;
+    --coreb:#1b3a54; --tmplb:#1c3a26; --profb:#4a2f1a;
+    --agreed:#51cf66; --pending:#ffa94d; --open:#cc5de8; --fact:#4dabf7; --code:#23262d;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#15171b; --fg:#e6e6e6; --muted:#9aa0a6; --line:#2c3038; --card:#1d2027;
+    --core:#4dabf7; --tmpl:#69db7c; --prof:#ffa94d;
+    --coreb:#1b3a54; --tmplb:#1c3a26; --profb:#4a2f1a;
+    --agreed:#51cf66; --pending:#ffa94d; --open:#cc5de8; --fact:#4dabf7; --code:#23262d;
+  }
+  :root[data-theme="light"]{
+    --bg:#fff; --fg:#1a1a1a; --muted:#666; --line:#d8d8dd; --card:#f6f6f8;
+    --core:#1971c2; --tmpl:#2b8a3e; --prof:#e8590c;
+    --coreb:#d0e4fb; --tmplb:#d3f0da; --profb:#fde3cf;
+    --agreed:#2b8a3e; --pending:#e8590c; --open:#862e9c; --fact:#1971c2; --code:#ececef;
+  }
+  *{box-sizing:border-box;}
+  body{background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,"Segoe UI",Roboto,sans-serif;max-width:880px;margin:0 auto;padding:1.5rem 1.1rem 4rem;}
+  h1{font-size:1.5rem;margin:0 0 .1rem;}
+  h2{font-size:1.05rem;margin:2rem 0 .5rem;padding-bottom:.25rem;border-bottom:2px solid var(--line);}
+  .meta{color:var(--muted);font-size:.82rem;margin:.2rem 0 1rem;}
+  code{background:var(--code);padding:.08em .35em;border-radius:4px;font-size:.86em;font-family:"Cascadia Code",Consolas,monospace;}
+  table{border-collapse:collapse;width:100%;margin:.5rem 0;font-size:.86rem;}
+  th,td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top;}
+  th{background:var(--card);}
+  .badge{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:.1em .45em;border-radius:4px;color:#fff;vertical-align:middle;}
+  .b-agreed{background:var(--agreed);} .b-pending{background:var(--pending);} .b-open{background:var(--open);} .b-fact{background:var(--fact);}
+  .legend span{margin-right:.9rem;color:var(--muted);font-size:.8rem;}
+  .overflow{overflow-x:auto;}
+
+  /* stack diagram */
+  .stack{display:flex;flex-direction:column;gap:6px;max-width:560px;margin:.6rem 0;}
+  .layer{border:2px solid;border-radius:8px;padding:.6rem .85rem;}
+  .layer .lh{font-weight:700;font-size:.95rem;}
+  .layer .ld{font-size:.8rem;color:var(--muted);margin-top:.15rem;}
+  .layer .lt{font-size:.72rem;float:right;font-weight:600;letter-spacing:.03em;}
+  .l-prof{border-color:var(--prof);background:var(--profb);} .l-prof .lh,.l-prof .lt{color:var(--prof);}
+  .l-core{border-color:var(--core);background:var(--coreb);} .l-core .lh,.l-core .lt{color:var(--core);}
+  .arrowcol{text-align:center;color:var(--muted);font-size:1rem;line-height:1;}
+
+  /* pipeline / flow */
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:.6rem 0;font-size:.82rem;}
+  .step{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:.35rem .6rem;}
+  .step b{display:block;font-size:.86rem;}
+  .arr{color:var(--muted);font-weight:700;}
+  .chip{border:1px solid;border-radius:5px;padding:.28rem .5rem;font-size:.8rem;font-family:"Cascadia Code",Consolas,monospace;}
+  .c-core{border-color:var(--core);color:var(--core);} .c-opt{border-color:var(--tmpl);color:var(--tmpl);} .c-prof{border-color:var(--prof);color:var(--prof);}
+  .chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0;}
+  .ok{color:var(--tmpl);font-weight:700;} .maybe{color:var(--prof);font-weight:700;} .prof-c{color:var(--prof);}
+  .mt{margin-top:.35rem;}
+  .inv{border:2px solid var(--agreed);background:var(--card);border-radius:7px;padding:.55rem .8rem;margin:.55rem 0;font-size:.86rem;}
+  .inv .il{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--agreed);margin-bottom:.2rem;}
+
+  /* claude.md cascade tree */
+  .cmt{font-family:"Cascadia Code",Consolas,monospace;font-size:.8rem;margin:.6rem 0;}
+  .cmt .row{padding:.16rem .3rem;margin:.1rem 0;}
+  .cmt .row.i1{margin-left:1.3rem;} .cmt .row.i2{margin-left:2.7rem;}
+  .cmt .fn{font-weight:700;}
+  .cmt .own{font-size:.64rem;font-weight:700;letter-spacing:.02em;padding:.05em .4em;border-radius:3px;margin-left:.35rem;white-space:nowrap;}
+  .own-core{background:var(--coreb);color:var(--core);}
+  .own-prof{background:var(--profb);color:var(--prof);}
+  .own-proj{border:1px solid var(--line);color:var(--muted);}
+  .cmt .d{display:block;color:var(--muted);font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.75rem;margin-top:.05rem;}
+
+  ul{padding-left:1.2rem;margin:.4rem 0;} li{margin:.15rem 0;}
+  .note{font-size:.8rem;color:var(--muted);}
+</style>
+
+<h1>strat-dist — Working Memory</h1>
+<p class="meta">Living source of truth · ad-hoc (no formal plan) · <code>/crs</code> formalizes at close-out · updated <strong>2026-07-08</strong></p>
+<p class="legend">
+  <span><span class="badge b-agreed">Agreed</span> confirmed</span>
+  <span><span class="badge b-pending">Pending</span> recommended, unconfirmed</span>
+  <span><span class="badge b-open">Open</span> undecided</span>
+  <span><span class="badge b-fact">Fact</span> established</span>
+</p>
+
+<h2>Goal</h2>
+<p style="font-size:.9rem;margin:.3rem 0;">Stratagem: hand-copied <code>~/.claude</code> payload → <strong>public, contributable repo</strong>. <strong>Two layers</strong> — Core + Profile. Core installs <strong>without an LLM</strong> (a plain script).</p>
+<p class="note"><b>Scope decision (2026-07-08):</b> the Template / domain-editions concept is <b>dropped</b>. No <em>Stratagem-for-Business/Engineering/etc.</em> right now. Core simply <b>is today's Stratagem</b> — code-flavored, and that's accepted. Removing Template deletes the composition problem, the per-subtree cascade, and the "make Core domain-neutral" backlog. Simple, surgical.</p>
+
+<h2>MVP — today <span class="badge b-pending">driving goal</span></h2>
+<p class="note"><b>Target:</b> Core running in <code>C:\code\ISCI-Vision</code> — a real project, not a toy. Vertical slice, dogfooded on this box.</p>
+<div class="overflow"><table>
+  <tr><th>#</th><th>Slice step</th><th>State</th></tr>
+  <tr><td>1</td><td><b>Core present</b> — 24 skills + <code>workflows/autonomy-loop.js</code> resolve</td><td><span class="ok">✓ already global on this box</span></td></tr>
+  <tr><td>2</td><td><b>Stratagem rules reach ISCI-Vision</b> — cross-cutting rules at <code>c:\code\CLAUDE.md</code> (parent) load in ISCI-Vision sessions</td><td><span class="maybe">partial</span> — meta-arch still in <code>Stratagem\CLAUDE.md</code> (see gap below)</td></tr>
+  <tr><td>3</td><td><b>Profile wired for ISCI-Vision</b> — Wiki Registry row → its vault; effort/prefs</td><td>row exists; formalize via <code>.local</code></td></tr>
+  <tr><td>4</td><td><b>Proof</b> — <b>decided: <code>/if</code> smoke</b> (1-task plan, <code>## Budget: 50000</code>, feature branch <code>tony/stratagem-smoke</code>). Plan drafted; run from an ISCI-Vision session</td><td><span class="maybe">plan ready · run pending</span></td></tr>
+</table></div>
+<p class="note"><b>Decisions (2026-07-08):</b> proof skill = <code>/if</code> smoke (canonical, exercises px→ax→verify). Rule-hoist to <code>c:\code\CLAUDE.md</code> = <b>deferred</b> — proof first, then decide if the deep meta-arch needs to load in ISCI-Vision.</p>
+<p class="note"><b>MVP done =</b> a Stratagem skill runs successfully inside <code>C:\code\ISCI-Vision</code>, with Stratagem rules loaded and the ISCI-Vision vault wired via Profile. <span class="note">(Full <code>strat-dist</code> repo + <code>install.ps1</code> from-clean-box = the follow-on, not blocking today's proof since Core is already global here.)</span></p>
+
+<h2>Layer Stack <span class="badge b-agreed">Agreed</span></h2>
+<div class="stack">
+  <div class="layer l-prof"><span class="lt">the filled-in blanks · local only</span><div class="lh">Profile</div><div class="ld">Every machine- / person- / install-specific slot Core needs to be <em>functional here</em>: secrets, real paths, identity, prefs. Ships as a <b>blank stencil</b>; a <code>.bat</code> asks → saves → verifies. A <b>role, not a folder</b> — values land in their native homes.</div></div>
+  <div class="arrowcol">▲ overrides</div>
+  <div class="layer l-core"><span class="lt">PUBLIC · shared · LLM-free install</span><div class="lh">Core <span style="font-weight:400;font-size:.78rem;">(the whole functional Stratagem)</span></div><div class="ld">Every skill + <code>/if</code> + <code>autonomy-loop.js</code> + verifier gate + Trust-But-Verify. Optionally the detachable <code>stratagem-ado</code> plugin. Public, secret-free, path-agnostic.</div></div>
+</div>
+<p class="note"><b>Two axes — don't conflate:</b> the stack is <b>override precedence</b> (Profile values beat Core defaults). The <b>install order</b> is Core first, then fill Profile. Profile isn't a slab; it's cross-cutting data ("role, not folder") injected into <code>.local</code> slots.</p>
+
+<h2>Facts <span class="badge b-fact">Fact</span></h2>
+<ul>
+  <li>Current <code>~/.claude</code> = only real edition = <b>"Stratagem for Code (+personal)"</b> → the <b>reference edition</b> Core is factored out of.</li>
+  <li>This machine = <b>testbed / dev env</b> for strat-dist.</li>
+  <li>Ref doc <code>docs\STRATAGEM-NEW-BOX.md</code> = the <em>manual</em> version of this split.</li>
+  <li>Core is secret-free &amp; path-agnostic; <code>autonomy-loop.js</code> has no fs access; nothing in Core names "ADO"; absent Wiki Registry → no-op, zero regression.</li>
+  <li><b>Skill inventory (verified 2026-07-08):</b> <b>24 global</b> (<code>~/.claude/skills/</code>) + <b>3 plugin</b> (<code>stratagem-ado</code>: <code>sp</code>·<code>pr</code>·<code>board-sync</code>) + <b>0 project-scoped</b> + <b>0 desktop</b>. <code>autonomy-loop</code> is a <b>workflow</b> (<code>~/.claude/workflows/autonomy-loop.js</code>), not a skill. Only the 3 plugin skills are non-global.</li>
+  <li><b>Doc drift:</b> global <code>CLAUDE.md</code> advertises <code>ha-*</code> (Hearact) commands, but <b>no <code>ha-*</code> skills are installed</b> (<code>skills-desktop/</code> is empty). The only installed personal-productivity skill is <code>gbx</code>.</li>
+  <li><b>Cascade semantics confirmed (docs.claude.com/claude-code, 2026-07-08):</b> config scopes <b>MERGE, never replace</b> — settings' scalars override by precedence, arrays concatenate; global <code>~/.claude</code> is <b>always active</b> at any cwd. This is the empirical backing for <b>Core = global install</b> + Profile <code>.local</code> overrides coexisting (the 🔒 invariant's mechanism). <span class="note">(The skills-stop-at-repo-root finding only mattered for the dropped editions/subtree idea — moot now.)</span></li>
+</ul>
+
+<h2>The Cut — Core vs Profile <span class="badge b-agreed">Agreed</span></h2>
+<p class="note">One question per item now (Template's "domain-neutral?" cut is gone):</p>
+<div class="flow">
+  <div class="step"><b>an item in<br>current ~/.claude</b></div>
+  <span class="arr">→</span>
+  <div class="step"><b>machine / person /<br>install-specific?</b></div>
+  <span class="arr">yes →</span>
+  <span class="chip c-prof">Profile</span>
+  <span class="arr">no →</span>
+  <span class="chip c-core">Core</span>
+</div>
+<p class="note">Skills, engine, workflows, plugin → all <b>Core</b>. Secrets, real paths, identity, prefs → <b>Profile</b>. That's the whole taxonomy.</p>
+
+<h2>What's in Core <span class="badge b-fact">verified 2026-07-08</span></h2>
+<p class="note"><b class="prof-c">All 24 global skills = Core</b> — plan → execute → verify → recover → retrospect engine + knowledge-vault + meta-tooling:</p>
+<div class="chips">
+  <span class="chip c-core">ps</span><span class="chip c-core">pf</span><span class="chip c-core">cp</span><span class="chip c-core">px</span><span class="chip c-core">ax</span><span class="chip c-core">phx</span><span class="chip c-core">cf</span>
+  <span class="chip c-core">ex</span><span class="chip c-core">fx</span><span class="chip c-core">mpx</span><span class="chip c-core">max</span><span class="chip c-core">if</span><span class="chip c-core">um</span><span class="chip c-core">rp</span>
+  <span class="chip c-core">rs</span><span class="chip c-core">crs</span><span class="chip c-core">wiki-ingest</span><span class="chip c-core">wiki-graph-audit</span><span class="chip c-core">pica</span><span class="chip c-core">sa</span><span class="chip c-core">handoff</span>
+  <span class="chip c-core">ss</span><span class="chip c-core">cx</span><span class="chip c-core">gbx</span>
+</div>
+<p class="note"><b style="color:var(--tmpl)">Optional plugin (3) — <code>stratagem-ado</code></b>, the only non-global skills; detachable, ADO-only:</p>
+<div class="chips">
+  <span class="chip c-opt">sp</span><span class="chip c-opt">pr</span><span class="chip c-opt">board-sync</span>
+</div>
+<p class="note"><b>Core is code-flavored by design</b> — <code>rp</code>→git diff, <code>ax</code>→context7, <code>ps</code>→codebase exploration, <code>cp</code>/<code>px</code>→tracer-bullet, <code>mpx</code>→"&lt;5 files", <code>pica</code>→impl-consistency. With Template gone there is <b>no domain-neutrality goal</b> — these code assumptions are fine, not a backlog. <span class="note">(<code>ss</code> is the one global skill that touches ADO; it pairs with the optional plugin but ships in Core.)</span></p>
+
+<h2>Profile — Stencil → Fill → Verify <span class="badge b-agreed">Agreed</span></h2>
+<p class="note">Profile turns an <b>inert Core</b> into the <b>fully-functional</b> Stratagem seen on this box. Ships as a blank <b>stencil</b> (format only); filled by a <code>.bat</code> — <b>ask → save → verify</b>, LLM as fallback — the sibling of the Core install script. These are the slots the install must supply (settings · plugin enablement · registry rows · secrets).</p>
+<div class="inv">
+  <span class="il">🔒 Invariant — Core replaceable, Profile durable</span>
+  <div>Core install/update writes <b>only Core-owned paths</b>; it <b>never writes a Profile slot</b>, and Core <b>runs without Profile</b> (degrades gracefully — NEW-BOX's "absent registry → no-op, zero regression" proves it for one slot). A working machine's Profile <b>survives every Core update untouched</b> → devs contribute / distribute / install / update Core freely. <b>Mechanism:</b> route each Profile slot to a <code>.local</code> / data file Core never ships (<code>settings.local.json</code> · <code>CLAUDE.local.md</code> · <code>pat.b64</code>), so a Core update can rewrite <code>CLAUDE.md</code>/<code>settings.json</code> without touching Profile.</div>
+</div>
+<div class="flow">
+  <div class="step"><b>stencil</b><br>shipped, blank<br><span class="note">format only</span></div>
+  <span class="arr">→</span>
+  <div class="step"><b>profile.bat</b><br>ask → save → verify<br><span class="note">LLM fallback</span></div>
+  <span class="arr">→</span>
+  <div class="step"><b>Core functional</b><br>on THIS machine</div>
+</div>
+<div class="overflow"><table>
+  <tr><th>Slot</th><th>Kind</th><th>Example</th><th>Native home — <span class="note">a Core-never-writes location</span></th></tr>
+  <tr><td>PAT</td><td>secret</td><td><code>base64(email:PAT)</code></td><td><code>plugins\data\stratagem-ado\pat.b64</code> <span class="ok">✓</span></td></tr>
+  <tr><td>work email · org</td><td>identity</td><td>you@intelliscience.com · intelliscience</td><td>feeds PAT encode + probe</td></tr>
+  <tr><td>vault / project paths</td><td>machine path</td><td><code>C:\code\ISCI-Vision\Vault</code></td><td>registry rows → <code>CLAUDE.local.md</code> <span class="maybe">⚠ confirm skills read it</span></td></tr>
+  <tr><td>effortLevel · prefs</td><td>preference</td><td>taste</td><td><code>settings.local.json</code> <span class="ok">✓ overrides settings.json</span></td></tr>
+  <tr><td>plugin enable</td><td>install state</td><td><code>stratagem-ado</code> on/off</td><td><code>settings.local.json</code> → <code>enabledPlugins</code></td></tr>
+</table></div>
+<p class="note"><b>Invariant mechanism:</b> every native home is a <code>.local</code> file or a data file Core never ships — that's what lets Core rewrite <code>CLAUDE.md</code>/<code>settings.json</code> on update without touching Profile.</p>
+<p class="note"><b>verify step</b> = the <code>.bat</code> proves each slot after saving (e.g. probe <code>core_list_projects</code> for the PAT) — the same "ask, save, verify" contract as NEW-BOX Part B, automated instead of hand-run.</p>
+
+<h2>Profile in Core Assets — externalize + reference <span class="badge b-agreed">Agreed</span></h2>
+<p class="note"><b>Principle: parameterize, never personalize.</b> A Core asset holds <b>zero Profile literals</b>. Every Profile value lives in one Profile-owned home; the asset <b>references</b> it via whatever indirection its type allows. Because the value never sits <em>inside</em> the Core file, a Core update overwrites the asset freely and the 🔒 invariant holds. So the answer to "how do we handle Profile in skills / hooks / workflows" is: <b>we don't put it there at all</b> — we externalize it and point at it.</p>
+<div class="inv" style="border-color:var(--prof)">
+  <span class="il" style="color:var(--prof)">⛔ Anti-pattern — no in-place token-fill</span>
+  <div>Filling <code>{{PLANS_DIR}}</code> → a real path <em>written into</em> the skill/settings file is <b>wrong</b>: the next Core update overwrites that file and destroys the value. Indirection (reference an external Profile file), never in-place substitution into a Core-owned file.</div>
+</div>
+
+<p class="note mt"><b>What's baked into Core today</b> (grep-verified 2026-07-08):</p>
+<div class="overflow"><table>
+  <tr><th>Asset</th><th>Profile literals baked in now</th><th>Status</th></tr>
+  <tr><td><b>Skills</b></td><td><code>max</code> · <code>crs</code> · <code>rs</code> · <code>px</code> · <code>fx</code> hardcode <code>C:\code\ISCI-Vision\…</code> paths</td><td><span class="maybe">❌ leaks</span></td></tr>
+  <tr><td><b>settings.json</b></td><td>marketplace <code>path=C:\code\Stratagem\plugins</code> · <code>enabledPlugins</code> · <code>effortLevel</code> · theme</td><td><span class="maybe">❌ leaks</span></td></tr>
+  <tr><td><b>Workflow</b> <code>autonomy-loop.js</code></td><td>none — fs-blind, zero paths</td><td><span class="ok">✅ clean</span></td></tr>
+  <tr><td><b>Hooks</b></td><td>none defined</td><td><span class="ok">✅ n/a</span></td></tr>
+</table></div>
+
+<p class="note mt"><b>Reference mechanism per asset</b> — one Profile source of truth, five ways to point at it (each asset reads a value differently):</p>
+<div class="overflow"><table>
+  <tr><th>Asset</th><th>Reads a runtime value via…</th><th>Profile home</th></tr>
+  <tr><td>CLAUDE.md</td><td>override file merged on top</td><td><code>CLAUDE.local.md</code></td></tr>
+  <tr><td>Skills <span class="note">(prompts — can't <code>import</code>)</span></td><td>agent <b>resolves</b> the path from the Registry at runtime, never inlines a literal</td><td>Registry rows in <code>CLAUDE.local.md</code></td></tr>
+  <tr><td>Hooks <span class="note">(shell cmds)</span></td><td><b>env vars</b> (<code>%STRATAGEM_VAULT%</code>)</td><td><code>env</code> block in <code>settings.local.json</code></td></tr>
+  <tr><td>Workflows <span class="note">(fs-blind JS)</span></td><td>values passed in as <b><code>args</code></b> by the launcher</td><td>launcher (<code>/if</code>) resolves + injects</td></tr>
+  <tr><td>settings.json</td><td><code>.local</code> file merged over</td><td><code>settings.local.json</code></td></tr>
+  <tr><td>Plugin secret</td><td>data file the plugin reads</td><td><code>pat.b64</code></td></tr>
+</table></div>
+
+<p class="note mt"><b>Refactor list — the real decoupling work:</b> 5 skills (<code>max crs rs px fx</code>) must <b>resolve paths from the Wiki Registry</b> (which <code>crs</code>/<code>rs</code> already partly do) instead of hardcoding <code>C:\code\ISCI-Vision\…</code>. The Registry, living in <code>CLAUDE.local.md</code>, is the Profile home for every path-type slot.</p>
+
+<p class="note mt"><b>Two couplings — do not conflate:</b></p>
+<div class="overflow"><table>
+  <tr><th>Coupling</th><th>Examples</th><th>Verdict</th></tr>
+  <tr><td><b>Path / identity leak</b></td><td><code>C:\code\ISCI-Vision</code> · marketplace path · org · email</td><td><span class="maybe">Profile bug → externalize</span> — <b>this is the work</b></td></tr>
+  <tr><td><b>Code-flavor</b></td><td>git diff · context7 · tracer-bullet · "&lt;5 files"</td><td><span class="ok">Core by design → leave</span> — Template-decouple, retired</td></tr>
+</table></div>
+
+<h2>CLAUDE.md Architecture — parent-level incorporation <span class="badge b-agreed">Objective</span></h2>
+<p class="note">How Stratagem manifests across a nested project tree: <b>one parent <code>CLAUDE.md</code> at <code>c:\code</code></b> carries the system; every project under it inherits automatically because <b>CLAUDE.md crosses git-repo boundaries</b>. This is the mechanism behind today's MVP — Core running in <code>ISCI-Vision</code>.</p>
+
+<p class="note mt"><b>The 5 cascade rules that make this work</b> (confirmed via docs.claude.com):</p>
+<div class="overflow"><table>
+  <tr><th>#</th><th>Rule</th><th>Consequence for us</th></tr>
+  <tr><td>1</td><td><b>Merge, not replace</b> — every <code>CLAUDE.md</code> from filesystem-root → cwd is concatenated</td><td>parent + project rules <em>add</em>, never clobber</td></tr>
+  <tr><td>2</td><td><b>Deeper wins</b> — on conflict the closer-to-cwd file overrides</td><td>a project can override a Stratagem default; Profile <code>.local</code> wins over all</td></tr>
+  <tr><td>3</td><td><b>Crosses git repos</b> — walks to the <em>filesystem</em> root, does NOT stop at a project's <code>.git</code> (unlike skills)</td><td><span class="ok">✅ proven live</span> — <code>c:\code\CLAUDE.md</code> loads inside every project repo</td></tr>
+  <tr><td>4</td><td><b>Load order</b> — managed → <code>~/.claude</code> → root-down-to-cwd; within a dir, <code>CLAUDE.md</code> then <code>CLAUDE.local.md</code></td><td><code>.local</code> gets the last word → Profile overrides cleanly</td></tr>
+  <tr><td>5</td><td><b>Nested on-demand</b> — a subdir's <code>CLAUDE.md</code> loads when Claude touches files there</td><td>monorepo packages self-describe; unused at top level</td></tr>
+</table></div>
+
+<p class="note mt"><b>Where each file lives &amp; who owns it</b> (★ = the one file that carries Stratagem):</p>
+<div class="cmt">
+  <div class="row"><span class="fn">🌍 ~/.claude/CLAUDE.md</span><span class="own own-proj">USER-GLOBAL</span><span class="d">personal comm-style · universal prefs — your own file, not shipped by Core</span></div>
+  <div class="row"><span class="fn">📂 c:\code\</span><span class="d">workspace parent — sits ABOVE every project repo (not itself a git repo)</span></div>
+  <div class="row i1"><span class="fn">├ CLAUDE.md ★</span><span class="own own-core">STRATAGEM CORE</span><span class="d">meta-arch · Trust-But-Verify · tracer-bullet · tool-routing · critical-ops — <b>loaded by EVERY project under c:\code</b></span></div>
+  <div class="row i1"><span class="fn">├ CLAUDE.local.md</span><span class="own own-prof">PROFILE</span><span class="d">Wiki Registry real rows · machine paths — gitignored, Core never writes</span></div>
+  <div class="row i1"><span class="fn">├ 📂 ISCI-Vision\ <span class="note">(git repo · MVP target)</span></span></div>
+  <div class="row i2"><span class="fn">├ CLAUDE.md</span><span class="own own-proj">PROJECT</span><span class="d">C++/CLI/WPF stack · Vision domain rules</span></div>
+  <div class="row i2"><span class="fn">└ CLAUDE.local.md</span><span class="own own-prof">PROFILE</span><span class="d">project-local machine paths (optional)</span></div>
+  <div class="row i1"><span class="fn">├ 📂 Stratagem\ <span class="note">(git repo)</span></span></div>
+  <div class="row i2"><span class="fn">└ CLAUDE.md</span><span class="own own-proj">PROJECT</span><span class="d">Stratagem-the-framework specifics only</span></div>
+  <div class="row i1"><span class="fn">└ 📂 &lt;new project&gt;\ <span class="note">(git repo)</span></span></div>
+  <div class="row i2"><span class="fn">└ CLAUDE.md</span><span class="own own-proj">PROJECT</span><span class="d">inherits Stratagem for free — zero wiring</span></div>
+</div>
+
+<p class="note mt"><b>What loads when cwd = <code>c:\code\ISCI-Vision</code></b> (the MVP scenario):</p>
+<div class="flow">
+  <span class="chip">~/.claude/CLAUDE.md</span>
+  <span class="arr">+</span>
+  <span class="chip c-core">c:\code\CLAUDE.md ★ Stratagem</span>
+  <span class="arr">+</span>
+  <span class="chip">ISCI-Vision\CLAUDE.md</span>
+  <span class="arr">+</span>
+  <span class="chip c-prof">ISCI-Vision\CLAUDE.local.md</span>
+  <span class="arr">=</span>
+  <span class="chip c-core">merged context</span>
+</div>
+<p class="note">Stratagem is active in ISCI-Vision with <b>zero per-project wiring</b>. Note: <code>c:\code\Stratagem\CLAUDE.md</code> does <em>not</em> load here — it's a sibling project, not an ancestor.</p>
+
+<div class="inv">
+  <span class="il">◎ Objective — Stratagem lives at the parent</span>
+  <div>Core ships its cross-cutting rules as <b>one <code>CLAUDE.md</code> at the workspace parent</b> (<code>c:\code</code> here; wherever a dev keeps projects otherwise — the <em>path</em> is a Profile/install choice, the <em>content</em> is Core). One file → Stratagem in every project. <b>Why the parent, not <code>~/.claude</code>:</b> it scopes Stratagem to <em>coding</em> work, leaving <code>~/.claude</code> for truly-universal personal prefs. <b>Today's gap:</b> the deep Meta-Architecture prose still sits in <code>c:\code\Stratagem\CLAUDE.md</code> (project-level) → it does NOT load during ISCI-Vision sessions. <b>Incorporation = hoisting the cross-cutting rules up to <code>c:\code\CLAUDE.md</code>.</b></div>
+</div>
+
+<h2>Target Install Pipeline <span class="badge b-open">Open</span></h2>
+<div class="flow">
+  <div class="step"><b>git clone</b><br>strat-dist</div>
+  <span class="arr">→</span>
+  <div class="step"><b>install.ps1</b><br>drops Core<br><span class="note">LLM-free</span></div>
+  <span class="arr">→</span>
+  <div class="step"><b>profile.bat</b><br>fill stencil: ask→save→verify<br><span class="note">never commits secrets</span></div>
+  <span class="arr">→</span>
+  <div class="step"><b>~/.claude</b><br>dogfooded</div>
+</div>
+<p class="note">Proposed dev-env: <code>strat-dist</code> sibling repo (e.g. <code>C:\code\strat-dist</code>) that builds into <code>~/.claude</code>. <span class="badge b-pending">Pending</span></p>
+
+<h2>Open Questions</h2>
+<div class="overflow"><table>
+  <tr><th>#</th><th>Question</th></tr>
+  <tr><td>1</td><td><b>Core installer</b> — the <code>install.ps1</code>/<code>install.sh</code> replacing manual <code>Copy-Item</code>; drops skills + <code>workflows/autonomy-loop.js</code>, LLM-free.</td></tr>
+  <tr><td>2</td><td><b>profile.bat</b> — guided first-run: ask → save → verify each slot; secrets never committed.</td></tr>
+  <tr><td>3</td><td><b>Stencil format</b> — literal token-substitution (<code>{{VAULT_PATH}}</code> files the <code>.bat</code> string-replaces) vs. a schema the <code>.bat</code> reads + writes into native homes. <b>Lean: schema-merge</b> — the <code>.local</code> routing (🔒 invariant) shrinks it: Profile slots become whole Profile-<em>owned</em> files, so the <code>.bat</code> writes whole files, not risky in-place merges. The slot table above <em>is</em> the schema.</td></tr>
+  <tr><td>4 🔴</td><td><b>Confirm skills read <code>CLAUDE.local.md</code></b> — the registry-rows slot durability rests on it (⚠ in slot table). Small test.</td></tr>
+  <tr><td>5</td><td><b>Repo skeleton</b> — lay out <code>strat-dist</code> (Core payload + stencil + install/profile scripts). Go?</td></tr>
+  <tr><td>6</td><td><s><b>Does Core ship CLAUDE.md prose?</b></s> <b>RESOLVED</b> (see <em>CLAUDE.md Architecture</em>): yes — as <b>one parent-level <code>c:\code\CLAUDE.md</code></b>. Remaining: (a) which rules are cross-cutting (→ parent) vs Stratagem-project-only; (b) does <code>install.ps1</code> write the parent file or does the dev point at their workspace root.</td></tr>
+  <tr><td>7 🎯</td><td><b>MVP proof</b> — pick the skill to demo in ISCI-Vision (<code>/if</code> smoke vs <code>/px</code>) and run it. Depends on step-2 gap (hoist cross-cutting rules to <code>c:\code\CLAUDE.md</code>) + step-3 (Profile row).</td></tr>
+  <tr><td>8</td><td><b>Skill path-externalization</b> — refactor the 5 leaking skills (<code>max crs rs px fx</code>) to <b>resolve paths from the Wiki Registry</b> instead of hardcoding <code>C:\code\ISCI-Vision\…</code>. Depends on Q4 (Registry lives in <code>CLAUDE.local.md</code>). This is the concrete "Profile in Core Assets" work.</td></tr>
+</table></div>
+
+<h2>Changelog</h2>
+<ul>
+  <li><b>2026-07-08</b> — Created. Goal, layer stack, facts, cuts + preliminary classification, composition options, install pipeline, open questions. Diagram-forward / minimal prose.</li>
+  <li><b>2026-07-08</b> — Verified Claude Code config cascade (claude-code-guide). Added "Config Cascade" section + disk map + composition model <b>(D) Native directory cascade</b> + 🔴 gating test. <span class="note">[all removed 2026-07-08 with Template]</span></li>
+  <li><b>2026-07-08</b> — Sharpened <b>Profile</b>: every machine/person/install-specific slot that makes Core functional here. Added "Profile — Stencil → Fill → Verify" (blank stencil + <code>profile.bat</code> ask→save→verify) + slot table. Profile is a <b>role, not a folder</b>.</li>
+  <li><b>2026-07-08</b> — Locked in the <b>🔒 Core-replaceable / Profile-durable invariant</b>. Mechanism: route every Profile slot to a <code>.local</code>/data file Core never ships. Annotated Layer Stack with the override-vs-install two-axes note.</li>
+  <li><b>2026-07-08</b> — <b>Skill inventory verified + full sweep.</b> Physical map (24 global + 3 plugin + 0 project + 0 desktop; <code>autonomy-loop</code> = workflow) added to Facts; flagged <code>ha-*</code> doc drift.</li>
+  <li><b>2026-07-08</b> — <b>Removed the Template concept entirely</b> → collapsed to the <b>2-layer Core + Profile</b> model. Deleted the Composition Model (D/A/B/C), the Config Cascade / disk-map / editions apparatus, the 🔴 git-boundary gating test, and the "decouple Core from code-specific mechanisms" abstraction backlog. Skill sweep collapsed: all 24 global skills = Core, the 3 plugin skills = optional Core add-on. Core is now explicitly <b>code-flavored by design, no domain-neutrality goal</b>. Open Questions renumbered (composition + template-distribution + gating-test dropped).</li>
+  <li><b>2026-07-08</b> — Post-Template reread + selective dump of the paused batch. Confirmed via official docs (Tavily; context7 not connected) that config scopes <b>merge, never replace</b> → kept as a Fact backing <b>Core = global install</b>. The skills-repo-boundary / CLAUDE.md-cascade-ladder / editions findings are moot under 2-layer and were <b>deliberately not re-added</b>. New <b>Q6</b>: does Core ship CLAUDE.md prose or embed rules in skills? (Merge + CLAUDE.md-chain questions answered in-chat.)</li>
+  <li><b>2026-07-08</b> — Added dedicated <b>"CLAUDE.md Architecture — parent-level incorporation"</b> section (5 cascade rules + directory-tree ownership map + ISCI-Vision load readout + objective callout). <b>Resolved Q6</b>: Core ships its rules as one parent <code>c:\code\CLAUDE.md</code>; incorporation = hoisting cross-cutting rules there so they load in every project. Added <b>MVP — today</b>: Core running in <code>C:\code\ISCI-Vision</code>, 4-step vertical slice; new Q7 (MVP proof skill).</li>
+  <li><b>2026-07-08</b> — <b>MVP decisions:</b> proof = <code>/if</code> smoke (canonical); rule-hoist <b>deferred</b> (proof first). Drafted the 1-task smoke plan (<code>## Budget: 50000</code>, branch <code>tony/stratagem-smoke</code>, file-existence Verify) — awaiting a run from an ISCI-Vision session. Found: Core mostly runs in ISCI-Vision already (skills global · <code>c:\code\CLAUDE.md</code> + registry mirror load there); only the deep meta-arch is absent (step-2 gap).</li>
+  <li><b>2026-07-08</b> — Added <b>"Profile in Core Assets — externalize + reference"</b> section. Principle: <b>parameterize, never personalize</b> — Core assets hold zero Profile literals, they reference an external Profile home (⛔ no in-place token-fill: a Core update would destroy it). Grep-verified the current leaks: 5 skills (<code>max crs rs px fx</code>) hardcode <code>C:\code\ISCI-Vision\…</code>; <code>settings.json</code> hardcodes marketplace path + <code>enabledPlugins</code> + <code>effortLevel</code>; <code>autonomy-loop.js</code> is clean; no hooks. Documented the per-asset reference mechanism (CLAUDE.local.md · Registry-resolve · env vars · launcher <code>args</code> · settings.local.json · pat.b64) and the two-couplings distinction (path/identity leak = fix; code-flavor = leave). New <b>Q8</b>: skill path-externalization refactor.</li>
+</ul>

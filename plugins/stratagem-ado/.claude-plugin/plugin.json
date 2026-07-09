@@ -1,0 +1,7 @@
+{
+  "name": "stratagem-ado",
+  "version": "0.1.0",
+  "description": "Detachable Stratagem-Azure DevOps bridge - board sync, SP, PR skills plus bundled MCP registration. Core stays ADO-blind; install/enable/disable/uninstall atomically.",
+  "author": { "name": "Tony Thomas" },
+  "defaultEnabled": false
+}

@@ -1,0 +1,17 @@
+{
+  "name": "stratagem-local",
+  "owner": { "name": "Tony Thomas" },
+  "metadata": { "description": "Local dev marketplace for Stratagem plugins (Stratagem repo)." },
+  "plugins": [
+    {
+      "name": "stratagem-ado",
+      "source": "./stratagem-ado",
+      "description": "Detachable Stratagem-Azure DevOps bridge - SP / board-sync / PR skills + bundled MCP registration. Ships disabled."
+    },
+    {
+      "name": "sg",
+      "source": "./stratagem-core",
+      "description": "Stratagem Core — workflow engine"
+    }
+  ]
+}

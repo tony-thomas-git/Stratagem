@@ -1,0 +1,7 @@
+{
+  "name": "sg",
+  "version": "0.1.0",
+  "description": "Stratagem Core — workflow operating modes (PF/CP/PX/AX/…)",
+  "author": { "name": "Tony Thomas" },
+  "defaultEnabled": true
+}
