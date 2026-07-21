@@ -49,7 +49,7 @@ argument-hint: "fix task reference or iq"
    Then, on a corpus miss, research externally:
    - Extract the exact error message and stack trace from the EX log
    - **Route per global "Research & Web Lookup Routing" rule:**
-     - If the error is library/framework/SDK-attributable (Castle.Windsor, CommunityToolkit.Mvvm, ONNX Runtime, OpenCV, etc.) → **context7 first** (`resolve-library-id` then `get-library-docs`). Stop here if it answers.
+     - If the error is library/framework/SDK-attributable (any library, framework, SDK, or cloud service your code uses) → **context7 first** (`resolve-library-id` then `get-library-docs`). Stop here if it answers.
      - Otherwise → **one** `tavily_search` with a keyword-style query: `"[exact error message]" [framework/library name]`. Bias toward `stackoverflow.com` and `github.com`.
      - If a Stack Overflow / GitHub URL surfaces → switch to `tavily_extract` on that URL. Do **not** fire more searches.
      - **`tavily_research` is forbidden in this skill** — use it only outside `/fx` and only with one-line justification.
@@ -97,7 +97,7 @@ argument-hint: "fix task reference or iq"
 
 8. **Post-Implementation Compliance Audit:**
    - Identify the pattern touched by this fix
-   - Run the `/pica` compliance dimensions (the pica skill is the single source of truth) against the Layer-5 `.cs/.xaml` files touched + their sibling files. Native C++ below the interop seam is out of scope.
+   - Run the `/pica` compliance dimensions (the pica skill is the single source of truth) against the changed source files + their sibling files implementing the same pattern.
    - Emit:
      ```
      COMPLIANCE AUDIT: [Pattern Name]

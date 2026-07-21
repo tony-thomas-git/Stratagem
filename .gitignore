@@ -1,0 +1,19 @@
+# Never distribute secrets — the ADO bridge needs the installer's OWN credentials.
+**/pat.b64
+**/ado.config.json
+**/tavily.config.json
+**/*.pem
+**/*.pfx
+.env
+.env.*
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+
+.claude/
+
+# Obsidian per-user UI state (graph.json IS tracked — it is the color-group contract)
+Vault/.obsidian/workspace*
+Vault/.obsidian/cache
+Vault/.obsidian/workspaces.json

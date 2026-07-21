@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feature Plan — Clean Board-Blind Coder Distributable</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --panel:#ffffff; --ink:#1c2333; --muted:#5b6572; --line:#e3e7ee;
+    --core:#2e7eaa; --core-bg:#eaf3f9; --seam:#50b864; --seam-bg:#ecf8f0;
+    --ado:#dc3545; --ado-bg:#fdeef0; --warn:#b26a00; --warn-bg:#fff6e6;
+    --h:#9c27b0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:960px;margin:0 auto;padding:32px 24px 80px;}
+  header.doc{border-left:5px solid var(--core);padding:6px 0 6px 18px;margin-bottom:8px;}
+  h1{font-size:26px;margin:0 0 4px;letter-spacing:-.2px;}
+  .sub{color:var(--muted);font-size:14px;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 28px;}
+  .chip{background:var(--panel);border:1px solid var(--line);border-radius:999px;
+    padding:4px 12px;font-size:12.5px;color:var(--muted);}
+  .chip b{color:var(--ink);font-weight:600;}
+  h2{font-size:19px;margin:38px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--line);}
+  h3{font-size:15.5px;margin:22px 0 8px;}
+  section{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px 22px 20px;margin-bottom:22px;}
+  p{margin:10px 0;}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.4px;}
+  code{background:#eef1f5;border-radius:4px;padding:1px 5px;font:12.5px/1.5 "SF Mono",Consolas,Menlo,monospace;}
+  .tag{display:inline-block;border-radius:5px;padding:1px 7px;font-size:11.5px;font-weight:600;}
+  .t-core{background:var(--core-bg);color:var(--core);}
+  .t-seam{background:var(--seam-bg);color:#2f7d48;}
+  .t-ado{background:var(--ado-bg);color:var(--ado);}
+  .t-L{background:#eef7ef;color:#2f7d48;} .t-M{background:#fff6e6;color:var(--warn);}
+  .t-H{background:#fbeaf7;color:var(--h);}
+  .callout{border-left:4px solid var(--seam);background:var(--seam-bg);border-radius:0 8px 8px 0;padding:12px 16px;margin:16px 0;}
+  .callout.warn{border-color:var(--warn);background:var(--warn-bg);}
+  .callout.rec{border-color:var(--core);background:var(--core-bg);}
+  ul{margin:8px 0 8px 2px;padding-left:20px;} li{margin:4px 0;}
+  .phase{border:1px solid var(--line);border-radius:9px;padding:2px 18px 14px;margin:14px 0;}
+  .phase h3{display:flex;align-items:center;gap:10px;}
+  .pn{background:var(--core);color:#fff;border-radius:6px;width:26px;height:26px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:0 0 auto;}
+  .files{font-family:"SF Mono",Consolas,monospace;font-size:12px;color:var(--muted);}
+  .diagram{margin:8px 0;overflow-x:auto;}
+  .foot{color:var(--muted);font-size:13px;margin-top:26px;text-align:center;}
+  .did{font-weight:700;color:var(--h);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1>Clean Board-Blind Coder Distributable</h1>
+  <div class="sub">A self-contained <code>sg</code>-only plugin marketplace — keep the neutral board/chat seam, ship no adapters.</div>
+</header>
+
+<div class="meta">
+  <span class="chip"><b>Type</b> · Feature Plan (PF)</span>
+  <span class="chip"><b>Repo</b> · Stratagem @ <code>tt/strat-dist</code></span>
+  <span class="chip"><b>Date</b> · 2026-07-18</span>
+  <span class="chip"><b>Tracer Bullet</b> · YES (validate a standalone <code>sg</code> install before carving)</span>
+  <span class="chip"><b>Est. scope</b> · ~12–18 files across 5 phases + 1 cross-repo touch</span>
+  <span class="chip"><b>Identity</b> · marketplace <b>Stratagem</b> · namespace <code>/sg:</code></span>
+  <span class="chip"><b>Next</b> · <code>/cp</code></span>
+</div>
+
+<section>
+  <h2>1 · Goal</h2>
+  <p>Turn the Stratagem distribution repo into a <b>clean coder-flavored plugin marketplace</b> that ships the
+  workflow engine (<code>sg</code>) alone — <b>complete and runnable with zero external dependencies</b> — while
+  <b>retaining the neutral lifecycle seam</b> so any external board or chat system can attach later via a
+  presence-checked adapter. <b>No concrete adapters</b> (<code>stratagem-ado</code>, <code>stratagem-teams</code>)
+  ship in this build, and <b>core names no external system</b>.</p>
+  <div class="callout">
+    <b>The good news, up front:</b> the board-sync capability is <em>already</em> board-blind and lives in core
+    (<code>/ax</code> emits a neutral <code>{event,syncId,task}</code> signal; <code>/if</code> resolves
+    <code>boardSync</code> by presence-check; <code>autonomy-loop.js</code> carries <code>boardNotify</code>).
+    Keeping <code>sg</code> keeps the capability. This feature is <b>packaging + purity</b>, not building a new seam.
+  </div>
+</section>
+
+<section>
+  <h2>2 · Current state (what blocks a clean build)</h2>
+  <table>
+    <tr><th>#</th><th>Gap</th><th>Evidence</th><th>Kind</th></tr>
+    <tr>
+      <td>G1</td>
+      <td>The dist <code>sg</code> plugin is <b>incomplete</b> — missing <code>hooks/</code> + <code>workflows/</code></td>
+      <td>dist <code>plugins/stratagem-core/</code> has only <code>.claude-plugin/</code> + <code>skills/</code>; canonical core also has <code>hooks/</code> (SessionStart sync) + <code>workflows/</code> (<code>autonomy-loop.js</code>). Without them <code>/if</code> can't self-install.</td>
+      <td><span class="tag t-core">completeness</span></td>
+    </tr>
+    <tr>
+      <td>G2</td>
+      <td>Marketplace <b>bundles the ADO adapter</b> &amp; is dev-named</td>
+      <td><code>plugins/.claude-plugin/marketplace.json</code> lists <code>stratagem-ado</code> + <code>sg</code>; name is <code>stratagem-local</code>.</td>
+      <td><span class="tag t-ado">carve</span></td>
+    </tr>
+    <tr>
+      <td>G3</td>
+      <td>The <code>stratagem-ado/</code> plugin dir <b>physically ships</b></td>
+      <td><code>plugins/stratagem-ado/</code> — board-sync/sp/pr/ss skills + MCP launcher + config example.</td>
+      <td><span class="tag t-ado">carve</span></td>
+    </tr>
+    <tr>
+      <td>G4</td>
+      <td><b>ADO naming leaks into core</b> — the seam is board-blind in <em>behavior</em> but not in <em>naming</em></td>
+      <td><code>cp/SKILL.md</code> writes <code>## ADO-Project:</code> / <code>## ADO-Area:</code> and reads <code>ado-board-config.md</code>; minor prose in <code>if</code>/<code>ps</code>. (<code>stratagem-core-rules.md</code> "Azure SDK" = false positive.)</td>
+      <td><span class="tag t-H">purity (H)</span></td>
+    </tr>
+    <tr>
+      <td>G5</td>
+      <td>The <b>notify/chat seam</b> is not symmetric with the board seam</td>
+      <td>Board seam has explicit core emit points; the notifier (Teams) seam's emit side is thinner. You asked for "boards, <b>chats</b>, etc." — needs an audit.</td>
+      <td><span class="tag t-seam">seam audit</span></td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>3 · Target architecture</h2>
+  <p>One marketplace, one shipped plugin (<code>sg</code>), two neutral seams that resolve to
+  <b>externally-installed</b> adapters by presence-check. The dependency arrow points only inward
+  (adapter → core), never out.</p>
+  <div class="diagram">
+  <svg width="900" height="330" viewBox="0 0 900 330" role="img" aria-label="Target topology">
+    <defs>
+      <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+        <path d="M0,0 L9,4.5 L0,9 z" fill="#5b6572"/>
+      </marker>
+      <marker id="arrg" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+        <path d="M0,0 L9,4.5 L0,9 z" fill="#50b864"/>
+      </marker>
+    </defs>
+    <!-- marketplace boundary -->
+    <rect x="20" y="20" width="470" height="290" rx="12" fill="#eaf3f9" stroke="#2e7eaa" stroke-dasharray="6 4"/>
+    <text x="36" y="44" font-size="13" font-weight="700" fill="#2e7eaa">stratagem marketplace — SHIPS</text>
+
+    <!-- sg core -->
+    <rect x="48" y="64" width="414" height="140" rx="10" fill="#fff" stroke="#2e7eaa" stroke-width="2"/>
+    <text x="66" y="88" font-size="14" font-weight="700" fill="#1c2333">sg — Stratagem Core (coder engine)</text>
+    <text x="66" y="110" font-size="11.5" fill="#5b6572">skills · hooks/ (SessionStart sync) · workflows/autonomy-loop.js</text>
+    <!-- seams -->
+    <rect x="66" y="126" width="180" height="58" rx="8" fill="#ecf8f0" stroke="#50b864"/>
+    <text x="156" y="150" font-size="11.5" font-weight="700" fill="#2f7d48" text-anchor="middle">board seam</text>
+    <text x="156" y="168" font-size="10" fill="#2f7d48" text-anchor="middle">{event,syncId,task}</text>
+    <rect x="266" y="126" width="180" height="58" rx="8" fill="#ecf8f0" stroke="#50b864"/>
+    <text x="356" y="150" font-size="11.5" font-weight="700" fill="#2f7d48" text-anchor="middle">notify seam</text>
+    <text x="356" y="168" font-size="10" fill="#2f7d48" text-anchor="middle">{event,summary,progress}</text>
+
+    <text x="66" y="230" font-size="11.5" fill="#5b6572">Runs full lifecycle with</text>
+    <text x="66" y="248" font-size="11.5" font-weight="700" fill="#2e7eaa">zero external dependencies</text>
+    <text x="66" y="266" font-size="11.5" fill="#5b6572">Names no external system</text>
+
+    <!-- adapters, external -->
+    <rect x="560" y="20" width="320" height="290" rx="12" fill="#fdeef0" stroke="#dc3545" stroke-dasharray="6 4"/>
+    <text x="576" y="44" font-size="13" font-weight="700" fill="#dc3545">External adapters — NOT in this build</text>
+
+    <rect x="588" y="70" width="264" height="66" rx="9" fill="#fff" stroke="#dc3545"/>
+    <text x="604" y="96" font-size="12.5" font-weight="700">stratagem-ado</text>
+    <text x="604" y="116" font-size="10.5" fill="#5b6572">board-sync → System.State (ADO)</text>
+
+    <rect x="588" y="164" width="264" height="66" rx="9" fill="#fff" stroke="#dc3545"/>
+    <text x="604" y="190" font-size="12.5" font-weight="700">stratagem-teams</text>
+    <text x="604" y="210" font-size="10.5" fill="#5b6572">notify-sync → channel message</text>
+
+    <rect x="588" y="252" width="264" height="42" rx="9" fill="#fff" stroke="#dc3545" stroke-dasharray="4 3"/>
+    <text x="720" y="278" font-size="11" fill="#5b6572" text-anchor="middle">…any future board / chat</text>
+
+    <!-- presence-checked resolution arrows (adapter -> seam) -->
+    <path d="M588,103 C520,103 470,150 449,152" fill="none" stroke="#50b864" stroke-width="2" marker-end="url(#arrg)"/>
+    <path d="M588,197 C520,197 400,182 359,184" fill="none" stroke="#50b864" stroke-width="2" marker-end="url(#arrg)"/>
+    <text x="500" y="128" font-size="10" fill="#2f7d48">presence-checked</text>
+  </svg>
+  </div>
+  <p style="font-size:13px;color:var(--muted)"><b>Reading:</b> adapters resolve <em>into</em> core's seams when installed+enabled;
+  with none present every emit is a silent no-op (the write-only <code>events.log</code> trace still records).
+  Adapters remain installable from the canonical <code>stratagem-core</code> marketplace — this build simply omits them.</p>
+</section>
+
+<section>
+  <h2>4 · Key design decisions <span style="font-size:13px;color:var(--muted)">(for <code>/cp</code> to lock)</span></h2>
+  <table>
+    <tr><th>ID</th><th>Decision</th><th>Options</th><th>Recommendation</th></tr>
+    <tr>
+      <td class="did">D1</td>
+      <td>Purity target</td>
+      <td><b>Carve-only</b> (G1–G3) vs <b>Carve + neutralize</b> (adds G4)</td>
+      <td><b>Carve + neutralize</b> — your "clean core… boards, chats, etc." calls for a genuinely system-agnostic core, not ADO-flavored-but-detached.</td>
+    </tr>
+    <tr>
+      <td class="did">D2</td>
+      <td>Neutral naming scheme</td>
+      <td><code>## Board-Project/Area</code> + <code>board-config.md</code> · or fully generic <code>## Sync-*</code> + <code>sync-config.md</code></td>
+      <td><code>## Board-*</code> / <code>board-config.md</code> — descriptive, matches the seam's domain ("board"), less churn than fully generic.</td>
+    </tr>
+    <tr>
+      <td class="did">D3</td>
+      <td>Cross-repo coordination of the header rename</td>
+      <td>(a) lockstep-change core + the canonical <code>stratagem-ado:sp</code> · (b) make <code>sp</code> accept old <b>and</b> new names (back-compat) · (c) let dist diverge as a fork</td>
+      <td><b>(b) back-compat</b> in <code>sp</code> first, then flip <code>/cp</code> — avoids a breaking big-bang across repos.</td>
+    </tr>
+    <tr>
+      <td class="did">D4</td>
+      <td>Where opt-in adapters live</td>
+      <td>Keep in the canonical <code>stratagem-core</code> marketplace · new <code>stratagem-adapters</code> marketplace</td>
+      <td>Keep in <code>stratagem-core</code> — the clean-core dist just omits them; users add that marketplace to attach.</td>
+    </tr>
+    <tr>
+      <td class="did">D5</td>
+      <td>Source-of-truth for the clean core</td>
+      <td>Dist repo becomes canonical (edit here) · dist is a <b>filtered publish</b> derived from <code>stratagem-core</code></td>
+      <td><b>Confirm with operator.</b> Drives whether Phase 1/3 edits happen here or upstream. Leaning: edit upstream, publish filtered — one source of truth.</td>
+    </tr>
+    <tr>
+      <td class="did">D6</td>
+      <td>Notify/chat seam scope (G5)</td>
+      <td>Audit-only this pass · formalize a symmetric core emit now</td>
+      <td>Audit-only now; formalize as a fast-follow if the emit side proves thin. Keeps this feature shippable.</td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>5 · Phased implementation <span style="font-size:13px;color:var(--muted)">(tracer-bullet order — validate standalone before carving)</span></h2>
+
+  <div class="phase">
+    <h3><span class="pn">1</span> Complete the core plugin <span class="tag t-L">Low–Med</span></h3>
+    <p>Bring the dist <code>sg</code> to parity with canonical core so it runs standalone.</p>
+    <ul>
+      <li>Sync <code>plugins/stratagem-core/hooks/</code> (<code>hooks.json</code>, <code>sync-autonomy-workflow.sh</code>) and <code>plugins/stratagem-core/workflows/autonomy-loop.js</code> from <code>stratagem-core</code>.</li>
+      <li>Confirm <code>plugin.json</code>: name <code>sg</code>, <code>defaultEnabled:true</code>, version.</li>
+      <li><b>Tracer validation (gate):</b> install <code>sg</code> alone on a throwaway repo → run <code>/pf→/cp→/phx</code> → confirm zero external deps and both seams no-op cleanly. <em>Do not proceed to Phase 2 until green.</em></li>
+    </ul>
+    <div class="files">files: hooks.json · sync-autonomy-workflow.sh · autonomy-loop.js · (plugin.json)</div>
+  </div>
+
+  <div class="phase">
+    <h3><span class="pn">2</span> Carve the marketplace to core-only <span class="tag t-L">Low</span></h3>
+    <ul>
+      <li><code>plugins/.claude-plugin/marketplace.json</code>: drop the <code>stratagem-ado</code> entry; name the marketplace <b>Stratagem</b> (the brand); rewrite the description as the clean coder core.</li>
+      <li>Remove <code>plugins/stratagem-ado/</code> from the distributable (per D4 it stays available upstream).</li>
+    </ul>
+    <div class="callout"><b>Identity (locked with operator):</b> marketplace &amp; brand = <b>Stratagem</b>; the plugin <code>name</code> stays <code>sg</code> so the <code>/sg:*</code> CLI namespace is preserved. Claude Code derives the command prefix from the plugin <code>name</code> field, so the "Stratagem" brand lives at the marketplace level + the plugin <code>description</code>. <em>Verify at build</em> whether <code>plugin.json</code> supports a separate display-name distinct from the command namespace; if not, <code>name:"sg"</code> is authoritative and brand stays at marketplace scope.</div>
+    <div class="files">files: marketplace.json · plugin.json (name stays sg) · (delete plugins/stratagem-ado/)</div>
+  </div>
+
+  <div class="phase">
+    <h3><span class="pn">3</span> Neutralize the seam-contract naming <span class="tag t-H">High — cross-cutting</span></h3>
+    <p>Make core name no external system. This is a <b>seam-contract change</b> (headers are consumed by <code>stratagem-ado:sp</code>), so sequence per D3.</p>
+    <ul>
+      <li><code>cp/SKILL.md</code>: <code>## ADO-Project/Area</code> → <code>## Board-Project/Area</code>; <code>ado-board-config.md</code> → <code>board-config.md</code>; "ADO AREA RESOLUTION" → "BOARD AREA RESOLUTION"; <code>stratagem-ado:sp</code> reference → neutral "the board adapter's sync skill".</li>
+      <li><code>if/SKILL.md</code>: "ADO pipeline green" → neutral "external CI/board green".</li>
+      <li><code>ps/SKILL.md</code>: "/ss … Azure DevOps board" → neutral "the board adapter's seed-sync skill".</li>
+      <li><code>Vault/ado-board-config.md</code> → <code>Vault/board-config.md</code> (update <code>/cp</code> read path + wiki refs; log the vault edit in <code>CHANGELOG.md</code>).</li>
+      <li><b>Cross-repo (D3):</b> teach the canonical <code>stratagem-ado:sp</code> to read the new header names (back-compat), <em>then</em> flip <code>/cp</code>.</li>
+    </ul>
+    <div class="files">files: cp/SKILL.md · if/SKILL.md · ps/SKILL.md · Vault/board-config.md · [stratagem-core] sp/SKILL.md</div>
+  </div>
+
+  <div class="phase">
+    <h3><span class="pn">4</span> Notify/chat seam symmetry audit <span class="tag t-M">Med</span></h3>
+    <ul>
+      <li>Trace the notifier seam's emit side in core (launcher heartbeat / loop boundary). Confirm it is neutral and presence-checked, symmetric with the board seam.</li>
+      <li>If the emit side is missing/thin, per D6 either add a neutral emit now or file a fast-follow — never name Teams in core.</li>
+    </ul>
+    <div class="files">files: (audit) · possibly if/SKILL.md · autonomy-loop.js</div>
+  </div>
+
+  <div class="phase">
+    <h3><span class="pn">5</span> Distribution docs + release <span class="tag t-M">Low–Med</span></h3>
+    <ul>
+      <li><code>readme.md</code> / INSTALL: core-only install, the "attach an adapter" path, the zero-dependency guarantee.</li>
+      <li>Bump <code>plugin.json</code> version; document the neutral-seam contract for adapter authors.</li>
+      <li>Dev-loop validation: uninstall + reinstall confirms the version-keyed cache refresh.</li>
+    </ul>
+    <div class="files">files: readme.md · INSTALL.md · plugin.json</div>
+  </div>
+</section>
+
+<section>
+  <h2>6 · Testing strategy</h2>
+  <table>
+    <tr><th>Test</th><th>What it proves</th></tr>
+    <tr><td><b>Standalone install</b> — <code>sg</code> alone on a clean repo, run <code>/pf→/cp→/px→/ax→/phx</code></td><td>The core is complete + runs with zero external dependencies (G1).</td></tr>
+    <tr><td><b>Seam no-op</b> — run <code>/if</code> with no adapter; inspect <code>events.log</code></td><td>Emits are silent no-ops; the write-only trace still records (board + notify).</td></tr>
+    <tr><td><b>Purity grep</b> — <code>grep -riE 'ado|azure' plugins/stratagem-core</code></td><td>Only the false-positive "Azure SDK" example remains (G4 closed).</td></tr>
+    <tr><td><b>Re-attach</b> — install the ADO adapter (upstream) against neutralized headers, run <code>/sp</code> + a synced <code>/if</code></td><td>Back-compat holds; board-sync still moves cards (D3 validated).</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>7 · Risks &amp; open edges</h2>
+  <ul>
+    <li><span class="tag t-H">H</span> <b>Cross-repo contract skew.</b> Renamed headers must be understood by the canonical adapter or synced plans break. Mitigation: D3 back-compat, and the re-attach test as the gate.</li>
+    <li><span class="tag t-M">M</span> <b>Source-of-truth ambiguity (D5).</b> If edits land here <em>and</em> upstream, they diverge. Resolve D5 before Phase 1/3.</li>
+    <li><span class="tag t-M">M</span> <b>Vault coupling.</b> <code>Vault/ado-board-config.md</code> rename touches a vault file → the mandatory <code>CHANGELOG.md</code> entry + fleet-check apply.</li>
+    <li><span class="tag t-L">L</span> <b>Namespace identity.</b> Only one <code>sg</code> installs at a time; dev iteration = uninstall+reinstall (version-keyed cache).</li>
+  </ul>
+</section>
+
+<section>
+  <h2>8 · Out of scope</h2>
+  <ul>
+    <li>Building any new adapter (Slack, GitHub Projects, Jira) — the seam is left ready, adapters are a separate effort.</li>
+    <li>Publishing / pushing the marketplace anywhere — packaging only; distribution channel is a later call.</li>
+    <li>Rewriting the two <code>CLAUDE.md</code> vault schemas (a separate, already-flagged follow-up).</li>
+  </ul>
+</section>
+
+<p class="foot">Feature plan authored by PF · uncommitted, for review · <b>Next:</b> <code>/cp</code> reads this and emits the <code>.md</code> execution plan.</p>
+
+</div>
+</body>
+</html>

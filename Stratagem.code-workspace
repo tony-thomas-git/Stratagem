@@ -11,14 +11,18 @@
 		{
 			"name": ".claude",
 			"path": "../../Users/TonyThomas/.claude"
+		},
+		{
+			"name": "stratagem-core",
+			"path": "../stratagem-core"
 		}
 	],
 	"settings": {
 		"workbench.colorCustomizations": {
-			"titleBar.activeForeground": "#ffffff",
-			"titleBar.activeBackground": "#c3771a",
-			"titleBar.inactiveForeground": "#ffffff",
-			"titleBar.inactiveBackground": "#7a4b11",
+			"titleBar.activeForeground": "#C9A227",
+			"titleBar.activeBackground": "#33336B",
+			"titleBar.inactiveForeground": "#C9A227",
+			"titleBar.inactiveBackground": "#2b2b5a",
 			"tab.unfocusedActiveBackground": "#454545",
 			"window.activeBorder": "#ffee00",
 			"window.inactiveBorder": "#cec000"

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "tavily": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/bin/tavily-mcp-launch.js",
+        "--package", "tavily-mcp@0.2.21",
+        "--data-dir", "${CLAUDE_PLUGIN_DATA}"
+      ]
+    }
+  }
+}

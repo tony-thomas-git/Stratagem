@@ -6,7 +6,7 @@ argument-hint: "pattern name or file"
 
 # PICA (Post-Implementation Compliance Audit)
 
-**Purpose:** Ensure pattern consistency across Layer-5 (C#/WPF) implementations immediately after each change.
+**Purpose:** Ensure pattern consistency across the implementations your change touches immediately after each change.
 
 **Task:** $ARGUMENTS
 
@@ -26,19 +26,16 @@ argument-hint: "pattern name or file"
 **Instructions:**
 
 1. **Scope the audit:**
-   - Identify the pattern just implemented (Windsor registration, UI-thread marshalling, storage/export flow, MVVM binding, module wiring, etc.).
-   - **Audit targets:** the Layer-5 `.cs/.xaml` files touched by the change — `IVia.App/` (+ `IVia.Common`, `IVia.Controls`, `IVia.Config`, `IVia.WebServices`, `IVia.Imaging`) — **plus their sibling files implementing the same pattern.**
-   - Do NOT audit native C++ below the interop seam — that's the C++ dev's domain.
+   - Identify the pattern just implemented (component registration, thread/async marshalling, resource-lifecycle ordering, data-binding, module wiring, etc.).
+   - **Audit targets:** the changed source files — **plus their sibling files implementing the same pattern** — scoped per the `Stack:` boundary above (any layer `CLAUDE.md` delegates to another owner stays out of audit scope).
 
-2. **Audit the consistency dimensions** (check the ones the change touches):
-   1. **Windsor registration** — new ViewModel/service/dialog/module registered in `IVia.App/Services/ComponentService.cs`; constructor injection only (property injection disabled — no public settable injected props).
-   2. **UI-thread marshalling** — TBB / `InspectionResponseReadyEvent` callbacks and every `ObservableCollection` mutation go through `Dispatcher.Invoke/BeginInvoke`; flag any XAML-bound write off the UI thread.
-   3. **Live vs aggregated** — export/scoring/history never bind `PipelineLiveResult`; live preview never binds `AggregatedResult`.
-   4. **Dialogs** — created via `UserInterfaceService.ShowDialogAsync(...)`, never `new …Dialog().ShowDialog()`.
-   5. **Export ordering** — history-cache write precedes `base.OnOkCommandAsync()` (reverse = silent file-deletion data loss).
-   6. **C# style** (`[[CSharpCodeStyle]]`) — `_camelCase` fields, `PascalCase` props, `PascalCaseAsync` methods, required region order, braces on all `if`, one class per file, fail-fast (no silent default fallbacks).
-   7. **Interop consumption** (shared `IVia.Vision/` seam) — consume `IVisualInspectionControlInterop` events via the double-buffer pattern; surface changes are *coordinated* with the C++ dev, never unilateral.
-   8. **New inspection module — our half** — C# `InspectionKind` enum, Windsor registration, `RegisterStorageTargetSupport<TModule,TModel>`, `[[module-index]]` entry. *(Native half — `InspectionPipelineKind` + `PipelineBuilderMap` — is the C++ dev's; coordinate so both halves stay consistent.)*
+2. **Audit the consistency dimensions** — check the dimensions your `CLAUDE.md` + style docs define; common ones:
+   1. **DI / registration consistency** — new components (services, view-models, handlers, modules) are registered through the project's DI/composition mechanism the way their siblings are, following the established construction/injection convention.
+   2. **Concurrency / async correctness** — cross-thread and async callbacks marshal to the required context per the project's threading model; shared-state mutations follow its synchronization convention.
+   3. **Resource-lifecycle ordering** — acquire/release, write/commit, and teardown steps run in the order the pattern requires (reversing them risks data loss or leaks).
+   4. **Style-guide conformance** — naming, member/region ordering, bracing, one-unit-per-file, and fail-fast conventions match the project's style docs (no silent default fallbacks).
+   5. **Boundary / seam coordination** — changes at a shared seam (interop, API, module boundary) honor the seam's contract and are *coordinated* with the owning side, never applied unilaterally.
+   6. **New-component wiring** — a new unit is wired into every registry / index / enum the pattern requires so it is fully discoverable, not half-registered.
 
 3. **Report Compliance Status:**
    ```

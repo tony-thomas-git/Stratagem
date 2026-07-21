@@ -1,0 +1,4 @@
+{"ts":"2026-07-19T01:47:43Z","event":"pf-start","syncId":null,"task":null,"note":"PF planning: clean board-blind coder distributable (sg-only marketplace)"}
+{"ts":"2026-07-19T18:29:27Z","event":"plan-ready","syncId":null,"task":null,"note":"CP execution plan written + validated (13 tasks, 5 phases)"}
+{"ts":"2026-07-19T19:10:37Z","event":"feature-started","syncId":null,"task":null,"note":"/if launch: tasks 1-10 unattended on tt/strat-dist, budget 600000"}
+{"ts":"2026-07-19T19:16:27Z","event":"feature-started","syncId":null,"task":null,"note":"/if relaunch: resume tasks 2-10, corrected integration gate"}

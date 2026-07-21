@@ -1,0 +1,5 @@
+{"ts":"2026-07-20T00:02:47Z","event":"pf-start","syncId":null,"task":null,"note":"PF planning start — strat-dist stack-neutral generic distribution"}
+{"ts":"2026-07-20T00:27:00Z","event":"plan-ready","syncId":null,"task":null,"note":"CP execution plan written + validated — 9 tasks, Verify 9/9, Integration-Verify present"}
+{"ts":"2026-07-20T01:02:21Z","event":"feature-started","syncId":null,"task":null,"note":"/if launch — 9 tasks, budget 500000, branch tt/strat-dist, boardSync/notifier null"}
+{"ts":"2026-07-20T01:05:01Z","event":"launch-blocked","syncId":null,"task":null,"note":"Workflow approval rejected: CRLF in autonomy-loop.js"}
+{"ts":"2026-07-20T01:07:50Z","event":"feature-started","syncId":null,"task":null,"note":"relaunch OK after LF fix — runId wf_8dc3aef5-ca8, tasks 1-9"}

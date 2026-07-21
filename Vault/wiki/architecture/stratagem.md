@@ -59,6 +59,7 @@ Without Stratagem, AI coding sessions are one-shot: every conversation re-derive
 
 ## Related
 
+- **twin (`scope/stratagem-core`)** — [[system-topology]] — the same system from the implementation/build side
 - [[operating-modes]]
 - [[configuration-hierarchy]]
 - [[tracer-bullet-discipline]]

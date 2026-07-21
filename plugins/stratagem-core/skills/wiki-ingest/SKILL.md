@@ -139,7 +139,7 @@ sources:
 updated: <today YYYY-MM-DD>
 tags:
   - status/<active|draft|superseded>
-  - scope/<vision|build|app|storage|…>     # see the vault's meta/scopes.md for the authoritative set
+  - scope/<app|build|storage|…>     # see the vault's meta/scopes.md for the authoritative set
   # Optional, multi-valued:
   # - pattern-family/<entity-system|navigation|filters|schema|layout>
   # - layer/<api|ui|db|orchestrator>
@@ -149,7 +149,7 @@ tags:
 **Required:** `type`, `sources` (empty list `[]` OK for meta pages), `updated`, `tags` with at least one `status/*` and one `scope/*`.
 
 **Scope tag selection:**
-- ISCI-Vision-Vault pages → `scope/vision` (single-project machine; domain + workflow knowledge)
+- Use the scope(s) defined in your vault's `meta/scopes.md` — e.g. `scope/<your-project>` (domain + workflow knowledge)
 - For a sub-area, use a finer `scope/*` per the vault's `meta/scopes.md` (e.g. `scope/build`, `scope/app`, `scope/storage`)
 
 **Filename rule (§4.5.4):** no enforced casing — a filename may preserve source casing/emoji **or** use lowercase-kebab (both valid; audit enforces neither). Counterpart nodes of project gold docs conventionally use lowercase-kebab stems with the gold-doc name in `sources:` (convention, not a rule). For non-file topics (`--stub` mode), use the topic label as-is.
@@ -297,7 +297,7 @@ Auto-fix? (yes / no / show-each)
 ```
 
 **Auto-fix rules (apply only on `yes`):**
-- Missing `tags:` → add block with `status/active` + inferred `scope/*` (per §4.5.3 — `scope/vision` for ISCI-Vision-Vault, or a finer scope per `meta/scopes.md`; prompt user if ambiguous)
+- Missing `tags:` → add block with `status/active` + inferred `scope/*` (per §4.5.3 — `scope/<your-project>` per the vault's `meta/scopes.md`, or a finer scope for a sub-area; prompt user if ambiguous)
 - Missing `status/*` → add `status/draft` (safest default; user can promote to `active` later)
 - Missing `scope/*` → infer from vault path; prompt if ambiguous
 - Missing `updated:` → set to today's date

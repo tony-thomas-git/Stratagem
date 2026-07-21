@@ -89,27 +89,27 @@ argument-hint: "feature name or plan reference"
    - Tasks should be atomic (one logical unit of work)
    - Include clear acceptance criteria for each task
    - **Emit a `Verify:` line for EVERY task** — a single shell command whose exit 0
-     objectively proves the task complete (e.g. `Verify: npm test -- auth.spec && eslint src/auth`).
+     objectively proves the task complete (e.g. `Verify: <your test runner, scoped to this task's suite>`).
      Mandatory: a verifier-era plan with any task missing `Verify:` HALTS at `/phx`'s upfront
      sweep. There is **no `Verifier:` opt-in flag** — the verifier is always-on.
 
 5. **Plan File Structure:**
 
-   **🎯 ADO AREA RESOLUTION (optional — board-synced projects only; resolve BEFORE writing the header below):**
+   **🎯 BOARD AREA RESOLUTION (optional — board-synced projects only; resolve BEFORE writing the header below):**
    > Decides which board area path the Feature + all its Stories will carry. `/cp` stays
-   > otherwise ADO-blind — it only writes a header that `stratagem-ado:sp` consumes verbatim
-   > (the neutral-seam contract: core Stratagem names no ADO mechanics).
+   > otherwise board-blind — it only writes a header that the board adapter's sync skill consumes verbatim
+   > (the neutral-seam contract: core Stratagem names no board mechanics).
    1. **Resolve `<vault>`** for the active project by the `Vault\` folder at the project's git root
       (the same project→vault mapping CORPUS-READ-FIRST uses above). No `<vault>` resolved →
-      **no-op this whole block** (non-ADO projects emit no ADO header; zero regression).
-   2. **Read `<vault>/ado-board-config.md`.** Absent → **no-op** (project not board-synced).
-   3. **Prompt the user to pick one area** from the config's `## ADO-Areas` list (each entry is a
-      **full area path**); default = the config's `## ADO-Area-Default` (also a full path). One
+      **no-op this whole block** (non-board-synced projects emit no board header; zero regression).
+   2. **Read `<vault>/board-config.md`.** Absent → **no-op** (project not board-synced).
+   3. **Prompt the user to pick one area** from the config's `## Board-Areas` list (each entry is a
+      **full area path**); default = the config's `## Board-Area-Default` (also a full path). One
       choice — the whole Feature and every child Story inherit it (per-story override is out of
       scope by design).
-   4. **Emit the two ADO headers** in the template below using the picked value **verbatim**:
-      `## ADO-Area: <chosen full path>` (the config already stores full paths — do **NOT** re-prefix
-      with the area root, or you double it) and `## ADO-Project: <ADO-Project>`, both from the
+   4. **Emit the two board headers** in the template below using the picked value **verbatim**:
+      `## Board-Area: <chosen full path>` (the config already stores full paths — do **NOT** re-prefix
+      with the area root, or you double it) and `## Board-Project: <Board-Project>`, both from the
       config. Omit both lines entirely when the block no-ops (steps 1–2).
 
    ```markdown
@@ -119,8 +119,8 @@ argument-hint: "feature name or plan reference"
    ## Source PF: {pf-plan-filename.md}
    ## Tracer Bullet: YES/NO
    ## Budget: {tokens — OPTIONAL, unattended /if runs only}
-   ## ADO-Project: {board project — OPTIONAL, board-synced projects only (from ado-board-config.md)}
-   ## ADO-Area: {full path e.g. ISCI - Consolidated - Kanban\ISCI-SAAS — OPTIONAL, board-synced only}
+   ## Board-Project: {board project — OPTIONAL, board-synced projects only (from board-config.md)}
+   ## Board-Area: {full path e.g. Portfolio - Team - Board\Area — OPTIONAL, board-synced only}
 
    ### Strategic Context
 
@@ -174,9 +174,9 @@ argument-hint: "feature name or plan reference"
    (autonomy-loop) execution; the `/if` launcher reads it, else the plugin default (750k) applies.
    Omit it for interactive `/phx` plans (two-path model — see `${CLAUDE_PLUGIN_ROOT}/stratagem-core-rules.md` "Autonomy Budget").
 
-   The `## ADO-Project:` / `## ADO-Area:` fields are likewise **optional** — emit them ONLY when the
-   ADO Area Resolution block above resolved a `ado-board-config.md` (board-synced projects). They are
-   consumed by `stratagem-ado:sp` at sync time; when absent, `sp` falls back to its own default. Omit
+   The `## Board-Project:` / `## Board-Area:` fields are likewise **optional** — emit them ONLY when the
+   Board Area Resolution block above resolved a `board-config.md` (board-synced projects). They are
+   consumed by the board adapter's sync skill at sync time; when absent, it falls back to its own default. Omit
    both for non-board-synced projects.
 
 6. **Validation:**
@@ -303,7 +303,7 @@ argument-hint: "feature name or plan reference"
    | ... | ... | ... |
 
    ### The catch (if any)
-   [Which task(s) break full autonomy and why — e.g. "Task 5 is a manual smoke test of IVia.App (WPF) — needs your eyes."]
+   [Which task(s) break full autonomy and why — e.g. "Task 5 is a manual smoke test of the app — needs your eyes."]
    ```
 
    Then **ALWAYS** close with this exact loud bifurcation banner — show BOTH routes even when you have a strong lean; the user chooses the path:
@@ -326,9 +326,9 @@ argument-hint: "feature name or plan reference"
    ```
 
    **Board-sync gating (the `[📌 …]` line in the banner):**
-   - **Board-synced plan** (step 5 wrote `## ADO-Project:` / `## ADO-Area:`) → make that line **loud and unmissable**, replacing it with:
+   - **Board-synced plan** (step 5 wrote `## Board-Project:` / `## Board-Area:`) → make that line **loud and unmissable**, replacing it with:
      `📌 BOARD-SYNCED — run /sp FIRST: it creates the Feature + one Story per task and writes Sync-Id back so the loop moves the cards. THEN pick a route ↓`
-   - **Not board-synced** → **remove that line entirely** (core stays board-blind; gate on the headers `/cp` itself wrote, never on ADO knowledge).
+   - **Not board-synced** → **remove that line entirely** (core stays board-blind; gate on the headers `/cp` itself wrote, never on board knowledge).
 
    **Symbol legend (autonomy column):**
    - ✅ — unattended-safe: code-observable `Verify:`, no human checkpoint

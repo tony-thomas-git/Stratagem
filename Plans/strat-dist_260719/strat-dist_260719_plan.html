@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feature Plan — strat-dist: Stack-Neutral Generic Distribution</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --panel:#ffffff; --ink:#1c2333; --muted:#5b6572; --line:#e3e7ee;
+    --core:#2e7eaa; --core-bg:#eaf3f9; --doc:#50b864; --doc-bg:#ecf8f0;
+    --gate:#dc3545; --gate-bg:#fdeef0; --warn:#b26a00; --warn-bg:#fff6e6;
+    --h:#9c27b0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 24px 80px;}
+  header.doc{border-left:5px solid var(--core);padding:6px 0 6px 18px;margin-bottom:8px;}
+  h1{font-size:26px;margin:0 0 4px;letter-spacing:-.2px;}
+  .sub{color:var(--muted);font-size:14px;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 28px;}
+  .chip{background:var(--panel);border:1px solid var(--line);border-radius:999px;
+    padding:4px 12px;font-size:12.5px;color:var(--muted);}
+  .chip b{color:var(--ink);font-weight:600;}
+  h2{font-size:19px;margin:38px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--line);}
+  h3{font-size:15.5px;margin:22px 0 8px;}
+  section{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px 22px 20px;margin-bottom:22px;}
+  p{margin:10px 0;}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.4px;}
+  code{background:#eef1f5;border-radius:4px;padding:1px 5px;font:12.5px/1.5 "SF Mono",Consolas,Menlo,monospace;}
+  pre{background:#0f172a;color:#e2e8f0;border-radius:8px;padding:14px 16px;overflow-x:auto;
+    font:12.5px/1.6 "SF Mono",Consolas,Menlo,monospace;margin:12px 0;}
+  pre .c{color:#7c8698;}
+  .tag{display:inline-block;border-radius:5px;padding:1px 7px;font-size:11.5px;font-weight:600;}
+  .t-gen{background:var(--core-bg);color:var(--core);}
+  .t-doc{background:var(--doc-bg);color:#2f7d48;}
+  .t-gate{background:var(--gate-bg);color:var(--gate);}
+  .t-L{background:#eef7ef;color:#2f7d48;} .t-M{background:#fff6e6;color:var(--warn);}
+  .t-H{background:#fbeaf7;color:var(--h);}
+  .callout{border-left:4px solid var(--doc);background:var(--doc-bg);border-radius:0 8px 8px 0;padding:12px 16px;margin:16px 0;}
+  .callout.warn{border-color:var(--warn);background:var(--warn-bg);}
+  .callout.rec{border-color:var(--core);background:var(--core-bg);}
+  ul{margin:8px 0 8px 2px;padding-left:20px;} li{margin:4px 0;}
+  .phase{border:1px solid var(--line);border-radius:9px;padding:2px 18px 14px;margin:14px 0;}
+  .phase h3{display:flex;align-items:center;gap:10px;}
+  .pn{background:var(--core);color:#fff;border-radius:6px;width:26px;height:26px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:0 0 auto;}
+  .files{font-family:"SF Mono",Consolas,monospace;font-size:12px;color:var(--muted);}
+  .foot{color:var(--muted);font-size:13px;margin-top:26px;text-align:center;}
+  .did{font-weight:700;color:var(--h);white-space:nowrap;}
+  .ok{color:#2f7d48;font-weight:700;} .no{color:var(--gate);font-weight:700;}
+  .mono{font-family:"SF Mono",Consolas,monospace;font-size:12px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1>strat-dist — Stack-Neutral Generic Distribution</h1>
+  <div class="sub">Finish the public distribution: make the already-board-agnostic <code>sg</code> core <b>fully stack-neutral</b>, add the missing generic <code>INSTALL.md</code>, and document the derivation so it is reproducible.</div>
+</header>
+
+<div class="meta">
+  <span class="chip"><b>Type</b> · Feature Plan (PF)</span>
+  <span class="chip"><b>Repo</b> · Stratagem @ <code>tt/strat-dist</code></span>
+  <span class="chip"><b>Date</b> · 2026-07-19</span>
+  <span class="chip"><b>Tracer Bullet</b> · <span class="no">NO</span> — single-layer prose genericization, no cross-layer integration</span>
+  <span class="chip"><b>Est. scope</b> · ~9 edited files + 2 net-new docs + 1 small fix</span>
+  <span class="chip"><b>Predecessor</b> · <code>clean-core-distributable_260718</code> (board-neutral ✅)</span>
+  <span class="chip"><b>Next</b> · <code>/cp</code></span>
+</div>
+
+<section>
+  <h2>1 · Goal</h2>
+  <p>The <code>sg</code> plugin on <code>tt/strat-dist</code> is a <b>hand-derived distributable of the coder flavor</b>, already board-neutralized (commit <code>dd4deee</code>: ADO naming stripped, <code>stratagem-ado</code> removed, notify seam present, <code>stratagem-tavily</code> add-on shipped). It is <b>not yet stack-neutral</b>: the skills still bake in intelliscience's C#/WPF/.NET stack (<code>IVia.*</code>, Castle.Windsor, OnnxRuntime, OpenCV, GoogleTest/MSTest, <code>npm</code>/<code>eslint</code>, <code>.cs/.xaml</code>, native-C++ interop). This feature closes three gaps:</p>
+  <ul>
+    <li><b>Genericize the stack specifics</b> across the skills so the core privileges no language, framework, or test runner (the objective bar: the stack-neutral grep gate reads clean).</li>
+    <li><b>Add the generic <code>INSTALL.md</code></b> (the originating question) — a concrete, org-neutral onboarding doc.</li>
+    <li><b>Document the derivation</b> (<code>docs/DERIVATION.md</code>) so <code>strat-dist</code> is a reproducible transform of the coder flavor, not a black-box one-off.</li>
+  </ul>
+  <div class="callout">
+    <b>Decision already locked (this session):</b> <span class="no">NOT</span> a compiler flavor. The compiler (<code>compile.mjs</code> + <code>core/</code> + <code>templates/</code>) stays untouched in the separate <code>stratagem-core</code> repo. <code>strat-dist</code> is a hand-derived snapshot of the coder plugin. <b>Accepted tradeoff:</b> the snapshot drifts from core; re-deriving is a manual, <em>documented</em> procedure — which is exactly why Gap 3 (DERIVATION) exists.
+  </div>
+</section>
+
+<section>
+  <h2>2 · Current state — the stack-bound surface</h2>
+  <p>Two classes of hit, and the split matters for how we verify (see §6):</p>
+
+  <h3>2a · Grep-visible hits <span class="tag t-gen">the stack-neutral gate catches these</span></h3>
+  <p>Running the seed's gate over <code>plugins/stratagem-core/</code> — <span class="mono">rg -iE 'IVia|\.cs\b|\.xaml|WPF|Castle\.Windsor|OnnxRuntime|OpenCV|TensorRT|gtest|MSTest|dotnet test|vstest|npm test|eslint|Native C\+\+|intelliscience|ISCI'</span> — surfaces these real targets:</p>
+  <table>
+    <tr><th>File</th><th>Line(s)</th><th>What is baked in</th><th>Genericize to</th><th>Cx</th></tr>
+    <tr><td class="mono">pica/SKILL.md</td><td>9, 30–41</td><td>Purpose + all 8 audit dimensions are C#/WPF/Windsor/TBB/XAML/interop-specific</td><td><b>Full re-author</b> → stack-neutral consistency dimensions (§4, D2)</td><td><span class="tag t-M">M</span></td></tr>
+    <tr><td class="mono">ax/SKILL.md</td><td>46, 97</td><td>Context7 library list (<code>Castle.Windsor, CommunityToolkit.Mvvm, Microsoft.ML.OnnxRuntime, OpenCV</code>); <code>/pica</code> "Layer-5 <code>.cs/.xaml</code> … Native C++ below interop seam out of scope"</td><td>"the libraries your task touches"; "the changed source files"</td><td><span class="tag t-L">L</span></td></tr>
+    <tr><td class="mono">fx/SKILL.md</td><td>52, 100</td><td>Same library list; same <code>/pica</code> Layer-5 line</td><td>Same as <code>ax</code></td><td><span class="tag t-L">L</span></td></tr>
+    <tr><td class="mono">max/SKILL.md</td><td>81</td><td>Same <code>/pica</code> Layer-5 <code>.cs/.xaml</code> + interop line</td><td>"the changed source files"</td><td><span class="tag t-L">L</span></td></tr>
+    <tr><td class="mono">cp/SKILL.md</td><td>92, 123, 306</td><td><code>Verify: npm test … &amp;&amp; eslint</code> example; <code>Board-Area</code> example uses <code>ISCI - Consolidated - Kanban</code>; "manual smoke test of <code>IVia.App (WPF)</code>"</td><td>"your test runner, scoped to this task's suite"; neutral board-area example; "the app"</td><td><span class="tag t-L">L</span></td></tr>
+    <tr><td class="mono">wiki-ingest/SKILL.md</td><td>152, 300</td><td><code>scope/vision</code> for <code>ISCI-Vision-Vault</code> as the worked scope example</td><td>neutral example scope (<code>scope/&lt;your-project&gt;</code>)</td><td><span class="tag t-L">L</span></td></tr>
+    <tr><td class="mono">wiki-graph-audit/SKILL.md</td><td>116</td><td>Same <code>scope/vision</code> / <code>ISCI-Vision-Vault</code> example</td><td>neutral example scope</td><td><span class="tag t-L">L</span></td></tr>
+  </table>
+
+  <h3>2b · Grep-invisible hits <span class="tag t-gate">the gate does NOT catch these — read-scan required</span></h3>
+  <div class="callout warn">
+    <b>Key finding — the gate is necessary but not sufficient.</b> The pattern matches only its literal tokens. Stack-bound <em>examples</em> that name <b>other</b> libraries pass it clean. Confirmed:
+    <ul>
+      <li><code>stratagem-core-rules.md:282</code> — the context7 routing bullet privileges <code>React, Next.js, Prisma, MSAL, AG Grid, Tailwind, AWS/Azure SDKs</code>. None of these are in the grep pattern → <b>invisible to the gate</b>, still stack-flavored. Generalize to a category, not a brand list.</li>
+      <li><code>ex/SKILL.md</code>, <code>ps/SKILL.md</code> — the seed flags "issue-class / diagnostic / exploration phrasing." Zero grep hits; <b>verify by read-scan</b> at build (likely light or no-op — confirm, don't assume).</li>
+    </ul>
+    <b>Implication:</b> Phase 1 must pair the grep gate with a human/agent read-pass for stack-flavored examples.
+  </div>
+
+  <div class="callout warn">
+    <b>Second finding — the gate over-reports.</b> The <code>ISCI</code> token matches the word "<b>disci</b>pline" case-insensitively (chars <code>i-s-c-i</code>). That alone produces <b>6 false hits</b> in <code>stratagem-core-rules.md</code>. As written, the gate can <em>never</em> read zero. The plan's verification must anchor the token — <code>ISCI-Vision</code> or <code>\bISCI\b</code> — or the "target zero" bar is unreachable (see §6, D3).
+  </div>
+</section>
+
+<section>
+  <h2>3 · The other two deliverables (net-new)</h2>
+
+  <h3>3a · <code>INSTALL.md</code> (repo root) — the originating question <span class="tag t-doc">doc</span></h3>
+  <p>There is <b>no</b> <code>plugins/stratagem-core/INSTALL.md</code> on this branch (it left with the ADO scrub), and <code>readme.md</code>'s install section uses an <code>&lt;owner&gt;/stratagem</code> placeholder and stops short of the auto-install mechanics. A dedicated root <code>INSTALL.md</code> documents, concretely:</p>
+  <ul>
+    <li><b>The 3-line marketplace install</b> — <span class="mono">claude plugin marketplace add tony-thomas-git/Stratagem</span> → <span class="mono">plugin install sg@stratagem</span> → restart. (Note the repo is <code>Stratagem</code>; the marketplace name is <code>stratagem</code>; plugins install as <code>sg@stratagem</code>.)</li>
+    <li><b><code>sg</code> is zero-config</b> — <code>defaultEnabled:true</code>, full lifecycle with zero external dependencies.</li>
+    <li><b>How the workflow self-installs</b> — the <code>SessionStart</code> hook (<code>hooks/hooks.json</code> → <code>sync-autonomy-workflow.sh</code>) copies <code>workflows/autonomy-loop.js</code> into each project's <code>.claude/workflows/</code> (idempotent, git-repo-only, skip-loud); plus the one-time <code>Workflow(autonomy-loop)</code> grant and the pre-grant <code>.claude/settings.json</code> snippet.</li>
+    <li><b>The only unique per-install setup</b> — the optional Tavily key at <code>~/.claude/plugins/data/stratagem-tavily-stratagem/tavily.config.json</code> → <code>{ "apiKey": "…" }</code>.</li>
+    <li>Linked from <code>readme.md</code> (trim its install block to point here).</li>
+  </ul>
+  <p style="margin-top:14px"><b>Command structure the doc will carry.</b> The core is a zero-config 3-liner; the Tavily add-on is a <em>separate, optional</em> install that ships OFF (<code>defaultEnabled:false</code>), so it needs <b>install <span class="ok">and</span> enable</b>:</p>
+  <pre><span class="c"># Core — git-backed marketplace, zero external dependencies, defaultEnabled:true</span>
+claude plugin marketplace add tony-thomas-git/Stratagem
+claude plugin install sg@stratagem
+<span class="c"># then restart Claude Code — /help should list /sg:*</span></pre>
+  <pre><span class="c"># Optional add-on (recommended) — ships DISABLED, so two commands:</span>
+claude plugin install stratagem-tavily@stratagem
+claude plugin enable  stratagem-tavily@stratagem
+<span class="c"># then add your key (free tier at https://app.tavily.com):</span>
+<span class="c">#   ~/.claude/plugins/data/stratagem-tavily-stratagem/tavily.config.json  ->  { "apiKey": "..." }</span></pre>
+  <p style="font-size:13px;color:var(--muted)">Source material already exists in the vault — <code>[[plugin-marketplace-distribution]]</code>, <code>[[workflow-auto-install-hook]]</code>, <code>[[bundled-mcp-launcher-shim]]</code> — so this is synthesis, not discovery.</p>
+
+  <h3>3b · <code>docs/DERIVATION.md</code> — reproducibility <span class="tag t-doc">doc</span></h3>
+  <ul>
+    <li>What <code>strat-dist</code> <em>is</em>: the coder <code>sg</code> plugin, board-neutralized (done) + stack-neutralized (this plan) + the <code>stratagem-tavily</code> add-on.</li>
+    <li>A <b>genericization map</b> — the §2 table, promoted to a durable "what was replaced and why" record.</li>
+    <li>The steps to <b>re-derive</b> when the coder flavor updates (manual, documented — the accepted tradeoff).</li>
+    <li><b>Stretch, not required (D5):</b> a <code>scripts/derive-generic.sh</code> that copies + substitutes. The doc is the baseline; the script is an optional new abstraction.</li>
+  </ul>
+
+  <h3>3c · <code>.gitignore</code> discrepancy fix <span class="tag t-gate">small fix</span></h3>
+  <p><code>plugins/stratagem-tavily/INSTALL.md:73</code> claims "the repo-root <code>.gitignore</code> ignores <code>**/tavily.config.json</code> as a second line of defence" — but the actual <code>.gitignore</code> has <b>no such rule</b>. Reconcile (D4): add <code>**/tavily.config.json</code> to <code>.gitignore</code> (keeps the security posture the doc promises) rather than weakening the claim.</p>
+</section>
+
+<section>
+  <h2>4 · Key design decisions <span style="font-size:13px;color:var(--muted)">(for <code>/cp</code> to lock)</span></h2>
+  <table>
+    <tr><th>ID</th><th>Decision</th><th>Options</th><th>Recommendation</th></tr>
+    <tr>
+      <td class="did">D1</td>
+      <td>Genericization voice</td>
+      <td>Neutral-noun phrasing ("the app", "the libraries your task touches", "your test runner scoped to this task's suite") · or a worked example in one neutral stack (e.g. a JS snippet)</td>
+      <td><b>Neutral-noun phrasing.</b> A worked example just privileges a different stack. Placeholder nouns privilege none — matches the seed's intent.</td>
+    </tr>
+    <tr>
+      <td class="did">D2</td>
+      <td><code>pica</code> re-author shape</td>
+      <td>Fixed new list of generic dimensions · or defer the dimension set to the project's <code>CLAUDE.md</code> + style docs, keeping only the mechanics</td>
+      <td><b>Defer to <code>CLAUDE.md</code>.</b> The <code>Stack:</code> line (L24) is <em>already</em> generic ("derive scope from the active project's CLAUDE.md"). Keep the banner / report / action-by-mode mechanics verbatim; replace the 8 IVia dimensions with a short stack-neutral set (DI/registration consistency, concurrency/async, resource-lifecycle ordering, style-guide conformance, boundary/seam coordination, new-component wiring) framed as "the dimensions your CLAUDE.md + style docs define." No new abstraction → keeps this M, not H.</td>
+    </tr>
+    <tr>
+      <td class="did">D3</td>
+      <td>Verification gate (the "fully stack-neutral" bar)</td>
+      <td>Ship the seed's grep verbatim · or the <b>anchored</b> gate + a read-scan checklist</td>
+      <td><b>Anchored gate + read-scan.</b> Fix <code>ISCI</code>→<code>ISCI-Vision|\bISCI\b</code> (kills the "discipline" false positives) and pair it with the §2b read-scan for brand examples. Adopt as the plan's <code>## Integration-Verify:</code> anchor.</td>
+    </tr>
+    <tr>
+      <td class="did">D4</td>
+      <td><code>.gitignore</code> reconciliation</td>
+      <td>Add <code>**/tavily.config.json</code> rule · or edit the INSTALL.md claim to match reality</td>
+      <td><b>Add the rule.</b> Defence-in-depth the doc already promises; the config lives in the data dir, so the rule is pure belt-and-suspenders and costs nothing.</td>
+    </tr>
+    <tr>
+      <td class="did">D5</td>
+      <td><code>DERIVATION</code> scope</td>
+      <td>Doc-only baseline · or doc + <code>scripts/derive-generic.sh</code></td>
+      <td><b>Doc-only now.</b> Per the codev axiom, a substitution script is a new abstraction with its own failure surface; the doc is the reproducible baseline. Script is a fast-follow if re-derivation becomes frequent.</td>
+    </tr>
+    <tr>
+      <td class="did">D6</td>
+      <td><code>INSTALL.md</code> vs <code>readme.md</code> overlap</td>
+      <td>Fold install into <code>readme.md</code> · or a dedicated <code>INSTALL.md</code>, readme links it</td>
+      <td><b>Dedicated <code>INSTALL.md</code>.</b> It goes deeper than a README should (auto-install mechanics, settings pre-grant, Tavily key). Concrete marketplace path <code>tony-thomas-git/Stratagem</code>; readme's install block trimmed to a pointer.</td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>5 · Phased implementation <span style="font-size:13px;color:var(--muted)">(no tracer bullet — natural decomposition; verify last)</span></h2>
+
+  <div class="phase">
+    <h3><span class="pn">1</span> Genericize the stack specifics <span class="tag t-gen">the core of the work</span> <span class="tag t-M">M aggregate · L per file</span></h3>
+    <p>Direct find/replace across the grep-visible hits (§2a) + the <code>pica</code> re-author (D2) + the read-scan for grep-invisible examples (§2b). These are baked-in compiled artifacts — no <code>{{VAR}}</code> templating; values are literal, so edits are direct.</p>
+    <ul>
+      <li>Apply D1 phrasing to <code>ax</code>, <code>fx</code>, <code>max</code>, <code>cp</code>, <code>wiki-ingest</code>, <code>wiki-graph-audit</code> at the enumerated lines.</li>
+      <li>Re-author <code>pica/SKILL.md</code> per D2 (heaviest single item; keep mechanics, swap dimensions).</li>
+      <li>Generalize <code>stratagem-core-rules.md:282</code> brand list; read-scan <code>ex</code> + <code>ps</code> for stack-flavored phrasing and neutralize any found.</li>
+      <li><b>Re-confirm exact lines at build</b> — line numbers here are a 2026-07-19 snapshot; grep first, edit second.</li>
+    </ul>
+    <div class="files">files: pica · ax · fx · max · cp · wiki-ingest · wiki-graph-audit · stratagem-core-rules.md · (ex, ps read-scan)</div>
+  </div>
+
+  <div class="phase">
+    <h3><span class="pn">2</span> Author <code>INSTALL.md</code> (root) <span class="tag t-doc">deliverable</span> <span class="tag t-L">L</span></h3>
+    <ul>
+      <li>Write per §3a from the vault sources; concrete <code>tony-thomas-git/Stratagem</code> marketplace path.</li>
+      <li>Link from <code>readme.md</code>; trim readme's install block to a pointer + replace its <code>&lt;owner&gt;/stratagem</code> placeholder.</li>
+    </ul>
+    <div class="files">files: INSTALL.md (new) · readme.md</div>
+  </div>
+
+  <div class="phase">
+    <h3><span class="pn">3</span> Author <code>docs/DERIVATION.md</code> <span class="tag t-doc">reproducibility</span> <span class="tag t-L">L</span></h3>
+    <ul>
+      <li>Write per §3b: what/how/re-derive-steps + the genericization map (promote §2 table). Doc-only per D5.</li>
+    </ul>
+    <div class="files">files: docs/DERIVATION.md (new)</div>
+  </div>
+
+  <div class="phase">
+    <h3><span class="pn">4</span> Fix the <code>.gitignore</code> discrepancy <span class="tag t-gate">small fix</span> <span class="tag t-L">L</span></h3>
+    <ul>
+      <li>Add <code>**/tavily.config.json</code> to <code>c:/code/Stratagem/.gitignore</code> per D4.</li>
+    </ul>
+    <div class="files">files: .gitignore</div>
+  </div>
+
+  <div class="phase">
+    <h3><span class="pn">5</span> Verify &amp; close <span class="tag t-gate">gate</span> <span class="tag t-L">L</span></h3>
+    <ul>
+      <li>Run the §6 test matrix — the anchored stack-neutral gate, the board-neutral regression guard, the add-on integrity checks, and the doc accuracy check.</li>
+      <li>All uncommitted on <code>tt/strat-dist</code> for review (never-commit).</li>
+    </ul>
+    <div class="files">files: (verification only)</div>
+  </div>
+</section>
+
+<section>
+  <h2>6 · Testing strategy</h2>
+  <table>
+    <tr><th>#</th><th>Test</th><th>What it proves</th></tr>
+    <tr>
+      <td>T1</td>
+      <td><b>Stack-neutral gate (anchored, primary).</b><br>
+        <span class="mono">rg -iE 'IVia|\.cs\b|\.xaml|WPF|Castle\.Windsor|OnnxRuntime|OpenCV|TensorRT|gtest|MSTest|dotnet test|vstest|npm test|eslint|Native C\+\+|intelliscience|ISCI-Vision|\bISCI\b' plugins/stratagem-core</span></td>
+      <td>Fully stack-neutral (target zero real hits). Anchoring <code>ISCI</code> removes the "discipline" false positives (D3).</td>
+    </tr>
+    <tr>
+      <td>T2</td>
+      <td><b>Read-scan for brand examples</b> — manual pass over <code>stratagem-core-rules.md</code>, <code>ex</code>, <code>ps</code> for library/framework names outside the gate's alphabet (§2b).</td>
+      <td>Catches the stack-flavored wording the grep is structurally blind to.</td>
+    </tr>
+    <tr>
+      <td>T3</td>
+      <td><b>Board-neutral regression guard</b> — <span class="mono">! rg -iqE 'ADO-|azure devops|ado-board-config|stratagem-ado' plugins/stratagem-core</span> (minus the SDK false positive).</td>
+      <td>The already-done board neutralization still holds.</td>
+    </tr>
+    <tr>
+      <td>T4</td>
+      <td><b>Add-on integrity</b> — <span class="mono">node --test plugins/stratagem-tavily/test/resolve-cred-dir.test.mjs</span> (9/9); <span class="mono">node --check …/tavily-mcp-launch.js</span>; <code>marketplace.json</code> valid (<code>sg</code> + <code>stratagem-tavily</code>).</td>
+      <td>Genericization + <code>.gitignore</code> touch didn't regress the Tavily add-on.</td>
+    </tr>
+    <tr>
+      <td>T5</td>
+      <td><b>Doc accuracy</b> — <code>INSTALL.md</code> documents install + workflow auto-install + Tavily key; <code>readme.md</code> links it; the <code>.gitignore</code> claim in tavily <code>INSTALL.md</code> is now true.</td>
+      <td>The originating question is answered and internally consistent.</td>
+    </tr>
+    <tr>
+      <td>T6</td>
+      <td><b>Publish smoke (once published)</b> — <span class="mono">marketplace add tony-thomas-git/Stratagem</span> → <span class="mono">install sg@stratagem</span> → <code>/help</code> shows <code>/sg:*</code>; spot-read a few skill prompts for stack-specific wording.</td>
+      <td>End-to-end install works and reads clean to a fresh user.</td>
+    </tr>
+  </table>
+  <p style="font-size:13px;color:var(--muted)"><b>Suggested plan header:</b> <code>## Integration-Verify:</code> = T1 (anchored gate) + T3 (regression) + T4 (add-on), chained. T2/T5 are read-verified; T6 is post-publish.</p>
+</section>
+
+<section>
+  <h2>7 · Risks &amp; open edges</h2>
+  <ul>
+    <li><span class="tag t-M">M</span> <b>Cross-cutting edit surface.</b> ~9 skill files change. Each edit is mechanical (L), but the aggregate touches &gt;5 outputs — treat Phase 1 as one coherent sweep and re-grep after, so no same-family file is missed (cf. the scope-by-category-blindness anti-pattern).</li>
+    <li><span class="tag t-M">M</span> <b>Gate blindness (mitigated).</b> The grep cannot see brand examples or soft phrasing — hence T2's mandatory read-scan. Do not treat a clean T1 as proof of neutrality on its own.</li>
+    <li><span class="tag t-L">L</span> <b>Drift from core.</b> Accepted + documented (DERIVATION). Not solved here by design.</li>
+    <li><span class="tag t-L">L</span> <b><code>pica</code> semantic loss.</b> Re-authoring away the IVia dimensions must not drop the <em>mechanism</em> (CLAUDE.md-derived scope + PICA-log + report format). Keep mechanics byte-stable; only the dimension list is generic.</li>
+    <li><span class="tag t-L">L</span> <b>Line-number staleness.</b> §2 lines are a snapshot; the build re-greps before editing.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>8 · Out of scope / superseded</h2>
+  <ul>
+    <li><b>The compiler-flavor route</b> (<code>templates/generic/</code>, compiler flags, golden/CI in <code>stratagem-core</code>) — abandoned; the compiler stays untouched in the intelliscience repo.</li>
+    <li><b>Auto-tracking upstream coder changes</b> — accepted as a manual, documented re-derivation.</li>
+    <li><b>Building any board/chat adapter</b> — the neutral seams are already present; adapters are external, separate efforts.</li>
+    <li><b>No git commits</b> — all edits left uncommitted on <code>tt/strat-dist</code> for review (never-commit).</li>
+  </ul>
+</section>
+
+<p class="foot">Feature plan authored by PF · uncommitted, for review · <b>Next:</b> <code>/cp</code> reads this <code>.html</code> and emits the <code>.md</code> execution plan.</p>
+
+</div>
+</body>
+</html>

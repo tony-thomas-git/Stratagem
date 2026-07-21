@@ -279,7 +279,7 @@ The workflow operating modes, invoked as `/sg:<name>`:
 
 Always pick the cheapest tool that answers the question.
 
-1. **Library / framework / SDK / CLI / cloud-service docs → context7. Always.** (React, Next.js, Prisma, MSAL, AG Grid, Tailwind, AWS/Azure SDKs, etc.)
+1. **Library / framework / SDK / CLI / cloud-service docs → context7. Always.** (any library, framework, SDK, CLI, or cloud service — the specific ones your task touches)
 2. For everything else, climb the **Tavily ladder** from cheapest up:
    - `tavily_search` — single keyword query for an error message, news, or current state
    - `tavily_extract` — known URL, want clean content (use after a search returns a good link)
@@ -322,4 +322,4 @@ When the user provides feedback during task execution:
 
 ## Wiki Vault Resolution
 
-Skills resolve a project's wiki vault by **convention**. The vault is the **`Vault\` folder at the git root of the current working directory** (`<project-root>\Vault`). Exists → route knowledge through it (`/sg:wiki-ingest`); absent → fall back to `docs/patterns/*`. The folder's presence *is* the opt-in — no registration step, a single source of truth (the in-repo `Vault\`), nothing to drift. Per-vault scope tags (e.g. `scope/vision`) live in each vault's own `meta/scopes.md`.
+Skills resolve a project's wiki vault by **convention**. The vault is the **`Vault\` folder at the git root of the current working directory** (`<project-root>\Vault`). Exists → route knowledge through it (`/sg:wiki-ingest`); absent → fall back to `docs/patterns/*`. The folder's presence *is* the opt-in — no registration step, a single source of truth (the in-repo `Vault\`), nothing to drift. Per-vault scope tags (e.g. `scope/<your-project>`) live in each vault's own `meta/scopes.md`.

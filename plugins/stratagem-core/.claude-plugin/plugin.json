@@ -1,7 +1,7 @@
 {
   "name": "sg",
-  "version": "0.1.0",
-  "description": "Stratagem Core — workflow operating modes (PF/CP/PX/AX/…)",
+  "version": "0.2.0",
+  "description": "Stratagem Core — the generic, board-agnostic AI coding workflow engine. PF/CP/PX/AX/CF lifecycle, /phx + budget-guarded /if autonomy loop, /ex→/fx recovery; neutral board + notify seams for external adapters. Zero external dependencies.",
   "author": { "name": "Tony Thomas" },
   "defaultEnabled": true
 }

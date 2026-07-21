@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "raw/Plans/🪙Steward-Patterns.md",
+                "file": "wiki/api/board-sync-event-map.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "🪙Steward-Patterns"
+              "title": "board-sync-event-map"
             }
           }
         ]
@@ -74,7 +74,8 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
@@ -182,6 +183,13 @@
   },
   "active": "27022d986d4bcb6c",
   "lastOpenFiles": [
+    "wiki/api/autonomy-loop-args.md",
+    "wiki/architecture/ado-bridge.md",
+    "raw/research/karpathy-llm-wiki-index-first-retrieval.md",
+    "wiki/index.md",
+    "wiki/architecture/skill-workflow-engine.md",
+    "wiki/architecture/system-topology.md",
+    "raw/Plans/🪙Steward-Patterns.md",
     "wiki/anti-patterns/workflow-script-authoring-gotchas.md",
     "wiki/anti-patterns/scope-by-category-blindness.md",
     "wiki/anti-patterns/research-tool-misrouting.md",
@@ -206,18 +214,11 @@
     "wiki/architecture/autonomy-loop-and-budget-guard.md.tmp.3564.9a0375988a81",
     "wiki/architecture/autonomy-loop-and-budget-guard.md.tmp.3564.8d7eb195f693",
     "wiki/architecture/autonomy-loop-and-budget-guard.md.tmp.3564.855923f0c56e",
-    "raw/Plans/🪙Steward-Patterns.md",
     "raw/Plans/gdrive_mcp_260313_150820_plan.md",
     "raw/Plans/hooks-registry.md",
     "raw/Plans/mpx-hard-stop_260225_retrospective.md",
     "raw/Plans/mpx-hard-stop-fix_260225.md",
     "raw/testing-philosophy-v3.md",
-    "raw/Steward-CLAUDE.md",
-    "raw/stratagem-testing-workflow.svg",
-    "wiki/meta/skill-catalog.md",
-    "wiki/meta/operating-modes.md",
-    "wiki/meta/contradictions.md",
-    "wiki/retrospectives/loop-engineering-phase1-verifier.md",
-    "README.md"
+    "raw/stratagem-testing-workflow.svg"
   ]
 }

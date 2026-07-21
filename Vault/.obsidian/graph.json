@@ -1,6 +1,6 @@
 {
   "collapse-filter": false,
-  "search": "-file:index -file:changelog",
+  "search": "-path:\"raw\", -file:\"index\", -file:\"CHANGELOG\"",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -88,6 +88,6 @@
   "repelStrength": 12,
   "linkStrength": 1,
   "linkDistance": 220,
-  "scale": 0.18462325879366082,
-  "close": true
+  "scale": 0.9346552205177797,
+  "close": false
 }

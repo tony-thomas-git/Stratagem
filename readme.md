@@ -1,210 +1,77 @@
-# 🎯 Stratagem Framework
+# 🎯 Stratagem
 
-> A Orchestration framework designed for AI-assisted development with Claude
+> The clean, board-agnostic AI coding workflow core for Claude Code.
 
-[![Version](https://img.shields.io/badge/version-3.0-blue.svg)](https://github.com/tony-thomas-git/stratagem)
-[![Status](https://img.shields.io/badge/status-active-success.svg)](https://github.com/tony-thomas-git/stratagem)
-[![Claude Compatible](https://img.shields.io/badge/claude-compatible-purple.svg)](https://claude.ai)
+Stratagem is a Claude Code **plugin marketplace** that ships one plugin — **`sg`**, the generic Stratagem Core. It's a self-contained workflow engine: a full plan → execute → verify → retrospect lifecycle plus a budget-guarded autonomy loop, running with **zero external dependencies**. External board and chat systems attach through **neutral seams** by presence-check — none are bundled, and the core names no external system.
 
-## 🚀 Overview
+## Why "generic"
 
-Stratagem is a strategic project organization framework that transforms chaotic development into disciplined execution. Built specifically for Claude Code integration, it implements a human-in-the-loop workflow ensuring AI assistance with human oversight at critical decision points.
+This is the **generic distribution** of Stratagem. It carries no organization-specific integrations: the core stays board-blind and chat-blind, exposing neutral seams that any external adapter can resolve to. Bring your own board (Azure DevOps, Jira, GitHub Projects, …) or chat (Teams, Slack, …) as a **separate adapter plugin** — the core never changes.
 
-### Key Features
+## What `sg` gives you
 
-- 🎖️ **Agile-Inspired Hierarchy** - Epics, Campaigns, Tactics structure
-- 🔄 **State Machine Workflow** - Clear progression from planning to execution
-- 👤 **Human Checkpoints** - Mandatory approval gates before code execution
-- 📊 **Progress Tracking** - Real-time task completion monitoring
-- 🤖 **AI-First Design** - Optimized for Claude Code integration
+- **The lifecycle** — `/sg:pf` (plan features) → `/sg:cp` (create plan) → `/sg:px` → `/sg:ax` (execute) → `/sg:cf` (complete), with `/sg:rs` retrospectives.
+- **Phase execution** — `/sg:phx` chains `/px`→`/ax` per phase (human-in-the-loop; you watch cost, it halts on error).
+- **Unattended autonomy** — `/sg:if` runs the loop itself under a hard token **budget**, verifier-gated per task, with bounded `/ex`→`/fx` auto-recovery and a plan-level integration gate.
+- **Discipline built in** — Trust-But-Verify gates, tracer-bullet slicing, and CORPUS-READ-FIRST (consult your in-repo `Vault/` knowledge base before the web).
+- **PICA adapts to your codebase** — `/pica` (the post-implementation compliance audit) derives its audit dimensions from your project's `CLAUDE.md` + style docs, not a baked-in stack; populating those *trains it on your patterns*.
+- **Neutral seams** — a board seam `{ event, syncId, task }` and a notify seam `{ event, summary, task }`, both presence-checked (silent no-op with no adapter). Contract: [`plugins/stratagem-core/SEAM-CONTRACT.md`](plugins/stratagem-core/SEAM-CONTRACT.md).
 
-## 📁 Project Structure
-
-```
-stratagem/
-├── epics/        # Major feature stories (strategic level)
-├── campaigns/    # Sprint plans & roadmaps (operational level)
-├── tactics/      # Bug fixes & quick wins (tactical level)
-├── intel/        # Research, specs, decisions
-├── watchlist/    # Risks and monitoring
-└── templates/    # Reusable document templates
-```
-
-## 🔄 Workflow States
-
-The Stratagem workflow implements a sophisticated state machine:
-
-```mermaid
-graph LR
-    START --> PF[📋 Plan Features]
-    PF --> CP[📁 Create Plan]
-    CP --> PX[🔍 Plan Execute]
-    PX --> |Human Approval| AX[⚡ Approve Execute]
-    AX --> |Human Review| CF[🎯 Complete Feature]
-    AX --> XE[🚨 Execution Error]
-    XE --> FX[🔧 Fix Execution]
-    FX --> PX
-    CF --> END
-```
-
-### Command Modes
-
-| Mode | Name | Purpose | Human Gate |
-|------|------|---------|------------|
-| PF | Plan Features | Define what to build | No |
-| CP | Create Plan | Generate task breakdown | No |
-| PX | Plan Execute | Select task & strategy | **Yes - Approval** |
-| AX | Approve Execute | Implement approved plan | **Yes - Review** |
-| XE | Execution Error | Identify issues | No |
-| FX | Fix Execution | Resolve errors | No |
-| CF | Complete Feature | Finalize & document | No |
-| RP | Read Plan | Resume existing work | No |
-
-## 🏃 Quick Start
-
-### 1. Initialize a New Feature
-
-```bash
-# Create a new epic
-mkdir -p epics
-echo "# 1.authentication-system" > epics/1.authentication-system.md
-
-# Start planning
-claude-code PF "Create user authentication system"
-```
-
-### 2. Execute the Workflow
-
-```bash
-# Create detailed plan
-claude-code CP
-
-# Begin execution loop
-claude-code PX  # Select next task
-# 👤 Human: Review and approve plan
-claude-code AX  # Execute approved plan
-# 👤 Human: Review implementation
-# Repeat until all tasks complete
-
-# Complete the feature
-claude-code CF
-```
-
-### 3. Resume Work
-
-```bash
-# Pick up where you left off
-claude-code RP
-claude-code PX  # Continue with next task
-```
-
-## 📋 File Naming Convention
-
-Stratagem enforces a hierarchical prefixing system:
-
-- `1.` - Epic level (major features)
-- `1.1.` - Feature/Story level
-- `1.1.1.` - Task level
-
-### Examples
+## Install
 
 ```
-epics/
-├── 1.authentication-system.md
-├── 2.payment-processing.md
-
-campaigns/
-├── 1.1.user-registration.md
-├── 1.2.login-flow.md
-
-tactics/
-├── 1.1.1.fix-email-validation.md
-├── 1.1.2.add-password-strength.md
+claude plugin marketplace add tony-thomas-git/Stratagem   # git remote, or a local clone path
+claude plugin install sg@stratagem
+# restart Claude Code to register the /sg:* commands
 ```
 
-## 📄 Plan.md Structure
+`sg` is `defaultEnabled` — it activates on install and runs the full lifecycle with **zero external dependencies**. Verify with `/help` (you should see `/sg:pf`, `/sg:cp`, `/sg:px`, `/sg:phx`, `/sg:if`, …).
 
-Each feature generates a structured plan file:
+**Full walkthrough** — the workflow auto-install, the one-time `Workflow(autonomy-loop)` grant + pre-grant snippet, and the Tavily research key: **[`INSTALL.md`](INSTALL.md)**.
 
-```markdown
-# Feature: User Authentication
-Created: 2025-01-25 14:30
-Status: In Progress (3/7 tasks)
+## Attaching an external board or chat adapter
 
-## Task List
-- [ ] Task 1: Set up database schema
-- [ ] Task 2: Create registration API
-- [x] Task 3: Implement password hashing ✅ 15:02
-- [ ] Task 4: Build login endpoint
+The core is board- and chat-blind by design. To sync a board or push chat notifications, install a **separate adapter plugin** that exposes the neutral seam skill:
 
-## Implementation Notes
-- Using PostgreSQL with bcrypt
-- Following OWASP guidelines
+- A **board adapter** exposes a `board-sync` skill. `/sg:if` resolves it by presence-check and threads it into the loop; task-lifecycle events (`task-started`, `verified`, …) fire across the seam, and the adapter maps them onto its own system's state.
+- A **notify / chat adapter** exposes a `notify-sync` skill (strictly outbound). Task-boundary notifications fire across the notify seam.
+
+Presence contract: **0 adapters → silent no-op · 1 → use it · 2+ → the core asks which.** A board/chat hiccup never changes or fails a task verdict (best-effort, skip-loud). Full details for adapter authors: [`SEAM-CONTRACT.md`](plugins/stratagem-core/SEAM-CONTRACT.md).
+
+## Recommended: enable research (Tavily)
+
+The **one add-on that ships with this distribution** is `stratagem-tavily` — it bundles the Tavily research MCP for the CORPUS-READ-FIRST web-fallback ladder. It ships **disabled** (`defaultEnabled: false`) and adds no dependency: without it, research falls back to built-in `WebSearch`. Enabling it gives sharper, citation-friendly results — a **recommended basic step**:
+
+```
+claude plugin install stratagem-tavily@stratagem
+claude plugin enable  stratagem-tavily@stratagem
+# then add your key (free tier at https://app.tavily.com) at:
+#   ~/.claude/plugins/data/stratagem-tavily-stratagem/tavily.config.json  →  { "apiKey": "<your-key>" }
 ```
 
-## 🛠️ Installation
+Full steps: [`plugins/stratagem-tavily/INSTALL.md`](plugins/stratagem-tavily/INSTALL.md). The core stays research-provider-blind — Tavily is the only bundled add-on; board and chat adapters remain external.
 
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/stratagem.git
-cd stratagem
+## Repository layout
 
-# Create directory structure
-./setup.sh
-
-# Install Claude Code extension
-# (Instructions for your IDE)
+```
+plugins/
+  .claude-plugin/marketplace.json   # the Stratagem marketplace (ships sg + stratagem-tavily)
+  stratagem-core/                   # the sg plugin
+    .claude-plugin/plugin.json      # name: sg · version · defaultEnabled
+    skills/                         # the /sg:* operating modes
+    hooks/                          # SessionStart sync of the autonomy workflow
+    workflows/autonomy-loop.js      # the /sg:if unattended loop
+    SEAM-CONTRACT.md                # neutral board + notify seam contract
+  stratagem-tavily/                 # the one bundled add-on — Tavily MCP, ships disabled
+    .mcp.json · bin/tavily-mcp-launch.js · tavily.config.example.json · INSTALL.md
+Vault/                              # the knowledge base (CORPUS-READ-FIRST)
+Plans/                              # active feature plans
 ```
 
-## 🤝 Contributing
+## Branching
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+This is the long-living **generic** line — it deliberately does not track organization-specific upgrades that live on other branches. Adapters and org-specific integrations stay outside this generic core.
 
-### Development Workflow
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b epic/amazing-feature`)
-3. Commit atomically (`git commit -m '[PX] Add amazing feature'`)
-4. Push to branch (`git push origin epic/amazing-feature`)
-5. Open a Pull Request
-
-## 📊 Project Status
-
-- ✅ **Core Workflow** - Complete and tested
-- ✅ **Human Checkpoints** - Implemented
-- ✅ **Visual Documentation** - SVG workflow diagram
-- 🚧 **Automation Scripts** - In development
-- 📅 **Web Dashboard** - Planned
-
-## 🗺️ Roadmap
-
-### Version 3.1 (Current Sprint)
-- [ ] Automated file organization
-- [ ] Progress tracking dashboard
-- [ ] Template instantiation
-
-### Version 4.0 (Next Release)
-- [ ] Web-based workflow visualizer
-- [ ] Multi-project orchestration
-- [ ] Performance metrics
-
-### Future Vision
-- Team collaboration features
-- CI/CD pipeline integration
-
-## 📚 Documentation
-
-- [Architecture Overview](docs/Stratagem%20Architecture.md)
-- [Workflow Checklist](docs/v3/stratagem-workflow-checklist.md)
-- [As-Built Documentation](docs/as-built-7-25-25.md)
-
-#
 ---
 
-<p align="center">
-  <strong>🎯 Strategic Planning + 🤖 AI Execution + 👤 Human Wisdom = 🚀 Success</strong>
-</p>
-
-<p align="center">
-  Made with ❤️ and strategic thinking
-</p>
+<p align="center"><strong>🎯 Board-agnostic core · neutral seams · zero external dependencies</strong></p>

@@ -78,7 +78,7 @@ argument-hint: "optional instructions"
 
 5. **Post-Implementation Compliance Audit:**
    - Identify the pattern just implemented
-   - Run the `/pica` compliance dimensions (the pica skill is the single source of truth) against the Layer-5 `.cs/.xaml` files touched + their sibling files. Native C++ below the interop seam is out of scope.
+   - Run the `/pica` compliance dimensions (the pica skill is the single source of truth) against the changed source files + their sibling files implementing the same pattern.
    - Emit:
      ```
      COMPLIANCE AUDIT: [Pattern Name]

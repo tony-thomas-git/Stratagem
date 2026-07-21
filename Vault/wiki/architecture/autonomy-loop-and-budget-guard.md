@@ -81,3 +81,4 @@ The loop's mechanics were proven by a real smoke-test run (discrete real-skill s
 - [[trust-but-verify-mid-task-gate]] — where the budget warn/halt surfaces
 - [[tracer-bullet-discipline]] — the single-feature-first build order this followed
 - [[forward-reference-comments-go-stale]] — the seam-comment hazard P3's regression surfaced
+- **twin (`scope/stratagem-core`)** — [[autonomy-loop]] — the same `/if` loop from the implementation side

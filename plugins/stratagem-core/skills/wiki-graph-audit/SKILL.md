@@ -104,7 +104,7 @@ Stray files are reported as part of Category 1 (folder-mismatch) with a special 
 - `updated:` present and matches `^\d{4}-\d{2}-\d{2}$`
 - `tags:` present
   - At least one `status/*` tag (exactly one of `active`, `draft`, `superseded`)
-  - At least one `scope/*` tag (value(s) from the vault's `meta/scopes.md` — e.g. `vision`, `build`, `app`, `storage`, `meta`)
+  - At least one `scope/*` tag (value(s) from the vault's `meta/scopes.md` — e.g. `build`, `app`, `storage`, `meta`)
 - Optional axes (`pattern-family/*`, `layer/*`) — if present, values must be from the closed set
 
 **Detection:** YAML frontmatter delimited by `---`. Parse and validate against rules. On parse failure, report file path with raw error.
@@ -113,7 +113,7 @@ Stray files are reported as part of Category 1 (folder-mismatch) with a special 
 - Missing `updated:` → set to today's date
 - Missing `sources:` → set to `[]` and flag for manual review
 - Missing `status/*` → add `status/draft` (safest)
-- Missing `scope/*` → infer from vault: `scope/vision` for ISCI-Vision-Vault (or a finer `scope/*` per the vault's `meta/scopes.md`); prompt user if ambiguous
+- Missing `scope/*` → infer from vault: `scope/<your-project>` per the vault's `meta/scopes.md` (or a finer `scope/*` for a sub-area); prompt user if ambiguous
 - Invalid `type:` → cannot auto-fix; report only
 
 ### Category 3: `orphans` (no inbound or outbound `[[wikilink]]`)

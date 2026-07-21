@@ -40,5 +40,5 @@ argument-hint: "raw idea or topic"
 5. **Save** to the plans directory as `{topic}_{YYMMDD}_seed.html` (or the project's plans dir per the vault convention). Leave uncommitted for manual review.
 
 **Next:** the seed can flow two ways —
-- `/ss <seed-file>` — **Sync Seed**: drop the seed onto the Azure DevOps board as a spike Story (in `Spike / Waiting on Delivery`) with the seed file attached, for grooming/triage.
+- `/ss <seed-file>` — **Sync Seed**: drop the seed onto the board adapter's seed-sync skill as a spike Story (in `Spike / Waiting on Delivery`) with the seed file attached, for grooming/triage.
 - `/pf` — turn the seed's open questions into a feature plan.

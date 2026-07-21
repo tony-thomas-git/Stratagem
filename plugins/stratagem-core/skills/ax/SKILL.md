@@ -25,6 +25,7 @@ argument-hint: "task reference or instructions"
    - Read the specific task from plan file
    - Review the PX implementation strategy
    - **Board-adapter seam (neutral, presence-checked):** if a board adapter is configured for this run AND the task line carries a `Sync-Id:` marker, notify the adapter that this task is starting (mark in-progress) before implementation. Presence-checked — with no adapter configured this is a silent no-op. Core names no external system; it signals a generic lifecycle event only.
+   - **Notifier-adapter seam (neutral, presence-checked — the outbound twin of the board seam):** if a notifier adapter is configured for this run, push a task-boundary status notification (a human-readable summary of what is starting) via the adapter's notify-sync skill. Presence-checked — with no notifier configured this is a silent no-op. Core names no external system (no chat vendor or channel); it signals a generic lifecycle event only, strictly **outbound** — it never reads or waits for a reply.
 
    **★ CORPUS-READ-FIRST (check the corpus before context7):**
    > **Sync note:** This `CORPUS-READ-FIRST` block is duplicated verbatim in `/pf`, `/cp`, `/px`, `/ax`, `/ex`, `/fx`, `/mpx`, `/max`. **Change-coupling:** any edit here must be applied to all eight SKILL.md files in the same change. **Single source of truth: all eight occurrences must remain identical.**
@@ -42,7 +43,7 @@ argument-hint: "task reference or instructions"
      1. Call `resolve-library-id` with the library name to get its context7-compatible ID
      2. Call `get-library-docs` with that ID to inject live API docs into context
      3. Generate code against retrieved docs — not training-time assumptions
-     - Apply this to every library touched in the task (Castle.Windsor, CommunityToolkit.Mvvm, Microsoft.ML.OnnxRuntime, OpenCV, etc.)
+     - Apply this to every library touched in the task (any library, framework, SDK, or cloud service your task touches)
 
 2. **Implementation Rules:**
    - Follow PX plan exactly - NO deviations without approval
@@ -93,7 +94,7 @@ argument-hint: "task reference or instructions"
 
 6. **Post-Implementation Compliance Audit:**
    - Identify the pattern just implemented
-   - Run the `/pica` compliance dimensions (the pica skill is the single source of truth) against the Layer-5 `.cs/.xaml` files touched + their sibling files. Native C++ below the interop seam is out of scope.
+   - Run the `/pica` compliance dimensions (the pica skill is the single source of truth) against the changed source files + their sibling files implementing the same pattern.
    - Emit:
      ```
      COMPLIANCE AUDIT: [Pattern Name]
