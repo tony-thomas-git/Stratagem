@@ -73,7 +73,13 @@ claude plugin install stratagem-tavily@stratagem
 claude plugin enable  stratagem-tavily@stratagem
 ```
 
-Then supply your own key (free tier at <https://app.tavily.com>). The add-on ships **no** credential — at MCP launch its shim reads a single file and exports the key to the server through the environment (never argv). Write it to the **`<plugin>-<marketplace>`** data dir:
+Then supply your own key (free tier at <https://app.tavily.com>). The add-on ships **no** credential. **Easiest — run the setup skill and paste it:**
+
+```
+/stratagem-tavily:setup                 # prompts for the key   (or:  /stratagem-tavily:setup tvly-your-key)
+```
+
+It resolves the correct `<plugin>-<marketplace>` data dir and writes `tavily.config.json` BOM-free for you — no path-hunting. **Manual fallback:** the shim reads a single file and exports the key through the environment (never argv); write it yourself to:
 
 ```
 ~/.claude/plugins/data/stratagem-tavily-stratagem/tavily.config.json   ->   { "apiKey": "<your-tavily-api-key>" }

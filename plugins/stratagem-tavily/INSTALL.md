@@ -31,12 +31,23 @@ claude plugin enable  stratagem-tavily@stratagem
 
 The Add-On contains **no credential**. At MCP launch the shim reads a single file —
 `${CLAUDE_PLUGIN_DATA}/tavily.config.json` — and exports the key as `TAVILY_API_KEY`
-for the server.
+for the server. The key is passed to the child through the **environment, never argv**.
 
-The key is passed to the child through the **environment, never argv** — an argv secret
-is readable by any process that can list the process table.
+### 3.0 The easy way — `/stratagem-tavily:setup` (recommended)
 
-### 3a. Resolve the data dir
+Once the Add-On is enabled, just run the setup skill and paste your key:
+
+```
+/stratagem-tavily:setup                 # prompts for the key
+/stratagem-tavily:setup tvly-your-key    # or pass it inline
+```
+
+It resolves the correct `<plugin>-<marketplace>` data dir and writes `tavily.config.json`
+BOM-free for you — removing the two footguns the manual steps below warn about (the folder
+suffix and the encoding). Restart Claude Code afterward. The manual path (§3a–3b) is the
+fallback if you'd rather not run a skill.
+
+### 3a. Resolve the data dir (manual fallback)
 
 `${CLAUDE_PLUGIN_DATA}` is the Add-On's persistent data directory (survives updates). Claude Code resolves it to **`~/.claude/plugins/data/<plugin>-<marketplace>/`** — the plugin name **plus the marketplace name**, *not* a bare `stratagem-tavily/`. Installed from the `stratagem` marketplace, that is:
 

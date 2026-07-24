@@ -138,6 +138,19 @@ keeps instead of a script.
 
 ---
 
+## 5. Dist-local enhancements (upstream candidates)
+
+Improvements made directly on `strat-dist` that are **not yet in the canonical
+`stratagem-core` tavily add-on** — candidates to upstream so every flavor gets them:
+
+- **`/stratagem-tavily:setup` skill** (`plugins/stratagem-tavily/skills/setup/`, add-on
+  v0.2.0) — prompts for the Tavily key and writes `tavily.config.json` to the resolved
+  `<plugin>-<marketplace>` data dir (BOM-free), removing the two manual-setup footguns
+  (wrong folder + UTF-16 BOM). Port into `stratagem-core`'s
+  `stratagem-addons/plugins/stratagem-tavily/` when convenient.
+
+---
+
 ## Related
 
 - `readme.md` — the generic distribution's front door

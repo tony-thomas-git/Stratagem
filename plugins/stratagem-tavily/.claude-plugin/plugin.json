@@ -1,6 +1,6 @@
 {
   "name": "stratagem-tavily",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Detachable Stratagem research bridge - Tavily search/extract/map/crawl/research MCP registration for the corpus-read-first web-fallback ladder. Optional by design: skills degrade to built-in WebSearch without it. Core stays research-provider-blind; install/enable/disable/uninstall atomically.",
   "author": { "name": "Tony Thomas" },
   "defaultEnabled": false

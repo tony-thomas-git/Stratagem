@@ -45,8 +45,8 @@ The **one add-on that ships with this distribution** is `stratagem-tavily` — i
 ```
 claude plugin install stratagem-tavily@stratagem
 claude plugin enable  stratagem-tavily@stratagem
-# then add your key (free tier at https://app.tavily.com) at:
-#   ~/.claude/plugins/data/stratagem-tavily-stratagem/tavily.config.json  →  { "apiKey": "<your-key>" }
+/stratagem-tavily:setup                 # paste your key (free tier at https://app.tavily.com) — writes the config for you
+# (manual alt: ~/.claude/plugins/data/stratagem-tavily-stratagem/tavily.config.json  →  { "apiKey": "<your-key>" })
 ```
 
 Full steps: [`plugins/stratagem-tavily/INSTALL.md`](plugins/stratagem-tavily/INSTALL.md). The core stays research-provider-blind — Tavily is the only bundled add-on; board and chat adapters remain external.
