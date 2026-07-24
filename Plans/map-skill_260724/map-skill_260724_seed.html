@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>/map — on-demand Stratagem lifecycle map (seed)</title>
+<!-- idea: /map — an on-demand ASCII+HTML lifecycle map of the Stratagem skill flow -->
+<!-- spike-brief
+## Problem / why
+No single command renders how the Stratagem skills chain together — the ps→pf→cp→px→ax→cf→rs lifecycle lives as CLAUDE.md prose and hand-maintained SVGs that silently drift when the skill set changes. Newcomers and the author alike navigate it from memory.
+## Shape of the idea
+A static reference skill `/map` (new core skill, `profile` precedent) that prints the full lifecycle — spine + ex/fx recovery loop + mpx/phx/if variant lanes — as ASCII in the terminal, with a `--html` flag that writes a preferred `.html` page: a context-swimlane (the newer favored format) painted in the workflow-SVG's 5-category color legend + emoji vocabulary. Zero repo reads on the default path (um's "never explain the output" ethos).
+## Open questions
+- Source-of-truth: hardcode the map in map.md, or golden-test it so drift from the real skill set fails CI? (the H decision)
+- Which flavors ship it, and where does `--html` write?
+- Does /map subsume the hand-drawn testing-workflow SVG, or stay a lighter command-graph view?
+- Final command name (/map vs /flow vs /lc).
+-->
+<style>
+  :root { --ink:#1a2733; --mut:#5b6b7a; --line:#d7dee6; --accent:#0b6b5f; }
+  * { box-sizing:border-box; }
+  body { font:15px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; color:var(--ink);
+         max-width:920px; margin:0 auto; padding:32px 24px 72px; background:#fbfcfd; }
+  h1 { font-size:23px; margin:0 0 2px; letter-spacing:-.01em; }
+  h2 { font-size:15px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent);
+       margin:34px 0 10px; padding-bottom:6px; border-bottom:2px solid var(--line); }
+  .sub { color:var(--mut); margin:0 0 4px; }
+  .meta { color:var(--mut); font-size:12.5px; margin:0 0 8px; }
+  p { margin:10px 0; }
+  ul { margin:8px 0; padding-left:22px; }
+  li { margin:5px 0; }
+  code { background:#eef1f5; padding:1px 5px; border-radius:4px; font:13px/1.4 ui-monospace,Consolas,monospace; }
+  pre { background:#0f1720; color:#dbe6ef; padding:18px 20px; border-radius:8px; overflow-x:auto;
+        font:12.5px/1.5 ui-monospace,Consolas,monospace; }
+  table { border-collapse:collapse; width:100%; margin:10px 0; font-size:13.5px; }
+  th,td { text-align:left; padding:7px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--mut); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+  td code { white-space:nowrap; }
+  .q { border-left:3px solid var(--accent); padding:2px 0 2px 14px; margin:14px 0; }
+  .q .rec { color:var(--accent); font-weight:600; }
+  .tag { display:inline-block; font-size:11px; font-weight:700; padding:1px 7px; border-radius:10px;
+         background:#fdecc8; color:#6b4c00; margin-left:6px; }
+  .fig { border:1px solid var(--line); border-radius:10px; padding:8px; background:#fff; margin:12px 0; }
+  .fig figcaption { color:var(--mut); font-size:12px; padding:6px 4px 2px; }
+  svg { display:block; width:100%; height:auto; }
+</style>
+</head>
+<body>
+
+<h1>/map — an on-demand Stratagem lifecycle map</h1>
+<p class="sub">Plan Seed → input to <code>/pf</code>. A static reference skill that renders the whole skill flow.</p>
+<p class="meta">slug <code>map-skill_260724</code> · git-root <code>C:\code\Stratagem</code> · implementation home <code>C:\code\stratagem-core</code> · uncommitted, for review</p>
+
+<h2>Problem / why this exists</h2>
+<p>The Stratagem lifecycle is <em>real and load-bearing</em> — <code>/ps → /pf → /cp → /px → /ax → /cf → /rs</code>, with an <code>/ex → /fx</code> recovery loop and the <code>/mpx</code>, <code>/phx</code>, <code>/if</code> variant lanes — but it exists only as <strong>prose</strong> (the CLAUDE.md "Composition Patterns" block) and as <strong>hand-drawn SVGs</strong> that no command produces on demand. To see how the pieces relate, you read the config file or open a static diagram. There is no <code>/map</code>.</p>
+<p>Two costs follow:</p>
+<ul>
+  <li><strong>Onboarding friction.</strong> A person learning Stratagem has no glanceable "here is the whole flow" surface — the mental model is assembled from scattered prose.</li>
+  <li><strong>Drift.</strong> The existing diagrams are hand-maintained. When the skill set changes — <code>profile</code> was recently added as the 22nd skill — the SVGs rot silently. This is the same drift class the golden re-baseline and Fleet-Aware rules fight elsewhere; the map should be the one artifact that <em>cannot</em> quietly disagree with the real skill set.</li>
+</ul>
+<p>Tell: the request that seeded this listed the commands as <code>/ps/pf/cf/px/ax/ex/fx/cp/rs</code> — out of lifecycle order. Even the framework's author benefits from a canonical rendering.</p>
+
+<h2>Evidence (measured)</h2>
+<table>
+  <tr><th>Fact</th><th>Ground truth</th><th>Source</th></tr>
+  <tr><td>Compiled skills</td><td>22 skill dirs in the shipped plugin</td><td><code>plugins/cache/sg-coder/…/skills/</code></td></tr>
+  <tr><td>Lifecycle shape</td><td>7-node spine + 2-node recovery pair + 3 variant lanes</td><td>CLAUDE.md "Composition Patterns"</td></tr>
+  <tr><td>New-skill mechanics</td><td>new <code>core/skills/&lt;n&gt;.md</code> + <code>&lt;N&gt;_DESC</code> var + golden re-baseline + purity-lint clean</td><td><code>core/vars.yaml:211–226</code> (the <code>profile</code> precedent, "a NEW core skill … golden gains a 22nd skill")</td></tr>
+  <tr><td>Closest analog</td><td><code>um</code> — emits a fixed block and <em>nothing else</em>, never explains its output</td><td><code>core/skills/um.md</code></td></tr>
+  <tr><td>Style already exists</td><td>a 5-category color legend + emoji vocabulary + human-gate glyphs — a visual language <code>/map</code> should <em>inherit</em>, not reinvent</td><td><code>docs/stratagem-testing-workflow.svg</code></td></tr>
+  <tr><td>Drift proof</td><td>2 hand-maintained workflow SVGs (v1 + <code>docs/v3/</code>), no generator, no drift guard</td><td><code>docs/…</code></td></tr>
+  <tr><td>Board chain</td><td>no <code>ado.config.json</code> in this repo → this seed's <code>/ss</code> auto-chain skip-louds</td><td>repo scan</td></tr>
+</table>
+
+<h2>Shape of the idea</h2>
+<p><code>/map</code> is a <strong>static reference card</strong>: no plan discovery, no git reads on the default path. The default output is ASCII to the terminal; the file-creating flag <code>--html</code> writes a richer <strong><code>.html</code> page (preferred over a bare <code>.svg</code>)</strong> — a <em>context-swimlane</em> (the newer favored format) rendered <strong>in the framework's existing visual language</strong>: the color legend below is lifted straight from <code>stratagem-testing-workflow.svg</code> (planning green, execution blue, recovery salmon, close/learn plum), and the per-node emoji (📋 🔍 🚀 ✅ ⚠️ 🔧) match too. Two mockups of what it emits:</p>
+
+<figure class="fig">
+<figcaption>Default terminal output — <code>/map</code></figcaption>
+<pre>
+                       STRATAGEM · lifecycle map
+ ────────────────────────────────────────────────────────────────────────
+   seed      plan      decompose  analyze   implement   close     learn
+   /ps ────▶ /pf ────▶ /cp ────▶ /px ────▶ /ax ────▶ /cf ────▶ /rs
+    │                                       ▲  │ fail
+    └▶ /ss  (board)                   retry │  ▼
+                                            └─ /ex ──▶ /fx
+                                              document   fix
+ ── variant lanes ────────────────────────────────────────────────────────
+   quick  (&lt;5 files)  :  /mpx ──▶ /max
+   phase  / range     :  /phx           chains /px▶/ax across a range
+   auto   (unattended):  /if            loop px▶ax▶verify▶advance ·
+                                         ex▶fx recovery · integration gate
+ ── supporting ────────────────────────────────────────────────────────────
+   /rp resume · /um status · /pica QA-gate@/ax · /crs conv-retro
+</pre>
+</figure>
+
+<figure class="fig">
+<figcaption>Rich render — <code>/map --html</code> → a <code>.html</code> context-swimlane (house palette + emoji from the existing workflow SVG)</figcaption>
+<svg viewBox="0 0 920 460" role="img" aria-label="Stratagem lifecycle map">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+    <marker id="ahe" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc143c"/>
+    </marker>
+    <style>
+      .role{ font:11px sans-serif; fill:#5b6b7a; text-anchor:middle; letter-spacing:.03em; }
+      .nl{ font:600 13px ui-monospace,Consolas,monospace; fill:#1a2733; text-anchor:middle; }
+      .lg{ font:11px sans-serif; fill:#5b6b7a; }
+      .edge{ stroke:#333; stroke-width:2; fill:none; }
+      .eedge{ stroke:#dc143c; stroke-width:2; fill:none; stroke-dasharray:5 3; }
+      .elbl{ font:11px sans-serif; fill:#a33; }
+      .lane{ font:12px sans-serif; fill:#5b6b7a; }
+      .lanek{ font:600 12px sans-serif; fill:#1a2733; }
+      .note{ font:11px sans-serif; fill:#7c8896; }
+      .planning{ fill:#90EE90; stroke:#228B22; stroke-width:2; }
+      .execution{ fill:#87CEEB; stroke:#4682B4; stroke-width:2; }
+      .error{ fill:#FFA07A; stroke:#DC143C; stroke-width:2; }
+      .completion{ fill:#DDA0DD; stroke:#8B008B; stroke-width:2; }
+      .pill{ fill:#eef1f5; stroke:#c4ccd6; stroke-width:1.5; }
+    </style>
+  </defs>
+
+  <!-- legend (from stratagem-testing-workflow.svg) -->
+  <rect class="planning"   x="24"  y="8" width="16" height="12" rx="2"/><text class="lg" x="44"  y="18">Planning</text>
+  <rect class="execution"  x="150" y="8" width="16" height="12" rx="2"/><text class="lg" x="170" y="18">Execution</text>
+  <rect class="error"      x="290" y="8" width="16" height="12" rx="2"/><text class="lg" x="310" y="18">Recovery</text>
+  <rect class="completion" x="420" y="8" width="16" height="12" rx="2"/><text class="lg" x="440" y="18">Close / Learn</text>
+
+  <!-- role labels -->
+  <text class="role" x="66"  y="58">seed</text>
+  <text class="role" x="197" y="58">plan</text>
+  <text class="role" x="328" y="58">decompose</text>
+  <text class="role" x="459" y="58">analyze</text>
+  <text class="role" x="590" y="58">implement</text>
+  <text class="role" x="721" y="58">close</text>
+  <text class="role" x="852" y="58">learn</text>
+
+  <!-- spine edges -->
+  <line class="edge" x1="108" y1="92" x2="155" y2="92" marker-end="url(#ah)"/>
+  <line class="edge" x1="239" y1="92" x2="286" y2="92" marker-end="url(#ah)"/>
+  <line class="edge" x1="370" y1="92" x2="417" y2="92" marker-end="url(#ah)"/>
+  <line class="edge" x1="501" y1="92" x2="548" y2="92" marker-end="url(#ah)"/>
+  <line class="edge" x1="632" y1="92" x2="679" y2="92" marker-end="url(#ah)"/>
+  <line class="edge" x1="763" y1="92" x2="810" y2="92" marker-end="url(#ah)"/>
+
+  <!-- spine nodes -->
+  <g><rect class="planning"   x="24"  y="70" width="84" height="44" rx="10"/><text class="nl" x="66"  y="97">🌱 /ps</text></g>
+  <g><rect class="planning"   x="155" y="70" width="84" height="44" rx="10"/><text class="nl" x="197" y="97">📋 /pf</text></g>
+  <g><rect class="planning"   x="286" y="70" width="84" height="44" rx="10"/><text class="nl" x="328" y="97">📝 /cp</text></g>
+  <g><rect class="execution"  x="417" y="70" width="84" height="44" rx="10"/><text class="nl" x="459" y="97">🔍 /px</text></g>
+  <g><rect class="execution"  x="548" y="70" width="84" height="44" rx="10"/><text class="nl" x="590" y="97">🚀 /ax</text></g>
+  <g><rect class="completion" x="679" y="70" width="84" height="44" rx="10"/><text class="nl" x="721" y="97">✅ /cf</text></g>
+  <g><rect class="completion" x="810" y="70" width="84" height="44" rx="10"/><text class="nl" x="852" y="97">📚 /rs</text></g>
+
+  <!-- board branch off /ps -->
+  <path class="edge" d="M66,114 L66,176" marker-end="url(#ah)"/>
+  <text class="elbl" x="74" y="150" fill="#5b6b7a">board</text>
+  <g><rect class="pill" x="30" y="176" width="72" height="36" rx="8"/><text class="nl" x="66" y="199" style="font-size:12px">↗ /ss</text></g>
+
+  <!-- recovery loop off /ax -->
+  <path class="eedge" d="M568,114 C520,142 512,152 541,176" marker-end="url(#ahe)"/>
+  <text class="elbl" x="500" y="150">fail</text>
+  <g><rect class="error" x="500" y="176" width="82" height="38" rx="9"/><text class="nl" x="541" y="200">⚠️ /ex</text></g>
+  <line class="eedge" x1="582" y1="195" x2="602" y2="195" marker-end="url(#ahe)"/>
+  <g><rect class="error" x="602" y="176" width="82" height="38" rx="9"/><text class="nl" x="643" y="200">🔧 /fx</text></g>
+  <path class="eedge" d="M643,176 C643,142 620,126 612,116" marker-end="url(#ahe)"/>
+  <text class="elbl" x="652" y="150">retry</text>
+  <text class="note" x="541" y="230" text-anchor="middle">document</text>
+  <text class="note" x="643" y="230" text-anchor="middle">fix</text>
+
+  <!-- variant lanes -->
+  <rect x="24" y="256" width="872" height="140" rx="10" fill="#f4f7fa" stroke="#e1e7ee"/>
+  <text class="lanek" x="40" y="280" style="text-transform:uppercase;letter-spacing:.06em;fill:#0b6b5f">variant lanes</text>
+
+  <text class="lanek" x="40" y="312">quick <tspan class="lane">(&lt;5 files)</tspan></text>
+  <g><rect class="pill" x="230" y="298" width="70" height="26" rx="7"/><text class="nl" x="265" y="316" style="font-size:12px">/mpx</text></g>
+  <line class="edge" x1="302" y1="311" x2="330" y2="311" marker-end="url(#ah)"/>
+  <g><rect class="pill" x="332" y="298" width="70" height="26" rx="7"/><text class="nl" x="367" y="316" style="font-size:12px">/max</text></g>
+
+  <text class="lanek" x="40" y="346">phase / range</text>
+  <g><rect class="pill" x="230" y="332" width="70" height="26" rx="7"/><text class="nl" x="265" y="350" style="font-size:12px">/phx</text></g>
+  <text class="note" x="316" y="350">chains /px▶/ax across a range</text>
+
+  <text class="lanek" x="40" y="380">unattended</text>
+  <g><rect class="pill" x="230" y="366" width="70" height="26" rx="7"/><text class="nl" x="265" y="384" style="font-size:12px">/if</text></g>
+  <text class="note" x="316" y="380">loop px▶ax▶verify▶advance · ex▶fx recovery · integration gate</text>
+
+  <!-- supporting -->
+  <text class="lane" x="40" y="428"><tspan class="lanek">supporting · </tspan>/rp resume &#160;·&#160; /um status &#160;·&#160; /pica QA-gate @ /ax &#160;·&#160; /crs conversation-retro</text>
+</svg>
+</figure>
+
+<p>The graph carries a <strong>legend table</strong> beneath it (HTML chassis, not free geometry) mapping each node to its one-liner:</p>
+<table>
+  <tr><th>Cmd</th><th>Stage</th><th>One-liner</th></tr>
+  <tr><td><code>/ps</code></td><td>seed</td><td>Bridge a raw idea into a reasoned seed doc (this skill).</td></tr>
+  <tr><td><code>/pf</code></td><td>plan</td><td>Turn the seed's open questions into a feature plan.</td></tr>
+  <tr><td><code>/cp</code></td><td>decompose</td><td>Break the plan into tasks (question-batch lockdown).</td></tr>
+  <tr><td><code>/px</code></td><td>analyze</td><td>Select + analyze one task.</td></tr>
+  <tr><td><code>/ax</code></td><td>implement</td><td>Implement the task exactly as specified (PICA runs here).</td></tr>
+  <tr><td><code>/ex → /fx</code></td><td>recover</td><td>Document the failure, then fix it — the recovery loop back to /ax.</td></tr>
+  <tr><td><code>/cf</code></td><td>close</td><td>Complete remaining tasks + executive summary.</td></tr>
+  <tr><td><code>/rs</code></td><td>learn</td><td>Extract learnings into the wiki / gold docs.</td></tr>
+</table>
+
+<h2>Open questions for /pf</h2>
+
+<div class="q">
+  <strong>1. Source of truth &amp; drift guard.</strong> <span class="tag">H — architect's call</span><br>
+  Where does the map's content live, and how is it kept honest?
+  <ul>
+    <li><em>(a)</em> Hardcode the ASCII/SVG in <code>map.md</code>; accept manual upkeep (simplest, drifts).</li>
+    <li><em>(b)</em> Hardcode <strong>+ golden-test</strong>: a compiler test asserts <code>map.md</code> names exactly the shipped lifecycle skill set, so drift fails CI.</li>
+    <li><em>(c)</em> Generate the map at compile time from a skill manifest (most robust, most machinery).</li>
+  </ul>
+  <span class="rec">Lean: (a)+(b)</span> — hardcode for legibility, guard with a golden/compiler test so it can't silently disagree with reality. This is the one H-complexity decision; the rest are L/M.
+</div>
+
+<div class="q">
+  <strong>2. Flavor scope.</strong> Ship in all flavors (lifecycle names are flavor-neutral, like <code>profile</code>/<code>um</code>) or coder-only?<br>
+  <span class="rec">Lean: all flavors</span> — one neutral <code>MAP_DESC</code> default, no per-flavor override.
+</div>
+
+<div class="q">
+  <strong>3. The file-creating flag — <code>--html</code>.</strong> <span class="tag" style="background:#d6efe0;color:#0b6b5f">operator-resolved</span><br>
+  The flag that writes a file emits an <strong><code>.html</code> page (preferred)</strong>, not a bare <code>.svg</code> — styled after the two references: the <em>context-swimlane HTML</em> (the newer favored format) for layout, and <code>stratagem-testing-workflow.svg</code> for the color-legend + emoji language (embedded as inline SVG within the page). ASCII stays the fileless default.<br>
+  <span class="rec">Open only:</span> where it writes — lean <code>docs/</code> (a caller-named path override), echo the path on completion.
+</div>
+
+<div class="q">
+  <strong>4. Relationship to the existing testing-workflow SVG.</strong> Does <code>/map</code> <em>subsume</em> the hand-drawn diagram (become its generator and retire the static file), or stay a lighter command-graph view while the richer testing-discipline diagram — with 👤 human gates, the <em>Feature Status?</em> decision, "no integration test until it works" — lives on separately (perhaps a future <code>--testing</code> view)?<br>
+  <span class="rec">Lean:</span> ship the command-graph view first; leave a <code>--testing</code> superset as a follow-on, and note the static SVG as the thing <code>/map</code> is on track to replace.
+</div>
+
+<div class="q">
+  <strong>5. Command name.</strong> Working name is <code>/map</code>; alternatives <code>/flow</code>, <code>/lc</code>, <code>/atlas</code>. Confirm at <code>/pf</code>.
+</div>
+
+<div class="q">
+  <strong>6. Supporting-cast depth.</strong> How much beyond the spine does the graph draw — just the core lifecycle, or also <code>/rp /um /pica /crs</code> and the board/notify adapters (<code>/ss /sp /pr</code>)?<br>
+  <span class="rec">Lean:</span> core lifecycle in the main graph; adjacents in a secondary "supporting" band so the spine stays legible.
+</div>
+
+<h2>Non-negotiables</h2>
+<ul>
+  <li><strong>Authored in source, not the cache.</strong> New skill lives at <code>c:\code\stratagem-core\core\skills\map.md</code> + <code>MAP_DESC</code> in <code>core/vars.yaml</code>; compiled + golden re-baselined. Never hand-edit the plugin cache.</li>
+  <li><strong>Core stays purity-clean.</strong> No brand tokens, no absolute home paths in <code>map.md</code>/<code>MAP_DESC</code> (the <code>profile</code>/T15 lesson — the comment naming a token can itself trip the purity lint).</li>
+  <li><strong>Canonical skeleton.</strong> Frontmatter (<code>name</code>/<code>description</code>/<code>argument-hint</code>) + <code>{{include: banner-open/close}}</code> + <code>{{include: session-preamble}}</code> + numbered Instructions + Key Principles + Next.</li>
+  <li><strong>The file flag emits HTML, in the house language.</strong> <code>--html</code> writes a <code>.html</code> page (preferred over a bare <code>.svg</code>), laid out as a <em>context-swimlane</em> (the newer favored format) and painted in the 5-category color legend + emoji vocabulary from <code>stratagem-testing-workflow.svg</code> — it renders in the established language, it does not invent a new one.</li>
+  <li><strong>Static, silent, fast.</strong> No repo reads on the default path; never explain the output — emit the map and stop (<code>um</code>'s ethos).</li>
+  <li><strong>The map must not silently drift</strong> from the real skill set. A drift guard is in scope, not a nice-to-have — <em>pattern-consistency is canon.</em></li>
+  <li><strong>ASCII default, HTML opt-in</strong> — the operator's stated lean; keeps the hot path lightweight.</li>
+</ul>
+
+<p class="meta" style="margin-top:28px">Next: <code>/pf</code> resolves the open questions into a feature plan → <code>/cp</code> decomposes → build in <code>stratagem-core</code>.</p>
+
+</body>
+</html>

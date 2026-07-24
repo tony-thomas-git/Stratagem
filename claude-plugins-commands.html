@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code Plugin Commands — Stratagem</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1b2130; --muted:#5c6675; --line:#e5e8ee;
+    --accent:#2e7eaa; --accent2:#50b864; --code-bg:#f0f2f6; --code-ink:#0f2a3a; --chip:#eef2f7;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0f141b; --card:#161c25; --ink:#e6eaf0; --muted:#93a0b1; --line:#26303c;
+      --accent:#5cb3e6; --accent2:#63c883; --code-bg:#0c1118; --code-ink:#cfe6f3; --chip:#1d2733;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:900px;margin:0 auto;padding:32px 22px 72px;}
+  header.doc{border-left:5px solid var(--accent);padding:4px 0 4px 18px;margin-bottom:6px;}
+  h1{font-size:25px;margin:0 0 4px;letter-spacing:-.2px;}
+  .sub{color:var(--muted);font-size:14px;}
+  .names{display:flex;flex-wrap:wrap;gap:7px;margin:16px 0 26px;}
+  .chip{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 11px;font-size:12.5px;color:var(--muted);}
+  .chip b{color:var(--ink);font-weight:600;}
+  section{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:6px 20px 16px;margin-bottom:18px;}
+  h2{font-size:16px;margin:16px 0 6px;display:flex;align-items:center;gap:9px;}
+  h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:0 0 auto;}
+  h2.g .dot{background:var(--accent2);}
+  table{width:100%;border-collapse:collapse;margin:8px 0 4px;}
+  td{padding:8px 8px;border-top:1px solid var(--line);vertical-align:top;}
+  tr:first-child td{border-top:none;}
+  td.cmd{width:52%;}
+  code{background:var(--code-bg);color:var(--code-ink);border-radius:5px;padding:2px 7px;
+    font:13px/1.5 "SF Mono",Consolas,Menlo,monospace;white-space:pre-wrap;word-break:break-word;}
+  td.desc{color:var(--muted);font-size:13.5px;}
+  pre{background:var(--code-bg);color:var(--code-ink);border:1px solid var(--line);border-radius:9px;
+    padding:14px 16px;overflow-x:auto;font:13px/1.7 "SF Mono",Consolas,Menlo,monospace;margin:8px 0;}
+  pre .c{color:var(--muted);}
+  .note{color:var(--muted);font-size:12.5px;margin:6px 0 0;}
+  .foot{color:var(--muted);font-size:12.5px;text-align:center;margin-top:26px;}
+  a{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1>Claude Code Plugin Commands</h1>
+  <div class="sub">Install &amp; manage the Stratagem distribution and its research add-on.</div>
+</header>
+
+<div class="names">
+  <span class="chip">repo · <b>tony-thomas-git/Stratagem</b></span>
+  <span class="chip">marketplace · <b>stratagem</b></span>
+  <span class="chip">core plugin · <b>sg</b></span>
+  <span class="chip">add-on · <b>stratagem-tavily</b></span>
+</div>
+
+<section>
+  <h2><span class="dot"></span>Quick start — clean machine</h2>
+  <pre>claude plugin marketplace add tony-thomas-git/Stratagem
+claude plugin install sg@stratagem                 <span class="c"># then restart Claude Code</span>
+claude plugin install stratagem-tavily@stratagem
+claude plugin enable  stratagem-tavily@stratagem
+<span class="c"># in Claude Code:  /stratagem-tavily:setup   → paste your Tavily key, then restart</span></pre>
+  <p class="note">Private repo? Grant the person <b>collaborator</b> access on GitHub, and have them run <code>gh auth setup-git</code> (or set up an SSH key) once first.</p>
+</section>
+
+<section>
+  <h2><span class="dot"></span>Marketplace</h2>
+  <table>
+    <tr><td class="cmd"><code>claude plugin marketplace add tony-thomas-git/Stratagem</code></td><td class="desc">Add the marketplace (GitHub shorthand — uses SSH by default). Reads <code>.claude-plugin/marketplace.json</code> at the repo root.</td></tr>
+    <tr><td class="cmd"><code>claude plugin marketplace add https://github.com/tony-thomas-git/Stratagem.git</code></td><td class="desc">Add via explicit HTTPS URL (uses your git credential helper).</td></tr>
+    <tr><td class="cmd"><code>claude plugin marketplace add git@github.com:tony-thomas-git/Stratagem.git</code></td><td class="desc">Add via explicit SSH URL (uses your SSH key).</td></tr>
+    <tr><td class="cmd"><code>claude plugin marketplace add C:\code\Stratagem</code></td><td class="desc">Add from a local clone — handy for testing before publishing.</td></tr>
+    <tr><td class="cmd"><code>claude plugin marketplace update stratagem</code></td><td class="desc">Re-pull from GitHub to pick up new commits.</td></tr>
+    <tr><td class="cmd"><code>claude plugin marketplace remove stratagem</code></td><td class="desc">Unregister the marketplace — e.g. to clear a name collision.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="dot"></span>Plugins</h2>
+  <table>
+    <tr><td class="cmd"><code>claude plugin install sg@stratagem</code></td><td class="desc">Install the core workflow engine. Auto-enables — <b>restart Claude Code</b> to register <code>/sg:*</code>.</td></tr>
+    <tr><td class="cmd"><code>claude plugin install stratagem-tavily@stratagem</code></td><td class="desc">Install the research add-on. Ships <b>disabled</b>.</td></tr>
+    <tr><td class="cmd"><code>claude plugin enable stratagem-tavily@stratagem</code></td><td class="desc">Activate the add-on.</td></tr>
+    <tr><td class="cmd"><code>claude plugin disable stratagem-tavily@stratagem</code></td><td class="desc">Deactivate it (keeps it installed).</td></tr>
+    <tr><td class="cmd"><code>claude plugin update stratagem-tavily@stratagem</code></td><td class="desc">Pull a newer version (only picks up a bumped <code>version</code>).</td></tr>
+    <tr><td class="cmd"><code>claude plugin uninstall stratagem-tavily@stratagem</code></td><td class="desc">Remove it. <b>Uninstall + install</b> is the reliable force-refresh when a cached version won't update.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2 class="g"><span class="dot"></span>Validate &amp; verify</h2>
+  <table>
+    <tr><td class="cmd"><code>claude plugin validate .</code></td><td class="desc">Official pre-publish structure check — run from the repo root. Catches schema errors, duplicate names, bad source paths.</td></tr>
+    <tr><td class="cmd"><code>claude mcp list</code></td><td class="desc">Confirm the Tavily MCP (<code>plugin:stratagem-tavily:tavily</code>) shows <b>connected</b>.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2 class="g"><span class="dot"></span>Private-repo auth <span style="font-weight:400;color:var(--muted);font-size:13px;">(once per machine — git, not Claude)</span></h2>
+  <table>
+    <tr><td class="cmd"><code>gh auth setup-git</code></td><td class="desc">Simplest — writes a GitHub token into git's credential helper (HTTPS).</td></tr>
+    <tr><td class="cmd"><code>ssh -T git@github.com</code></td><td class="desc">SSH route — trust the host once. Needs an SSH key on your GitHub account.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span class="dot"></span>Inside Claude Code <span style="font-weight:400;color:var(--muted);font-size:13px;">(slash commands, not the CLI)</span></h2>
+  <table>
+    <tr><td class="cmd"><code>/plugin marketplace add tony-thomas-git/Stratagem</code></td><td class="desc">Same as the CLI, from within a session.</td></tr>
+    <tr><td class="cmd"><code>/help</code></td><td class="desc">Confirm <code>/sg:*</code> and <code>/stratagem-tavily:setup</code> registered.</td></tr>
+    <tr><td class="cmd"><code>/stratagem-tavily:setup</code></td><td class="desc">One-command Tavily key setup — prompts for the key (or pass it inline) and writes the config file for you.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2 class="g"><span class="dot"></span>Env vars <span style="font-weight:400;color:var(--muted);font-size:13px;">(private-repo edge cases only)</span></h2>
+  <table>
+    <tr><td class="cmd"><code>CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1</code></td><td class="desc">Make the <code>owner/repo</code> shorthand use HTTPS instead of SSH.</td></tr>
+    <tr><td class="cmd"><code>CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE=1</code></td><td class="desc">Keep the working clone if a background auto-update pull fails.</td></tr>
+  </table>
+  <p class="note">Env-var names can be version-dependent — the reliable core is collaborator access + <code>gh auth setup-git</code> (or SSH). SSH is the most trouble-free for a private marketplace.</p>
+</section>
+
+<p class="foot">Stratagem — board- and stack-agnostic AI coding workflow · commands reference</p>
+
+</div>
+</body>
+</html>

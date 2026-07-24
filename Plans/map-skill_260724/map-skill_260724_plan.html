@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>/map skill — feature plan</title>
+<!-- Spike-Sync-Id: null -->
+<style>
+  :root { --ink:#1a2733; --mut:#5b6b7a; --line:#d7dee6; --accent:#0b6b5f; --warn:#b07d1a;
+          --new:#1f8a4c; --edit:#2f6f9f; --gen:#7a5cc4; }
+  * { box-sizing:border-box; }
+  body { font:15px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; color:var(--ink);
+         max-width:940px; margin:0 auto; padding:32px 24px 72px; background:#fbfcfd; }
+  h1 { font-size:23px; margin:0 0 2px; letter-spacing:-.01em; }
+  h2 { font-size:14px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent);
+       margin:32px 0 10px; padding-bottom:6px; border-bottom:2px solid var(--line); }
+  h3 { font-size:14.5px; margin:18px 0 6px; }
+  .sub { color:var(--mut); margin:0 0 4px; }
+  .meta { color:var(--mut); font-size:12.5px; margin:0 0 8px; }
+  p { margin:9px 0; }
+  ul { margin:8px 0; padding-left:22px; } li { margin:4px 0; }
+  code { background:#eef1f5; padding:1px 5px; border-radius:4px; font:12.5px/1.4 ui-monospace,Consolas,monospace; }
+  table { border-collapse:collapse; width:100%; margin:10px 0; font-size:13px; }
+  th,td { text-align:left; padding:7px 9px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--mut); font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; }
+  td code { white-space:nowrap; }
+  .pill { display:inline-block; font-size:10.5px; font-weight:700; padding:1px 7px; border-radius:9px; color:#fff; }
+  .new { background:var(--new); } .edit { background:var(--edit); } .gen { background:var(--gen); }
+  .cx { display:inline-block; font-size:10.5px; font-weight:700; padding:1px 6px; border-radius:4px; }
+  .cxL { background:#e4f5e4; color:#1f7a1f; } .cxM { background:#fdecc8; color:#8a6a12; } .cxH { background:#fbdcdc; color:#b02a2a; }
+  .callout { border-left:3px solid var(--warn); background:#fffaf0; padding:10px 14px; margin:14px 0; border-radius:0 6px 6px 0; }
+  .callout.dec { border-color:var(--accent); background:#f0faf7; }
+  .rec { color:var(--accent); font-weight:600; }
+  .fig { border:1px solid var(--line); border-radius:10px; padding:10px; background:#fff; margin:12px 0; }
+  .fig figcaption { color:var(--mut); font-size:12px; padding:6px 4px 2px; }
+  pre { background:#0f1720; color:#dbe6ef; padding:16px 18px; border-radius:8px; overflow-x:auto;
+        font:12px/1.5 ui-monospace,Consolas,monospace; }
+  svg { display:block; width:100%; height:auto; }
+</style>
+</head>
+<body>
+
+<h1>Feature Plan — <code>/map</code>, the lifecycle-map skill</h1>
+<p class="sub">A static reference skill that renders the Stratagem skill flow. Planned from <code>map-skill_260724_seed.html</code>.</p>
+<p class="meta">PF · no coding · for approval → <code>/cp</code> · implementation home <code>c:\code\stratagem-core</code> · plan dir <code>C:\code\Stratagem\Plans\map-skill_260724\</code></p>
+
+<h2>1 · What we're building</h2>
+<p>A new <strong>general (core-bodied) skill</strong>, <code>/map</code>, that prints the canonical lifecycle as <strong>ASCII to the terminal</strong> by default, and — via a <code>--html</code> flag — writes a <strong><code>.html</code> context-swimlane</strong> in the framework's existing visual language (the 5-category color legend + emoji vocabulary from <code>stratagem-testing-workflow.svg</code>). It is <em>static</em>: no plan discovery, no git reads on the default path — the <code>um</code> ethos ("emit and stop, never explain the output"). Because it lives in <code>core/skills/</code>, the directory-driven compiler ships it into <strong>all five flavors</strong> (coder / author / business / sales / tester) with zero registration.</p>
+
+<h2>2 · Architecture approach</h2>
+<ul>
+  <li><strong>Directory-driven, no manifest.</strong> <code>compile.mjs:625</code> compiles every <code>core/skills/*.md</code>. Dropping <code>map.md</code> in is the entire registration — the <code>profile</code> (T15) precedent exactly.</li>
+  <li><strong>Vars-only seam, no overlay.</strong> Like <code>profile</code>/<code>um</code>, the only per-flavor divergence is frontmatter + branding, which overlays can't reach — so no <code>templates/*/overlays/map.overlay.md</code>. Composes through the standard pipeline ① overlay → ② include → ③ substitute → ④ header.</li>
+  <li><strong>Branding via <code>{{MAP_TITLE}}</code> (resolves the "STRATAGEM is ok" note).</strong> The purity lint (<code>lint-core-purity.mjs:52</code>) hard-fails on the literal token <code>Stratagem</code> anywhere in <code>core/</code>. So the ASCII/HTML title is a <code>{{MAP_TITLE}}</code> var: a neutral, lint-clean default in <code>core/vars.yaml</code>, and a <code>STRATAGEM · lifecycle map</code> override in each flavor's <code>templates/&lt;flavor&gt;/vars.yaml</code> (the lint scans <code>core/</code> only, never <code>templates/</code>). Every <em>shipped</em> flavor renders <strong>STRATAGEM</strong>; the neutral default only ever exists in the unshipped <code>core</code> build. This is the same brand-restore pattern <code>WIKI_INGEST_DESC</code> already uses.</li>
+  <li><strong>The map is its own source of truth.</strong> The literal ASCII lives in <code>map.md</code>; the <code>--html</code> render is generated from the same fixed node/edge model on each run. Static art embedded in a skill body is idiomatic here (<code>um</code>'s status block, the <code>banner</code> fragment).</li>
+</ul>
+
+<div class="fig">
+<figcaption>One source → five flavors, through three gates</figcaption>
+<svg viewBox="0 0 900 250" role="img" aria-label="compile fan-out">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4682B4"/></marker>
+    <style>.b{font:600 12px ui-monospace,Consolas,monospace;fill:#1a2733;text-anchor:middle}.s{font:11px sans-serif;fill:#5b6b7a;text-anchor:middle}.g{fill:#fdecc8;stroke:#b07d1a;stroke-width:1.5}.src{fill:#cfe8ff;stroke:#2f6f9f;stroke-width:1.5}.out{fill:#e6f7ec;stroke:#1f8a4c;stroke-width:1.5}.e{stroke:#4682B4;stroke-width:1.5;fill:none}</style>
+  </defs>
+  <rect class="src" x="20" y="96" width="150" height="48" rx="8"/>
+  <text class="b" x="95" y="116">core/skills/map.md</text>
+  <text class="s" x="95" y="132">+ MAP_DESC / MAP_TITLE</text>
+
+  <text class="s" x="300" y="40">gates (must stay green)</text>
+  <rect class="g" x="220" y="52" width="150" height="30" rx="6"/><text class="b" x="295" y="71" style="font-size:11px">lint-core-purity</text>
+  <rect class="g" x="220" y="92" width="150" height="30" rx="6"/><text class="b" x="295" y="111" style="font-size:11px">node --test (+drift)</text>
+  <rect class="g" x="220" y="132" width="150" height="30" rx="6"/><text class="b" x="295" y="151" style="font-size:11px">diff-harness / golden</text>
+
+  <line class="e" x1="170" y1="120" x2="220" y2="107" marker-end="url(#a)"/>
+
+  <text class="s" x="640" y="40">compiled into every flavor</text>
+  <g>
+   <rect class="out" x="560" y="50" width="300" height="26" rx="6"/><text class="b" x="710" y="68" style="font-size:11px">sg-coder · /map</text>
+   <rect class="out" x="560" y="82" width="300" height="26" rx="6"/><text class="b" x="710" y="100" style="font-size:11px">sg-author · /map</text>
+   <rect class="out" x="560" y="114" width="300" height="26" rx="6"/><text class="b" x="710" y="132" style="font-size:11px">sg-business · /map</text>
+   <rect class="out" x="560" y="146" width="300" height="26" rx="6"/><text class="b" x="710" y="164" style="font-size:11px">sg-sales · /map</text>
+   <rect class="out" x="560" y="178" width="300" height="26" rx="6"/><text class="b" x="710" y="196" style="font-size:11px">sg-tester · /map</text>
+  </g>
+  <line class="e" x1="370" y1="112" x2="560" y2="63"  marker-end="url(#a)"/>
+  <line class="e" x1="370" y1="112" x2="560" y2="95"  marker-end="url(#a)"/>
+  <line class="e" x1="370" y1="112" x2="560" y2="127" marker-end="url(#a)"/>
+  <line class="e" x1="370" y1="112" x2="560" y2="159" marker-end="url(#a)"/>
+  <line class="e" x1="370" y1="112" x2="560" y2="191" marker-end="url(#a)"/>
+  <text class="s" x="710" y="224">each carries STRATAGEM · lifecycle map (via template MAP_TITLE)</text>
+</svg>
+</div>
+
+<h2>3 · Files touched</h2>
+<table>
+  <tr><th>File</th><th></th><th>Change</th><th>Cx</th></tr>
+  <tr><td><code>core/skills/map.md</code></td><td><span class="pill new">NEW</span></td><td>The skill: frontmatter (<code>name</code>/<code>description: {{MAP_DESC}}</code>/<code>argument-hint: "[--html [path]]"</code>) + <code>{{include: banner-open/close}}</code> + <code>{{include: session-preamble}}</code> + instructions (default = print the literal ASCII map; <code>--html</code> = write the swimlane <code>.html</code>) + the canonical ASCII (using <code>{{MAP_TITLE}}</code>) + the <code>--html</code> render spec + Key Principles + Next.</td><td><span class="cx cxM">M</span></td></tr>
+  <tr><td><code>core/vars.yaml</code></td><td><span class="pill edit">EDIT</span></td><td>Add <code>MAP_DESC</code> (neutral, no brand token) + <code>MAP_TITLE</code> (neutral default, e.g. <code>lifecycle map</code>). Purity-clean — spell no brand token even in the comment (the T21 lesson).</td><td><span class="cx cxL">L</span></td></tr>
+  <tr><td><code>templates/{coder,author,business,sales,tester}/vars.yaml</code></td><td><span class="pill edit">EDIT ×5</span></td><td>Override <code>MAP_TITLE: STRATAGEM · lifecycle map</code> (brand restore; lint doesn't scan templates). Optionally a flavor-specific <code>MAP_DESC</code> — else the neutral default flows through.</td><td><span class="cx cxL">L</span></td></tr>
+  <tr><td><code>compiler/test/map-drift.test.mjs</code></td><td><span class="pill new">NEW</span></td><td>The drift guard (§4). Zero-dep <code>node --test</code>, matching the existing <code>compiler/test/*.test.mjs</code> shape.</td><td><span class="cx cxM">M</span></td></tr>
+  <tr><td><code>golden/{sg-coder,sg-author,sg-business,sg-sales,sg-tester}/skills/map/SKILL.md</code></td><td><span class="pill gen">GEN ×5</span></td><td>Re-baseline: a new skill dir reports <code>MISSING</code> in diff-harness until golden carries it. Generated by recompiling + snapshotting, not hand-written. Update <code>golden/DELTA-REPORT.md</code> if the gen script does.</td><td><span class="cx cxL">L</span></td></tr>
+  <tr><td><code>Vault/wiki/…/map-skill.md</code></td><td><span class="pill new">follow-on</span></td><td>Document <code>/map</code> in the skill catalog via <code>/wiki-ingest</code> — deferred to close-out (<code>/rs</code>), not a build task.</td><td><span class="cx cxL">L</span></td></tr>
+</table>
+
+<h2>4 · The drift guard — the one decision to sign off</h2>
+<div class="callout dec">
+  <p><strong>Finding that reshapes the seed's H-question:</strong> the existing <code>diff-harness</code>/golden gate does <em>not</em> catch map drift. Golden proves the compiled bytes match a frozen snapshot — but if a skill is renamed and <code>map.md</code> isn't updated, <code>map.md</code> is unchanged, so it compiles identically and golden stays green. The map silently lies. A dedicated content test is required.</p>
+  <p><span class="rec">Recommendation (a + focused test):</span> hardcode the map in <code>map.md</code> for legibility, and add <code>map-drift.test.mjs</code> that:</p>
+  <ul>
+    <li><strong>No dangling refs:</strong> every <code>/token</code> the map names resolves to an existing <code>core/skills/&lt;token&gt;.md</code> — catches a skill renamed out from under the map.</li>
+    <li><strong>Spine present:</strong> the canonical lifecycle set <code>{ps,pf,cp,px,ax,ex,fx,cf,rs}</code> all appear — catches a lifecycle skill dropped from the map.</li>
+  </ul>
+  <p>This is cheap, deterministic, and catches both drift directions golden can't. It de-risks the seed's H decision down to <span class="cx cxM">M</span>. Rejected alternatives: <em>(b-only)</em> golden — proven blind above; <em>(c)</em> generate the map from a manifest at compile time — most robust but the most machinery, deferred as a possible v2.</p>
+  <p class="meta"><strong>Sign-off needed:</strong> approve the drift-test approach (vs. accept silent drift, or go straight to generation). Everything else in this plan is L/M and auto-proceeds under Trust-But-Verify.</p>
+</div>
+
+<h2>5 · Integration points</h2>
+<ul>
+  <li><strong>Compiler op ③</strong> resolves <code>{{MAP_DESC}}</code> + <code>{{MAP_TITLE}}</code> from merged vars (template-wins). Reserved-name guard is irrelevant (neither is a built-in).</li>
+  <li><strong>lint-core-purity</strong> must stay green — the whole reason branding is a var. Verify <code>map.md</code> + the core <code>vars.yaml</code> additions carry no <code>Stratagem</code>/stack/language/absolute-path tokens.</li>
+  <li><strong>diff-harness / golden</strong> — re-baseline all five flavors so the new <code>map</code> dir is <code>PASS</code>, not <code>MISSING</code>.</li>
+  <li><strong>Flavor fan-out</strong> is the only "horizontal" surface: one source, five outputs. Handled entirely by the compiler + the per-flavor <code>MAP_TITLE</code> override + the golden re-baseline. No per-flavor logic.</li>
+</ul>
+
+<h2>6 · Testing strategy</h2>
+<table>
+  <tr><th>Gate</th><th>Command</th><th>Pass condition</th></tr>
+  <tr><td>Purity</td><td><code>node compiler/lint-core-purity.mjs .</code></td><td><code>core is clean</code> — no brand token leaked into <code>map.md</code>/<code>vars.yaml</code></td></tr>
+  <tr><td>Unit + drift</td><td><code>node --test compiler/test/</code></td><td>all green, incl. the new <code>map-drift.test.mjs</code></td></tr>
+  <tr><td>Byte gate</td><td><code>node compiler/diff-harness.mjs out/sg-coder</code> (per flavor)</td><td><code>map</code> is <code>PASS</code> after re-baseline (all other skills stay byte-neutral)</td></tr>
+  <tr><td>Manual — ASCII</td><td><code>/map</code></td><td>prints the aligned lifecycle map, titled <code>STRATAGEM · lifecycle map</code>, and stops</td></tr>
+  <tr><td>Manual — HTML</td><td><code>/map --html</code></td><td>writes a <code>.html</code> swimlane in the house palette; echoes the path; opens clean</td></tr>
+</table>
+
+<h2>7 · Complexity &amp; tracer-bullet</h2>
+<p>Single vertical slice — one skill, one test, mechanical fan-out. <strong>Skip tracer-bullet ceremony</strong> (it's a single feature, not 3+ layers of new architecture), but treat the five-flavor golden re-baseline as the integration checkpoint. Rank map: one <span class="cx cxM">M</span> (the skill body + the drift-test design), the rest <span class="cx cxL">L</span>. No <span class="cx cxH">H</span> remains once the drift approach is approved — the seed's lone H is retired by the concrete subset-test design above.</p>
+
+<h2>8 · Task preview (for <code>/cp</code>)</h2>
+<ol>
+  <li><strong>Author <code>core/skills/map.md</code></strong> — skeleton + literal ASCII (with <code>{{MAP_TITLE}}</code>) + <code>--html</code> render spec. <span class="cx cxM">M</span></li>
+  <li><strong>Add <code>MAP_DESC</code> + <code>MAP_TITLE</code> to <code>core/vars.yaml</code></strong> (neutral) and <strong><code>MAP_TITLE</code> brand-restore to the 5 template <code>vars.yaml</code></strong>. <span class="cx cxL">L</span></li>
+  <li><strong>Write <code>compiler/test/map-drift.test.mjs</code></strong> — no-dangling-refs + spine-present. <span class="cx cxM">M</span></li>
+  <li><strong>Compile + run the three gates</strong> (purity, <code>node --test</code>, diff-harness) — fix to green. <span class="cx cxL">L</span></li>
+  <li><strong>Re-baseline golden</strong> for all five flavors; confirm <code>map</code> is <code>PASS</code>. <span class="cx cxL">L</span></li>
+  <li><strong>Manual verify</strong> <code>/map</code> and <code>/map --html</code> in a consuming repo. <span class="cx cxL">L</span></li>
+</ol>
+
+<h2>9 · Open decisions</h2>
+<table>
+  <tr><th>#</th><th>Decision</th><th>Recommendation</th><th>State</th></tr>
+  <tr><td>1</td><td>Drift guard approach (§4)</td><td>Hardcode + focused <code>map-drift.test.mjs</code></td><td><strong>needs sign-off</strong></td></tr>
+  <tr><td>2</td><td>Brand all 5 flavors, or coder-only for v1?</td><td>All 5 — trivial <code>MAP_TITLE</code> line each; keeps flavors uniform</td><td>lean, confirm at /cp</td></tr>
+  <tr><td>3</td><td>Command name</td><td><code>/map</code> (working name); alts /flow /lc /atlas</td><td>confirm at /cp</td></tr>
+  <tr><td>4</td><td>Supporting-cast depth in the graph</td><td>Core spine in main graph; rp/um/pica/crs in a "supporting" band</td><td>settled in seed</td></tr>
+  <tr><td>5</td><td>Subsume the hand-drawn testing-workflow SVG?</td><td>Ship command-graph view first; <code>--testing</code> superset + retiring the static SVG is a follow-on</td><td>settled in seed</td></tr>
+</table>
+
+<p class="meta" style="margin-top:26px"><strong>Next:</strong> <code>/cp</code> reads this plan and emits the <code>.md</code> execution plan (question-batch lockdown for decisions 1–3), then build in <code>stratagem-core</code>.</p>
+
+</body>
+</html>

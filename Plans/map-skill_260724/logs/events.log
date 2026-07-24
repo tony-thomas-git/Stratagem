@@ -1,0 +1,3 @@
+{"ts":"2026-07-24T06:09:51Z","event":"seed-ready","syncId":null,"task":null,"note":"map-skill seed authored (ASCII+HTML lifecycle map); /ss chain skip-loud — no ado.config.json in repo"}
+{"ts":"2026-07-24T06:21:13Z","event":"pf-start","syncId":null,"task":0,"note":"planning /map skill from seed; no Spike-Sync-Id (ss skip-loud'd) -> syncId null; board-sync chain skip-loud (no ado.config.json)"}
+{"ts":"2026-07-24T06:41:42Z","event":"plan-ready","syncId":null,"task":null,"note":"map-skill exec plan written+validated; 4 tasks, coder-flavor skill (templates/coder/skills/map.md), static output; /sp chain skip-loud (not board-synced)"}
