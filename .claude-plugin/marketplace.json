@@ -1,16 +1,16 @@
 {
   "name": "stratagem",
   "owner": { "name": "Tony Thomas" },
-  "metadata": { "description": "Stratagem — the clean, board-agnostic AI coding workflow core. Ships the sg plugin (self-contained PF→CP→PX→AX→CF lifecycle + budget-guarded autonomy loop, zero external dependencies) plus one recommended, disabled-by-default research add-on (stratagem-tavily). Board/chat adapters attach externally by presence-check via neutral seams." },
+  "metadata": { "description": "Stratagem — the clean, board-agnostic AI coding workflow core. Ships the sg plugin (self-contained PS→PF→CP→PX→AX→CF lifecycle + budget-guarded autonomy loop, zero external dependencies) plus one recommended, disabled-by-default research add-on (stratagem-tavily). Board/chat adapters attach externally by presence-check via neutral seams." },
   "plugins": [
     {
       "name": "sg",
-      "source": "./stratagem-core",
+      "source": "./plugins/stratagem-core",
       "description": "Stratagem Core — the generic clean coder core. Workflow operating modes (PF/CP/PX/AX/CF, /if autonomy loop, /ex→/fx recovery), tracer-bullet and Trust-But-Verify discipline, and neutral {event,syncId,task} board + notify seams that external adapters resolve to by presence-check. Runs the full lifecycle standalone with zero external dependencies."
     },
     {
       "name": "stratagem-tavily",
-      "source": "./stratagem-tavily",
+      "source": "./plugins/stratagem-tavily",
       "description": "Detachable research bridge — bundles the Tavily search/extract/map/crawl MCP for the research ladder's web fallback. Ships DISABLED (defaultEnabled:false); enable it and add your own API key to use. Recommended basic step; skills degrade to built-in WebSearch without it."
     }
   ]

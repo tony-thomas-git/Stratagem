@@ -24,7 +24,7 @@ to the intelliscience coder flavor:
 | **Stack-neutralized** | the skills privilege no language, framework, or test runner — baked C#/WPF/.NET/native-C++ nouns replaced with neutral placeholders | this feature (`strat-dist_260719`, Tasks 1–6) |
 | **`stratagem-tavily` add-on** | the one bundled research add-on — Tavily MCP for the web-fallback ladder, ships **disabled** (`defaultEnabled: false`) | `plugins/stratagem-tavily/` |
 
-The live marketplace (`plugins/.claude-plugin/marketplace.json`, name `stratagem`)
+The live marketplace (`.claude-plugin/marketplace.json` at the repo root, name `stratagem`)
 ships exactly **two** plugins — `sg` (the core) and `stratagem-tavily` (the
 add-on). **No board plugin ships here.** External board (Azure DevOps, Jira,
 GitHub Projects, …) and chat (Teams, Slack, …) systems attach as *separate

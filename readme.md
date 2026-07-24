@@ -54,8 +54,8 @@ Full steps: [`plugins/stratagem-tavily/INSTALL.md`](plugins/stratagem-tavily/INS
 ## Repository layout
 
 ```
+.claude-plugin/marketplace.json     # the Stratagem marketplace — at REPO ROOT (ships sg + stratagem-tavily)
 plugins/
-  .claude-plugin/marketplace.json   # the Stratagem marketplace (ships sg + stratagem-tavily)
   stratagem-core/                   # the sg plugin
     .claude-plugin/plugin.json      # name: sg · version · defaultEnabled
     skills/                         # the /sg:* operating modes

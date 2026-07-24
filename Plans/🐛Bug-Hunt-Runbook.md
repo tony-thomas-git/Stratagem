@@ -21,7 +21,16 @@
 
 ## Bug Log
 
-*(none yet)*
+### BUG-001 — `marketplace add <owner/repo>` fails: manifest not at repo root
+- **Date:** 2026-07-21
+- **Description:** On a clean test-install machine, `claude plugin marketplace add tony-thomas-git/Stratagem` failed with "Marketplace file not found." The git-remote form reads `.claude-plugin/marketplace.json` at the **repo root**, but the manifest lived one level down at `plugins/.claude-plugin/marketplace.json` — a location only the local-path add form can reach.
+- **Root cause:** The marketplace manifest was authored under `plugins/` with `source` paths relative to that dir (`./stratagem-core`, `./stratagem-tavily`). The `owner/repo` git-remote install form cannot point at a subdirectory, so it never found the manifest. Auth + clone were fine (repo reached HEAD `95a8131`).
+- **Files changed:**
+  - **NEW** `.claude-plugin/marketplace.json` (repo root) — the manifest, `source` re-rooted to `./plugins/stratagem-core` + `./plugins/stratagem-tavily`.
+  - **DEL** `plugins/.claude-plugin/marketplace.json` — moved to root (single source of truth).
+  - **MOD** `readme.md` — repo-layout block now shows the manifest at root.
+  - **MOD** `docs/DERIVATION.md` — live-marketplace path reference updated to root.
+- **Fix summary:** Moved the manifest to the repo root and re-rooted the two plugin `source` paths so both the git-remote (`owner/repo`) and local-path add forms resolve. Verified valid JSON + both sources resolve to a real `plugin.json`. End-to-end confirmation is the `steep` test machine re-running `marketplace add` after push.
 
 ---
 
@@ -29,7 +38,7 @@
 
 | Area | Files | Notes |
 |------|-------|-------|
-| Marketplace / distribution | `plugins/.claude-plugin/marketplace.json` | ships `sg` + `stratagem-tavily` (FEAT-001) |
+| Marketplace / distribution | `.claude-plugin/marketplace.json` **(repo root)** | ships `sg` + `stratagem-tavily`; manifest moved root-side so `marketplace add owner/repo` resolves (BUG-001) |
 | Research add-on | `plugins/stratagem-tavily/` | bundled Tavily MCP, ships disabled (FEAT-001) |
 | Docs | `readme.md` | generic-core + enable-research (FEAT-001) |
 
@@ -40,3 +49,4 @@
 | Date | Entry | Summary |
 |------|-------|---------|
 | 2026-07-19 | FEAT-001 | Ship `stratagem-tavily` research add-on (bundled Tavily MCP, disabled by default) |
+| 2026-07-21 | BUG-001 | Move marketplace manifest to repo root so `marketplace add owner/repo` resolves |
