@@ -45,6 +45,40 @@
 </style>
 </head>
 <body>
+  <pre>
+
+    claude plugin marketplace add tony-thomas-git/Stratagem
+
+claude plugin install stratagem-tavily@stratagem
+claude plugin enable  stratagem-tavily@stratagem
+/stratagem-tavily:setup            # paste your Tavily key (free tier at app.tavily.com)
+
+
+try /sg:help for a quick overview of the Stratagem plugin's capabilities — the full lifecycle map with every command and its purpose.
+
+----
+
+    For a clean machine, Stratagem installs as a Claude Code plugin marketplace (stratagem). The canonical, current source is INSTALL.md — here are the commands:
+
+Core (sg) — required, zero-config
+
+# 1. Add the marketplace (git remote, or a local clone path)
+claude plugin marketplace add tony-thomas-git/Stratagem
+#   or from a local clone:  claude plugin marketplace add C:\code\Stratagem
+
+# 2. Install the core plugin
+claude plugin install sg@stratagem
+
+# 3. Restart Claude Code
+sg sets defaultEnabled: true, so it activates on install — no keys, no board, no services. Verify with /help (you should see /sg:pf, /sg:cp, /sg:px, /sg:if, /sg:cf, …).
+
+Research add-on (stratagem-tavily) — optional, recommended
+
+claude plugin install stratagem-tavily@stratagem
+claude plugin enable  stratagem-tavily@stratagem
+/stratagem-tavily:setup            # paste your Tavily key (free tier at app.tavily.com)
+Ships disabled; without it research falls back to built-in WebSearch. Needs node on PATH.
+  </pre>
 <div class="wrap">
 
 <header class="doc">

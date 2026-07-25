@@ -19,7 +19,7 @@ to the intelliscience coder flavor:
 
 | Layer | State | Evidence |
 |---|---|---|
-| **Coder `sg` flavor** | the base — the 21-skill workflow engine (`plugins/stratagem-core/`) | `plugins/stratagem-core/skills/` (21 derived dirs; +`/map` dist-local → 22 today, see §5) |
+| **Coder `sg` flavor** | the base — the 21-skill workflow engine (`plugins/stratagem-core/`) | `plugins/stratagem-core/skills/` (21 derived dirs; +`/help` dist-local → 22 today, see §5) |
 | **Board-neutralized** | ADO naming stripped, `stratagem-ado` removed, neutral `{event, syncId, task}` board + notify seams left in place | commit `dd4deee`; `plugins/stratagem-core/SEAM-CONTRACT.md` |
 | **Stack-neutralized** | the skills privilege no language, framework, or test runner — baked C#/WPF/.NET/native-C++ nouns replaced with neutral placeholders | this feature (`strat-dist_260719`, Tasks 1–6) |
 | **`stratagem-tavily` add-on** | the one bundled research add-on — Tavily MCP for the web-fallback ladder, ships **disabled** (`defaultEnabled: false`) | `plugins/stratagem-tavily/` |
@@ -148,13 +148,13 @@ Improvements made directly on `strat-dist` that are **not yet in the canonical
   `<plugin>-<marketplace>` data dir (BOM-free), removing the two manual-setup footguns
   (wrong folder + UTF-16 BOM). Port into `stratagem-core`'s
   `stratagem-addons/plugins/stratagem-tavily/` when convenient.
-- **`/map` lifecycle-map skill** (`plugins/stratagem-core/skills/map/`, added 2026-07-24) —
+- **`/help` lifecycle-map skill** (`plugins/stratagem-core/skills/help/`, added 2026-07-24, renamed from `/map`) —
   a static reference skill that prints the `ps→…→rs` lifecycle as an ASCII card (spine +
   `/ex→/fx` recovery loop + variant lanes + a grouped skill legend with acronym expansions),
   and writes a context-swimlane HTML page on `--html`. Board/stack-neutral by construction
   (it names only workflow-engine skills; no board/stack tokens), so it survives the §4 gates
   untouched. **A re-derivation (§4) will NOT carry it** — §4 starts from the upstream coder
-  flavor, which has no `/map` — so to make it durable, port it into the upstream coder flavor's
+  flavor, which has no `/help` — so to make it durable, port it into the upstream coder flavor's
   skill set (`stratagem-core`'s `templates/coder/skills/`) when convenient; until then, **re-add
   it after any clean re-derive** (it is pure content, no neutralization needed).
 

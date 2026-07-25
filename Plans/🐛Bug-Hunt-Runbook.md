@@ -29,6 +29,18 @@
 - **Implementation summary:** Instruction skill (no build) + a one-line `node` write reusing the launcher's `stratagem-tavily*` glob (DRY, no new abstraction). Key passed to `node` as a process arg (never interpolated into JS or a printed command). Launcher + tests untouched.
 - **Verification:** `node --test resolve-cred-dir.test.mjs` **9/9** ✅ · `claude plugin validate .` ✅ · skill frontmatter valid · `plugin.json` v0.2.0.
 
+### FEAT-003 — Rename `/map` lifecycle-map skill → `/help` (strat dist)
+- **Date:** 2026-07-24
+- **Description:** Renamed the dist-local lifecycle-map skill from `/map` to `/help` (invoked as `/sg:help`). Content is unchanged — the `STRATAGEM · lifecycle map` ASCII card and the `--html` swimlane page are byte-identical; only the command token changed.
+- **Motivation:** `/help` is the intuitive command for "show me what this plugin does" — the lifecycle map *is* the plugin's help/overview surface. `IQ.md` onboarding copy already pointed users at `/sg:help` for a full command list, so the rename makes that real instead of two half-commands (`/sg:map` overview + a non-existent `/sg:help`).
+- **Files changed:**
+  - **REN** `plugins/stratagem-core/skills/map/SKILL.md` → `plugins/stratagem-core/skills/help/SKILL.md` (`git mv`; the folder name *is* the command name).
+  - **MOD** that `SKILL.md` — frontmatter `name: map`→`help`; H1 `# MAP (Lifecycle Map)`→`# HELP (Lifecycle Map)`; banner `⚡ MAP`→`⚡ HELP`; HTML footer self-ref `/map --html`→`/help --html`. Card/HTML **title** left as "lifecycle map" (names the artifact, not the command).
+  - **MOD** `docs/DERIVATION.md` — §5 dist-local bullet + line-22 flavor table: `/map`→`/help`, `skills/map/`→`skills/help/`, noted "renamed from `/map`".
+  - **MOD** `IQ.md` — collapsed the now-dead `/sg:map` reference into the single `/sg:help` onboarding line.
+- **Implementation summary:** Pure rename, **dist-local only** — `/map` never existed upstream in `stratagem-core/core/skills/` or any golden baseline (confirmed), so zero compiler/golden churn. Used **edit-then-`git mv`** order to avoid the Edit-cache-invalidation trap ([[multi-stage-migration-pitfalls]]). No `Vault/` edit (no CHANGELOG / fleet gate), no manifest edit (skills are directory-discovered). Historical `Plans/map-skill_260724/` left intact as the original build record. No naming collision — plugin skills are namespaced (`/sg:help`), so no clash with the built-in `/help`.
+- **Verification:** `help/SKILL.md` present with `name: help` + `# HELP` + `⚡ HELP`; `map/` gone; grep for live `skills/map`\|`/sg:map` → none (remaining `map` hits are the unrelated Tavily `tavily_map` MCP tool). **Manual HV pending (not shell-verifiable):** run `/sg:help` → prints the lifecycle card; `/sg:help --html` → writes the swimlane page.
+
 ---
 
 ## Bug Log
@@ -54,6 +66,7 @@
 | Research add-on | `plugins/stratagem-tavily/` | bundled Tavily MCP, ships disabled (FEAT-001) |
 | Research add-on · setup | `plugins/stratagem-tavily/skills/setup/` | `/stratagem-tavily:setup` one-command key setup; add-on v0.2.0 (FEAT-002) |
 | Docs | `readme.md` | generic-core + enable-research (FEAT-001) |
+| Lifecycle-map skill | `plugins/stratagem-core/skills/help/` | `/sg:help` prints the lifecycle map (ASCII) / `--html` swimlane; renamed from `/map` (FEAT-003) |
 
 ---
 
@@ -64,3 +77,4 @@
 | 2026-07-19 | FEAT-001 | Ship `stratagem-tavily` research add-on (bundled Tavily MCP, disabled by default) |
 | 2026-07-21 | BUG-001 | Move marketplace manifest to repo root so `marketplace add owner/repo` resolves |
 | 2026-07-21 | FEAT-002 | Add `/stratagem-tavily:setup` — one-command key setup (no manual data-dir path) |
+| 2026-07-24 | FEAT-003 | Rename `/map` lifecycle-map skill → `/help` (`/sg:help`) |

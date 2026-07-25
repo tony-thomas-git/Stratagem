@@ -1,10 +1,10 @@
 ---
-name: map
+name: help
 description: Lifecycle Map - print the Stratagem skill flow as an ASCII reference card; --html writes a swimlane page
 argument-hint: "[--html [path]]"
 ---
 
-# MAP (Lifecycle Map)
+# HELP (Lifecycle Map)
 
 **Purpose:** Print the Stratagem skill lifecycle as a single at-a-glance reference — the `ps → pf → cp → px → ax → cf → rs` spine, the `ex → fx` recovery loop, the variant lanes, and a grouped legend giving every skill its name and one-liner. A static, deterministic reference card: it prints (or writes) pre-authored content, it never generates.
 
@@ -13,7 +13,7 @@ argument-hint: "[--html [path]]"
 **IMMEDIATELY display this banner:**
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- ⚡ MAP (Lifecycle Map) MODE ACTIVE
+ ⚡ HELP (Lifecycle Map) MODE ACTIVE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  Task: [show $ARGUMENTS or "printing map"]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -36,7 +36,7 @@ argument-hint: "[--html [path]]"
    ┌────┐  ┌────┐  ┌────┐  ┌────┐  ┌────┐  ┌────┐  ┌────┐
    │/ps │─▶│/pf │─▶│/cp │─▶│/px │─▶│/ax │─▶│/cf │─▶│/rs │
    └────┘  └────┘  └────┘  └────┘  └─┬──┘  └────┘  └────┘
-                     recovery ↺  on /ax fail:  /ax ▶ /ex ▶ /fx ▶ /ax  (≤3×)
+                     recovery ↺  on /ax fail: /ex ▶ /fx 
 
    PLANNING     /ps  Plan Seed              seed a raw idea into a reasoned brief
                 /pf  Plan Features          turn open questions into a feature plan
@@ -169,7 +169,7 @@ argument-hint: "[--html [path]]"
     </div>
   </div>
 
-  <footer>STRATAGEM · lifecycle map — a static reference. Regenerate with <code>/map --html</code>.</footer>
+  <footer>STRATAGEM · lifecycle map — a static reference. Regenerate with <code>/help --html</code>.</footer>
 </body>
 </html>
 ```

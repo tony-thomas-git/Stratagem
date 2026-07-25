@@ -1,6 +1,6 @@
 {
   "name": "sg",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Stratagem Core — the generic, board-agnostic AI coding workflow engine. PS/PF/CP/PX/AX/CF lifecycle, /phx + budget-guarded /if autonomy loop, /ex→/fx recovery; neutral board + notify seams for external adapters. Zero external dependencies.",
   "author": { "name": "Tony Thomas" },
   "defaultEnabled": true
